@@ -1,0 +1,19 @@
+<f:be.container loadExtJs="true" pageTitle="Schulungen" enableExtJsDebug="true" addJsFile="{f:uri.resource(path:'Js/schulungenBackend.js')}" addCssFile="{f:uri.resource(path:'css/backend.css')}">
+
+	<f:base />
+	<div id="typo3-docheader">
+		<div id="typo3-docheader-row1"></div>
+		<div id="typo3-docheader-row2">
+			<div class="docheader-row2-left"><div class="docheader-funcmenu"></div></div>
+			<div class="docheader-row2-right"><f:be.pagePath /> <strong><f:be.pageInfo /></strong></div>
+		</div>
+	</div>
+
+	<f:renderFlashMessages style="padding: 12px; border:1px solid #ffcc00; background-color: lightyellow" />
+
+	<div class="tx-schulungen-mod">
+		<div id="typo3-inner-docbody">
+			<f:render section="backend" />
+		</div>
+	</div>
+</f:be.container>

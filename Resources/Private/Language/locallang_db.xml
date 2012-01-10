@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'schulungen'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_schulungen_domain_model_schulung">Schulung</label>
+			<label index="tx_schulungen_domain_model_schulung.titel">Titel</label>
+			<label index="tx_schulungen_domain_model_schulung.untertitel">Untertitel</label>
+			<label index="tx_schulungen_domain_model_schulung.beschreibung">Beschreibung</label>
+			<label index="tx_schulungen_domain_model_schulung.voraussetzungen">Voraussetzungen</label>
+			<label index="tx_schulungen_domain_model_schulung.treffpunkt">Treffpunkt</label>
+			<label index="tx_schulungen_domain_model_schulung.dauer">Veranstaltungsdauer</label>
+			<label index="tx_schulungen_domain_model_schulung.veranstalter">Veranstalter</label>
+			<label index="tx_schulungen_domain_model_schulung.teilnehmern_min">Teilnehmer Min</label>
+			<label index="tx_schulungen_domain_model_schulung.teilnehmer_max">Teilnehmer Max</label>
+			<label index="tx_schulungen_domain_model_schulung.mail_kopie">Mail Kopie</label>
+			<label index="tx_schulungen_domain_model_schulung.schulung_termine">Schulung: Termine</label>
+			<label index="tx_schulungen_domain_model_termin">Termin</label>
+			<label index="tx_schulungen_domain_model_termin.start">Start</label>
+			<label index="tx_schulungen_domain_model_termin.ende">Ende</label>
+			<label index="tx_schulungen_domain_model_termin.abgesagt">Abgesagt</label>
+			<label index="tx_schulungen_domain_model_termin.erinnerungenverschickt">Erinnerungen an Teilnehmer verschickt</label>
+			<label index="tx_schulungen_domain_model_termin.termin_teilnehmer">Termin: Teilnehmer</label>
+			<label index="tx_schulungen_domain_model_teilnehmer">Teilnehmer</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.vorname">Vorname</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.nachname">Nachname</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.email">Email</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.studienfach">Fachrichtung / Studiengang</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.schule">Schule</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.ort">Ort</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.bemerkung">Bemerkung</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.teilnehmer_termin">Teilnehmer: Termin</label>
+		</languageKey>
+	</data>
+</T3locallang>

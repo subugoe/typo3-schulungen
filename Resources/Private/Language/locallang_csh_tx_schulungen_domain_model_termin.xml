@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+    <meta type="array">
+        <description>Context Sensitive Help (CSH) for table tx_schulungen_domain_model_termin</description>
+        <type>CSH</type>
+        <csh_table>tx_schulungen_domain_model_termin</csh_table>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+			<label index="start.description">Startdatum und Zeit</label>
+			<label index="ende.description">Enddatum</label>
+			<label index="abgesagt.description">Flag ob der Termin abgesagt wurde</label>
+			<label index="termin_teilnehmer.description">Teilnehmer des Schulungstermins</label>
+		</languageKey>
+    </data>
+</T3locallang>

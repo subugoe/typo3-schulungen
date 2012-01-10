@@ -1,0 +1,39 @@
+/* 
+    Document   : backend.css
+    Created on : 01.04.2011, 13:36:21
+    Author     : ingop
+    Description:
+        CSS fuer das Backend Modul der Schulungsextension
+*/
+
+.tx-schulungen-mod table{
+        padding-bottom: 16px;
+}
+
+.tx-schulungen-mod th {
+	border-bottom: 1px solid black;	
+        font-size: 12px;
+        font-weight: normal;
+        text-align: center;
+}
+
+.tx-schulungen-mod td{
+        background-color: #DDD;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;	
+        border: 1px solid #333;
+        padding: 2px;
+        text-align: center;
+}
+
+.tx-schulungen-mod .Even{
+        background-color: #EEE !important;
+}
+
+.tx-schulungen-mod .anzahlTeilnehmer    {
+    text-align: center;    
+}
+
+.tx-schulungen-mod .date    {
+    text-align: center;    
+}

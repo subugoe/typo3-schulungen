@@ -1,0 +1,12 @@
+<label for="start">
+	<f:translate key="tx_schulungen_domain_model_termin.start" />
+</label><br />
+	<f:form.textbox property="start"  value="{termin.start->f:format.date()}"  /><br />
+<label for="ende">
+	<f:translate key="tx_schulungen_domain_model_termin.ende" />
+</label><br />
+	<f:form.textbox property="ende"  value="{termin.ende->f:format.date()}"  /><br />
+<label for="abgesagt">
+	<f:translate key="tx_schulungen_domain_model_termin.abgesagt" /> <span class="required">(required)</span>
+</label><br />
+	<f:form.textbox property="abgesagt" /><br />

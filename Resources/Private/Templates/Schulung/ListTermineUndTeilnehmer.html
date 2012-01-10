@@ -1,0 +1,15 @@
+<f:for each="{schulung}" as="eintrag">
+	<h3>{eintrag.titel}</h3>
+	<ul>
+		<f:for each="{eintrag.schulungTermine}" as="termin">
+			<li><strong><f:format.date format="d.m.Y H:i">{termin.ende}</f:format.date></strong> ({termin.anzahlTeilnehmer} Teilnehmer)
+				<ul>
+					<f:for each="{termin.teilnehmer}" as="teilnehmer">
+						<li>{teilnehmer.vorname} {teilnehmer.nachname}, <f:link.email email="{teilnehmer.email}">{teilnehmer.email}</f:link.email></li>
+					</f:for>
+				</ul>
+			</li>
+		</f:for>
+	</ul>
+</f:for>
+

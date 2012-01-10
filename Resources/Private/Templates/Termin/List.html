@@ -1,0 +1,29 @@
+<f:layout name="default" />
+
+<f:section name="main">
+<h1>Listing for Termin</h1>
+
+<f:flashMessages />
+
+<table  class="" >
+	<tr>
+		<th><f:translate key="tx_schulungen_domain_model_termin.start" /></th>
+		<th><f:translate key="tx_schulungen_domain_model_termin.ende" /></th>
+		<th><f:translate key="tx_schulungen_domain_model_termin.abgesagt" /></th>
+		<th> </th>
+		<th> </th>
+	</tr>
+
+	<f:for each="{termins}" as="termin">
+		<tr>
+			<td><f:link.action action="show" arguments="{termin : termin}"> {termin.start -> f:format.date()}</f:link.action></td>
+			<td><f:link.action action="show" arguments="{termin : termin}"> {termin.ende -> f:format.date()}</f:link.action></td>
+			<td><f:link.action action="show" arguments="{termin : termin}"> {termin.abgesagt}</f:link.action></td>
+			<td><f:link.action action="edit" arguments="{termin : termin}">Edit</f:link.action></td>
+			<td><f:link.action action="delete" arguments="{termin : termin}">Delete</f:link.action></td>
+		</tr>
+	</f:for>
+</table>
+
+<f:link.action action="new">New Termin</f:link.action>
+</f:section>

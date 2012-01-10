@@ -1,0 +1,80 @@
+plugin.tx_schulungen {
+	settings {
+		view {
+			templateRootPath = {$plugin.tx_schulungen.view.templateRootPath}
+			partialRootPath = {$plugin.tx_schulungen.view.partialRootPath}
+			layoutRootPath = {$plugin.tx_schulungen.view.layoutRootPath}
+		}
+		mail{
+			fromMail = {$plugin.tx_schulungen.mail.fromMail}
+			fromName = {$plugin.tx_schulungen.mail.fromName}
+		}
+		persistence{
+			enableAutomaticCacheClearing = 1
+			storagePid = {$plugin.tx_schulungen.persistence.storagePid}
+		}
+	}
+        useCacheHash = 1
+}
+module.tx_schulungen {
+	persistence{
+		enableAutomaticCacheClearing = 1
+		storagePid = {$plugin.tx_schulungen.persistence.storagePid}
+	}
+	mail < {$plugin.tx_schulungen.mail}
+	view < {$plugin.tx_schulungen.view}
+}
+
+lib.tx_schulungen.pathSegmentTitle = TEXT
+lib.tx_schulungen.pathSegmentTitle {
+	dataWrap = DB:tx_schulungen_domain_model_schulung:{GP:tx_schulungen_schulungen|schulung}:titel
+	wrap3 = {|}
+	insertData = 1
+}
+
+lib.tx_schulungen_teilnehmer.pathSegmentTitle = COA
+lib.tx_schulungen_teilnehmer.pathSegmentTitle {
+	10 = TEXT
+	10 {
+		dataWrap = DB:tx_schulungen_domain_model_termin:{GP:tx_schulungen_schulungen|termin}:startzeit
+		wrap3 = {|}
+		insertData = 1
+	}
+	stdWrap.strftime = %A, %d. %B %Y - %H:%M Uhr
+}
+
+ics = PAGE
+ics {
+	typeNum = 1316011668
+	10 =< tt_content.list.20.schulungen_calendar
+
+	config {
+		disableAllHeaderCode = 1
+
+		additionalHeaders = Expires: 0
+		additionalHeaders = Cache-Control: must-revalidate, post-check=0, pre-check=0
+		additionalHeaders = Content-type: text/calendar
+		additionalHeaders = Content-Disposition: attachment; filename=termin.ics
+
+		xhtml_cleaning = 0
+		admPanel = 0
+    }
+}
+
+csv = PAGE
+csv {
+	typeNum = 1321464620
+	10 =< tt_content.list.20.schulungen_csvexport
+
+	config {
+		disableAllHeaderCode = 1
+
+		additionalHeaders = Expires: 0
+		additionalHeaders = Cache-Control: must-revalidate, post-check=0, pre-check=0
+		additionalHeaders = Content-type: text/csv
+		additionalHeaders = Content-Disposition: attachment; filename=export.csv
+
+		xhtml_cleaning = 0
+		admPanel = 0
+    }
+}

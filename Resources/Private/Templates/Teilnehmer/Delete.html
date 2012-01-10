@@ -1,0 +1,15 @@
+<f:layout name="default" />
+
+<f:section name="main">
+<h2>Anmeldung</h2>
+
+<f:flashMessages />
+
+<f:render partial="formErrors" />
+<f:form method="post" action="create" name="newTeilnehmer" object="{newTeilnehmer}" arguments="{gallery : gallery, album : album}"  additionalParams="{tx_schulungen_schulungen: {schulung: '{teilnehmerTermin.schulung.uid}', termin: '{teilnehmerTermin.uid}'}}">
+
+	{teilnehmerTermin.schulung.titel}
+<f:render partial="Teilnehmer/formFields" arguments="{domainObject:domainObject, teilnehmerTermin:teilnehmerTermin}" />
+	<f:form.submit value="Eintragen" />
+</f:form>
+</f:section>

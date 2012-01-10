@@ -1,0 +1,14 @@
+<f:layout name="default" />
+
+<f:section name="main">
+<h1>Edit Schulung</h1>
+
+<f:flashMessages />
+
+<f:render partial="formErrors" />
+
+<f:form method="post" action="update" name="schulung" object="{schulung}" >
+<f:render partial="Schulung/formFields" arguments="{schulung:schulung}" />
+	<f:form.submit value="Save" />
+</f:form>
+</f:section>

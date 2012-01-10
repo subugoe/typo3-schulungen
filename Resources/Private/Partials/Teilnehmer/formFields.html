@@ -1,0 +1,24 @@
+<label for="vorname">
+	<f:translate key="tx_schulungen_domain_model_teilnehmer.vorname" /> <span class="required">(Pflichtfeld)</span>
+</label><br />
+<f:form.textfield property="vorname" size="40"/>
+<f:render partial="FieldError" arguments="{ errors: errors, formName: 'newTeilnehmer', fieldName: 'vorname' }" /><br />
+<label for="nachname">
+	<f:translate key="tx_schulungen_domain_model_teilnehmer.nachname" /> <span class="required">(Pflichtfeld)</span>
+</label><br />
+<f:form.textfield property="nachname" size="40"/>
+<f:render partial="FieldError" arguments="{ errors: errors, formName: 'newTeilnehmer', fieldName: 'nachname' }" /><br />
+<label for="email">
+	<f:translate key="tx_schulungen_domain_model_teilnehmer.email" /> <span class="required">(Pflichtfeld)</span>
+</label><br />
+<f:form.textfield property="email" size="40" />
+<f:render partial="FieldError" arguments="{ errors: errors, formName: 'newTeilnehmer', fieldName: 'email' }" /><br />
+<label for="studienfach">
+	<f:translate key="tx_schulungen_domain_model_teilnehmer.studienfach" />
+</label><br />
+<f:form.textfield property="studienfach" size="40" /><br />
+<label for="bemerkung">
+	<f:translate key="tx_schulungen_domain_model_teilnehmer.bemerkung" />
+</label><br />
+<f:form.textarea property="bemerkung" rows="5" cols="40" /><br />
+<f:form.hidden name="termin" value="{teilnehmerTermin}" />

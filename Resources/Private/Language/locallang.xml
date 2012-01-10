@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for the Schulungen extension in the FRONTEND</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tx_schulungen_domain_model_schulung">Schulungen der SUB Goettingen</label>
+			<label index="tx_schulungen_domain_model_schulung.schulungsangebote">Schulungsangebote</label>
+			<label index="tx_schulungen_domain_model_schulung.titel">Titel der Schulung</label>
+			<label index="tx_schulungen_domain_model_schulung.beschreibung">Beschreibung der Schulung</label>
+			<label index="tx_schulungen_domain_model_schulung.voraussetzungen">Voraussetzungen</label>
+			<label index="tx_schulungen_domain_model_schulung.treffpunkt">Treffpunkt</label>
+			<label index="tx_schulungen_domain_model_schulung.dauer">Veranstaltungsdauer</label>
+			<label index="tx_schulungen_domain_model_schulung.veranstalter">Veranstalter</label>
+			<label index="tx_schulungen_domain_model_schulung.teilnehmer">Teilnehmer</label>
+			<label index="tx_schulungen_domain_model_schulung.teilnehmern_min">Mindestteilnehmerzahl</label>
+			<label index="tx_schulungen_domain_model_schulung.teilnehmer_max">Maximale Teilnehmerzahl</label>
+			<label index="tx_schulungen_domain_model_schulung.teilnehmerzahl">Teilnehmerzahl</label>
+			<label index="tx_schulungen_domain_model_schulung.teilnehmer">Teilnehmer</label>
+			<label index="tx_schulungen_domain_model_schulung.mail_kopie">E-Mail Adresse einer Person</label>
+			<label index="tx_schulungen_domain_model_schulung.schulung_termine">Termine der Schulung</label>
+			<label index="tx_schulungen_domain_model_termin">Termine</label>
+			<label index="tx_schulungen_domain_model_termin.ausgebucht">Derzeit keine freien Plätze verfügbar</label>
+			<label index="tx_schulungen_domain_model_termin.noch">Noch</label>
+			<label index="tx_schulungen_domain_model_termin.freiePlaetze">freie Plätze</label>
+			<label index="tx_schulungen_domain_model_termin.start">Startdatum und Zeit</label>
+			<label index="tx_schulungen_domain_model_termin.ende">Enddatum</label>
+			<label index="tx_schulungen_domain_model_termin.datum">Datum / Uhrzeit</label>
+			<label index="tx_schulungen_domain_model_termin.anmeldung">Anmeldung</label>
+			<label index="tx_schulungen_domain_model_termin.entfaellt">Entfällt</label>
+			<label index="tx_schulungen_domain_model_termin.abgesagt">Flag ob der Termin abgesagt ist</label>
+			<label index="tx_schulungen_domain_model_termin.wochentag.1">Montag</label>
+			<label index="tx_schulungen_domain_model_termin.wochentag.2">Dienstag</label>
+			<label index="tx_schulungen_domain_model_termin.wochentag.3">Mittwoch</label>
+			<label index="tx_schulungen_domain_model_termin.wochentag.4">Donnerstag</label>
+			<label index="tx_schulungen_domain_model_termin.wochentag.5">Freitag</label>
+			<label index="tx_schulungen_domain_model_termin.wochentag.6">Samstag</label>
+			<label index="tx_schulungen_domain_model_termin.wochentag.7">Sonntag</label>
+			<label index="tx_schulungen_domain_model_teilnehmer">Teilnehmer an Schulungen</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.vorname">Vorname</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.nachname">Nachname</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.email">E-Mail</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.studienfach">Fachrichtung / Studiengang</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.schule">Schule</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.ort">Ort</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.bemerkung">Bemerkung</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.teilnehmer_termin">Teilnehmer an einem Termin</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.bestaetigung">Anmeldebestätigung</label>
+			<label index="tx_schulungen_email_bestaetigung_subject">Vielen Dank für Ihre Anmeldung</label>
+			<label index="tx_schulungen_email_versand.fail">Ein Fehler beim E-Mail Versand trat auf.</label>
+			<label index="tx_schulungen_zurueck">Zurück zur Übersicht</label>
+			<label index="tx_schulungen_domain_validator_empty">Der übergebene Wert war leer.</label>
+			<label index="tx_schulungen_domain_validator_emailaddress">Der übergebene Wert ist keine gültige E-Mail-Adresse.</label>
+		</languageKey>
+                <languageKey index="en" type="array">
+			<label index="tx_schulungen_domain_validator_empty">The given subject was empty.</label>
+			<label index="tx_schulungen_domain_validator_emailaddress">The given subject was not a valid email address.</label>
+                </languageKey>
+
+	</data>
+</T3locallang>

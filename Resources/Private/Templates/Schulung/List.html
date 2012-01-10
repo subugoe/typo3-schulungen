@@ -1,0 +1,18 @@
+<f:layout name="default" />
+
+<f:section name="main">
+	<h2><f:translate key="tx_schulungen_domain_model_schulung.schulungsangebote" /></h2>
+
+	<f:flashMessages />
+
+	<f:for each="{schulungs}" as="schulung">
+		<h3><f:link.action action="show" arguments="{schulung : schulung}">{schulung.titel}</f:link.action></h3>
+		<p><f:format.html>{schulung.beschreibung}</f:format.html></p>
+
+	</f:for>
+
+<!--	<f:link.action action="new">Neue Schulung</f:link.action> -->
+<!--	<f:link.action action="listTermineUndTeilnehmer">Termine und Teilnehmer</f:link.action>-->
+<!--	<f:link.action controller="Benachrichtigung" action="sendeBenachrichtigung">Benachrichtigung</f:link.action>-->
+
+</f:section>

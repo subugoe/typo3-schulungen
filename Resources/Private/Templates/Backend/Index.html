@@ -1,0 +1,89 @@
+<f:layout name="backend" />
+
+<f:section name="backend">
+
+	<h2 class="uppercase">Schulungen</h2>
+	<div id="tx_schulungen-inhalt">
+
+		<f:for each="{schulungs}" as="schulung">
+			<h4>{schulung.titel}</h4>
+			<table>
+				<thead>
+					<tr>
+						<th width="10%">Details</th>
+						<th width="20%">Datum</th>
+						<th width="10%">Beginn</th>
+						<th width="10%">Ende</th>
+						<th width="10%">Teilnehmer</th>
+						<th width="10%">Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					<f:if condition="{schulung.schulungTermine}">
+						<f:then>
+
+							<f:for each="{schulung.schulungTermine}" as="termin" reverse="TRUE" iteration="Iterator">
+								<tr>
+									<td class="{f:if(condition: Iterator.isEven, then: 'Even')}">
+                                                                                <f:link.action action="detail" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-open" alt="Details" title="Detailansicht"></span></f:link.action>
+                                                                                <!--<f:be.buttons.icon uri="{f:uri.action(action:'detail',arguments:'{termin:termin}')}" icon="zoom" title="Detailansicht" />-->
+										<f:if condition="{termin.abgesagt}">
+											<f:then>
+                                                                                                <f:link.action action="uncancel" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-hide" alt="Uncancel" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} zusagen"></span></f:link.action>
+												<!--<f:be.buttons.icon uri="{f:uri.action(action:'uncancel',arguments:{termin:termin})}" icon="button_unhide" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} zusagen" />-->
+											</f:then>
+											<f:else>
+                                                                                                <f:link.action action="cancel" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-unhide" alt="Cancel" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} absagen"></span></f:link.action>
+												<!--<f:be.buttons.icon uri="{f:uri.action(action:'cancel',arguments:{termin:termin})}" icon="button_hide" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} absagen" />-->
+											</f:else>
+										</f:if>
+										</td>
+										<td class="date {f:if(condition: Iterator.isEven, then: 'Even')}">
+											<f:format.date format="d.m.Y">{termin.startZeit}</f:format.date>
+										</td>
+										<td class="date {f:if(condition: Iterator.isEven, then: 'Even')}">
+											<f:format.date format="H:i">{termin.startZeit}</f:format.date>
+										</td>
+										<td class="date {f:if(condition: Iterator.isEven, then: 'Even')}">
+											<f:format.date format="H:i">{termin.ende}</f:format.date>
+										</td>
+										<td class="anzahlTeilnehmer {f:if(condition: Iterator.isEven, then: 'Even')}">
+											{termin.anzahlTeilnehmer} ({termin.schulung.teilnehmernMin}-{termin.schulung.teilnehmerMax})
+										</td>
+										<td class="{f:if(condition: Iterator.isEven, then: 'Even')}">
+											<f:if condition="{termin.abgesagt}">
+												<f:then>
+													<f:image src="{f:uri.resource(path:'img/fail.png')}" alt="abgesagt" title="abgesagt" />
+												</f:then>
+												<f:else>
+													<f:image src="{f:uri.resource(path:'img/ok.png')}" alt="findet statt" title="findet statt" />
+												</f:else>
+											</f:if>
+										</td>
+									</tr>
+									</f:for>
+
+							</f:then>
+							<f:else>
+									<tr>
+										<td colspan="6">Es sind noch keine Schulungstermine eingetragen.</td>
+									</tr>
+							</f:else>
+					</f:if>
+
+				</tbody>
+			</table>
+
+		</f:for>
+
+	  <h4>Übersicht</h4>
+	  <table>
+		<tr><th>Teilnehmer</th><th>Schulungstermine</th></tr>
+		<tr><td>{schulung.numberOfTeilnehmer}</td><td>{schulung.numberOfTermine}</td></tr>
+	  </table>
+	  
+	  <f:link.action controller="Backend" action="export" format="csv" pluginName="csvexport" pageType="1321464620"><span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-export-csv" alt="Details" title="Detailansicht"></span></f:link.action>
+	  <f:link.action controller="Backend" action="export" format="csv" pluginName="csvexport" pageType="1321464620">CSV-Export</f:link.action>
+	</div>
+
+</f:section>

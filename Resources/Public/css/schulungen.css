@@ -1,0 +1,48 @@
+root { 
+	display: block;
+}
+
+.tx-schulungen-pi1 {
+	color: #434343;
+}
+
+.tx-schulungen-pi1 .list {
+	float:left;
+	clear:both;
+	margin-bottom: 8px;
+}
+
+.tx-schulungen-pi1 table {
+	border-spacing: 1px;
+}
+
+.tx-schulungen-pi1 table th {
+	text-align: left;
+	font-weight: normal;
+}
+
+.tx-schulungen-pi1 table th td {
+	padding: 2px;
+}
+
+.tx-schulungen-pi1 dt {
+	margin-top: 12px;
+	color: #626262;
+	font-weight: bold;
+/*	float: left; */
+}
+
+.tx-schulungen-pi1 dd {
+/*	text-indent: 20px; */
+	margin-left: 20px;
+}
+
+#icon_cal {
+	float: right;
+	border: 0px;
+	margin-right: 4px;
+}
+
+.middle {
+	text-align: center;
+}

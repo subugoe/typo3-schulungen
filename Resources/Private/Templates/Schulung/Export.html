@@ -1,0 +1,14 @@
+<f:layout name="default" />
+
+<f:section name="main">
+<f:for each="{fluidVarsObject}" as="schulung">
+	<f:if condition="{schulung.schulungTermine}">
+	<f:then>
+	    <f:for each="{schulung.schulungTermine}" as="termin" reverse="TRUE" iteration="Iterator">
+		{schulung.titel};<f:format.date format="d.m.Y">{termin.startZeit}</f:format.date>;<f:format.date format="H:i">{termin.startZeit}</f:format.date>;<f:format.date format="H:i">{termin.ende}</f:format.date>;{termin.anzahlTeilnehmer};{termin.abgesagt}\n
+	    </f:for>
+	</f:then>
+    </f:if>
+</f:for>
+
+</f:section>

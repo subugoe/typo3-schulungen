@@ -1,0 +1,18 @@
+<f:layout name="backend" />
+
+<f:section name="backend">
+
+	<h2>{termin.schulung.titel}</h2>
+	<strong><f:format.date format="d.m.Y - H:i">{termin.startZeit}</f:format.date><f:format.date format="H:i">{termin.ende}</f:format.date></strong> ({termin.anzahlTeilnehmer} Teilnehmer)
+	<table>
+
+		<f:for each="{termin.teilnehmer}" as="teilnehmer">
+			<tr>
+				<td>{teilnehmer.vorname} {teilnehmer.nachname}</td>
+				<td><f:link.email email="{teilnehmer.email}">{teilnehmer.email}</f:link.email></li></td>
+			</tr>
+		</f:for>
+	</table>
+
+	<f:be.buttons.icon uri="{f:uri.action(action:'cancel',arguments:{termin:termin})}" icon="button_hide" title="{termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} absagen" />{termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} absagen
+</f:section>

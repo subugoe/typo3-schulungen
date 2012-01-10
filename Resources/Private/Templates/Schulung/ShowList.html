@@ -1,0 +1,36 @@
+<f:layout name="default" />
+
+<f:section name="main">
+	{namespace schulungen=Tx_Schulungen_ViewHelpers}
+
+	<f:flashMessages />
+	<f:render partial="Schulung/properties" arguments="{schulung:schulung}" />
+	<br />
+
+	<h2>Termine</h2>
+	<ul>
+		<f:if condition="{termine}">
+			<f:then>
+				<f:for each="{termine}" as="termin">
+						<li><f:translate key="tx_schulungen_domain_model_termin.wochentag.{termin.startzeit -> f:format.date(format: 'N')}" />, <f:format.date format="d.m.Y H:i">{termin.startzeit}</f:format.date> - <f:format.date format="H:i">{termin.ende}</f:format.date>
+						<f:if condition="{termin.anzahlTeilnehmer} < {schulung.teilnehmerMax}">
+						<f:then>
+							(<f:translate key="tx_schulungen_domain_model_termin.noch" /> <schulungen:freiePlaetze maxPlaetze="{schulung.teilnehmerMax}" belegtePlaetze="{termin.anzahlTeilnehmer}" /> <f:translate key="tx_schulungen_domain_model_termin.freiePlaetze"/>).<br />
+							<f:link.action action="new" controller="Teilnehmer" arguments="{termin:termin}" additionalParams="{tx_schulungen_schulungen: {schulung: '{schulung.uid}'}}" >Teilnahme am <f:format.date format="d.m.Y">{termin.startzeit}</f:format.date></f:link.action> </li>
+						</f:then>
+						<f:else>.
+							<br />
+							<f:translate key="tx_schulungen_domain_model_termin.ausgebucht" />
+						</f:else>
+					</f:if>
+				</f:for>
+			</f:then>
+			<f:else>
+				Keine Termine vorhanden!
+			</f:else>
+		</f:if>
+	</ul>
+
+	<!--<f:link.action action="list">Back to list</f:link.action><br />-->
+
+</f:section>
