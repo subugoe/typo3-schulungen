@@ -27,7 +27,7 @@
 /**
  * Controller for the Schulung object
  *
- * @version $Id$
+ * @version $Id: SchulungController.php 1558 2011-12-18 10:01:41Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */

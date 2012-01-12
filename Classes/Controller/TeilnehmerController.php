@@ -27,7 +27,7 @@
 /**
  * Controller for the Teilnehmer object
  *
- * @version $Id$
+ * @version $Id: TeilnehmerController.php 1583 2012-01-05 13:39:45Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */

@@ -27,7 +27,7 @@
 /**
  * Schulungen der SUB Goettingen
  *
- * @version $Id$
+ * @version $Id: Schulung.php 1154 2011-09-07 12:11:37Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */

@@ -38,13 +38,13 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 		)
 );
 
-//Scheduler fuer die Erinnerungen konfigurieren
-//$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_Schulungen_Service_SendRemindersTask'] = array(
-//	'extension' => $_EXTKEY,
-//	'title' => 'Erinnerungen versenden',
-//	'description' => 'Vor einer Schulung Erinnerungen verschicken'
-//);
+// Scheduler fuer die Erinnerungen konfigurieren
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_Schulungen_Service_SendRemindersTask'] = array(
+	'extension' => $_EXTKEY,
+	'title' => 'Erinnerungen versenden',
+	'description' => 'Vor einer Schulung Erinnerungen verschicken'
+);
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'Tx_Schulungen_Command_ReminderCommandController';
+//$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'Tx_Schulungen_Command_ReminderCommandController';
 
 ?>

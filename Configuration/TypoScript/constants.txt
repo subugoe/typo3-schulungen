@@ -6,15 +6,16 @@ plugin.tx_schulungen {
 		partialRootPath = EXT:schulungen/Resources/Private/Partials/
 		# cat=plugin.tx_schulungen/file; type=string; label=Path to template layouts (FE)
 		layoutRootPath = EXT:schulungen/Resources/Private/Layouts/
-                includePid = 1650
+		includePid = 1650
 	}
 	persistence {
 		# cat=plugin.tx_schulungen//a; type=int+; label=Default storage PID
-		storagePid = 1142
+		storagePid = 1648
 	}
 	mail {
 		# cat=plugin.tx_schulungen/string; type=string; label=Mailsender
 		fromMail = zentralinfo@sub.uni-goettingen.de
+#		fromMail = dominic.simm@sub.uni-goettingen.de
 		fromName = SUB Goettingen
 	}
 }

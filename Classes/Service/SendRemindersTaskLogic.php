@@ -32,7 +32,7 @@
  */
 class Tx_Schulungen_Service_SendRemindersTaskLogic extends Tx_Extbase_Core_Bootstrap {
         
-        public function execute(&$pObj) {
+	public function execute(&$pObj) {
 
 		// set parent task object
 		$this->pObj = $pObj;
@@ -43,22 +43,23 @@ class Tx_Schulungen_Service_SendRemindersTaskLogic extends Tx_Extbase_Core_Boots
 		// initalization
 		$this->initRepositories();
                 
-                $success = true;
-                $this->benachrichtigung = t3lib_div::makeInstance('tx_schulungen_controller_benachrichtigungcontroller');
-                $success = $this->benachrichtigung->sendeBenachrichtigungAction();
-                if (!$success) {
-                        t3lib_div::devLog('SendReminder Scheduler Task: Problem during execution. Stopping.' , 'schulungen', 3);
-                }
-                
-		// tear this sucker down!
+		$success = true;
+		$this->benachrichtigung = t3lib_div::makeInstance('tx_schulungen_controller_benachrichtigungcontroller');
+		$this->benachrichtigung->config['mail'] = $this->mailConfig; 
+		$success = $this->benachrichtigung->sendeBenachrichtigungAction();
+		if (!$success) {
+				t3lib_div::devLog('SendReminder-Scheduler-Task: Problem during execution. Stopping.' , 'schulungen', 3);
+		}
+
 		// $this->tearDownFramework();
                 
-                return $success;
-                // return TRUE;
+		return $success;
+
 	}
         
-        protected function setupFramework()     {
+	protected function setupFramework()     {
 
+			/* Example */
 /*		$configuration = array(
 			'extensionName' => 'myext',
 			'pluginName' => 'tx_myext_task',
@@ -70,23 +71,29 @@ class Tx_Schulungen_Service_SendRemindersTaskLogic extends Tx_Extbase_Core_Boots
 			),
 			'_LOCAL_LANG' => '< plugin.tx_myext._LOCAL_LANG'
 		);
-*/                
-                $configuration = array(
+*/        
+		
+		$configuration = array(
 			'extensionName' => 'schulungen',
 			'pluginName' => 'scheduler',
-                        'settings' => '< plugin.tx_schulungen',
-                            /* funktioniert so alles nicht: Typo3 findet keinen "default controller" */
-                        'controller' => 'Benachrichtigung',
-    			'switchableControllerActions' => array(
-                                 'Benachrichtigung' => array('actions' => 'sendeBenachrichtigung')
+			'settings' => '< plugin.tx_schulungen',
+			'controller' => 'Benachrichtigung',
+			'switchableControllerActions' => array(
+				 'Benachrichtigung' => array('actions' => 'sendeBenachrichtigung')
    			),
-                );
+			'mail' => array(
+				'fromMail' => 'zentralinfo@sub.uni-goettingen.de', 
+//				'fromMail' => 'dominic.simm@sub.uni-goettingen.de', 
+				'fromName' => 'SUB Göttingen'
+			),
+		);
 
+		$this->mailConfig = $configuration['mail'];
 		$this->initialize($configuration);
                 
 	}
 
-        protected function initRepositories() {
+	protected function initRepositories() {
 		$this->schulungRepository = $this->objectManager->get('tx_schulungen_domain_repository_schulungrepository');
 		$this->teilnehmerRepository = $this->objectManager->get('tx_schulungen_domain_repository_teilnehmerrepository');
 		$this->terminRepository = $this->objectManager->get('tx_schulungen_domain_repository_terminrepository');

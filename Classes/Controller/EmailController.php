@@ -62,11 +62,11 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 
 		$mail->setFrom($sender);
 
-                $mail->addTo($recipient);
-                if($variables['copy'] != false) {
-                    $mail->addCc($sender);
-/*                  $mail->addBcc($variables['mailcopy']); */
-                }
+		$mail->addTo($recipient);
+		if($variables['copy'] != false) {
+			$mail->addCc($sender);
+			$mail->addBcc($variables['mailcopy']);
+		}
 
 		$mail->setSubject($subject);
 		$mail->setBody($emailBody, 'text/html');

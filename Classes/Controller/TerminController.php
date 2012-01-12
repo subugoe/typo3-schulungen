@@ -27,7 +27,7 @@
 /**
  * Controller for the Termin object
  *
- * @version $Id$
+ * @version $Id: TerminController.php 1256 2011-10-28 14:50:43Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
