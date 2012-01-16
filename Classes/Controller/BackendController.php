@@ -27,7 +27,7 @@
 /**
  * Controller for the Schulung object
  *
- * @version $Id: BackendController.php 1588 2012-01-11 17:58:42Z simm $
+ * @version $Id: BackendController.php 1590 2012-01-13 17:38:19Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
@@ -50,6 +50,17 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	 * @var Tx_Schulungen_Domain_Repository_TeilnehmerRepository
 	 */
 	protected $teilnehmerRepository;
+
+	/**
+	 * Initializes the current action
+	 *
+	 * @return void
+	 */
+	protected function initializeAction() {
+		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
+		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$this->settings = $extbaseFrameworkConfiguration;
+	}
 
 	/**
 	 * inject Schulung
@@ -88,9 +99,17 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 		$schulungs = $this->schulungRepository->findAll();
 		$numberOfTermine = $this->terminRepository->countAll();
 		$numberOfTeilnehmer = $this->teilnehmerRepository->countAll();
-/*		$schulungs = array_merge($schulungs, array($numberOfTermine));
-		$schulungs = array_merge($schulungs, array($numberOfTeilnehmer));
-*/		$this->view->assign('schulungs', $schulungs);
+
+		$time = new DateTime();
+		$time->setTimestamp(time());//+84600*2);
+
+		$values = array(
+						'schulungs' => $schulungs,
+						'time' => $time,
+						'termine' => $numberOfTermine,
+						'teilnehmer' => $numberOfTeilnehmer
+					);
+		$this->view->assignMultiple($values);
 
         }
 
@@ -145,15 +164,25 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	 * @param Tx_Schulungen_Domain_Model_Termin $termin
 	 */
 	public function cancelAction(Tx_Schulungen_Domain_Model_Termin $termin) {
-		$termin->setAbgesagt(true);
-		$this->terminRepository->update($termin);
-                
-		$this->benachrichtigung = t3lib_div::makeInstance('Tx_Schulungen_Controller_BenachrichtigungController');
-		$teilnehmer = $termin->getTeilnehmer();
-		$this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin);
+		
+		$time = new DateTime();
+		$time->setTimestamp(time());
 
-		$this->flashMessageContainer->add('Schulung wurde abgesagt. Die Teilnehmer werden per E-Mail benachrichtigt!');
+		if($termin->getStartzeit() > $time)	{
+			$termin->setAbgesagt(true);
+			$this->terminRepository->update($termin);
+
+			$this->benachrichtigung = t3lib_div::makeInstance('Tx_Schulungen_Controller_BenachrichtigungController');
+			$teilnehmer = $termin->getTeilnehmer();
+			$result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
+
+			$this->flashMessageContainer->add('Schulung wurde abgesagt. Die Teilnehmer werden per E-Mail benachrichtigt!');
+		}	else	{
+			$this->flashMessageContainer->add('Der Schulungstermin liegt in der Vergangenheit und kann nicht mehr verändert werden!');			
+		}
+		
 		$this->redirect('index');
+		
 	}
 
 	/**
@@ -161,15 +190,25 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	 * @param Tx_Schulungen_Domain_Model_Termin $termin
 	 */
 	public function uncancelAction(Tx_Schulungen_Domain_Model_Termin $termin) {
-		$termin->setAbgesagt(false);
-		$this->terminRepository->update($termin);
+		
+		$time = new DateTime();
+		$time->setTimestamp(time());
 
-		$this->benachrichtigung = t3lib_div::makeInstance('Tx_Schulungen_Controller_BenachrichtigungController');
-		$teilnehmer = $termin->getTeilnehmer();
-		$this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin);
-                
-		$this->flashMessageContainer->add('Schulung wurde wieder zugesagt. Die Teilnehmer werden per E-Mail benachrichtigt!');
+		if($termin->getStartzeit() > $time)	{
+			$termin->setAbgesagt(false);
+			$this->terminRepository->update($termin);
+
+			$this->benachrichtigung = t3lib_div::makeInstance('Tx_Schulungen_Controller_BenachrichtigungController');
+			$teilnehmer = $termin->getTeilnehmer();
+			$result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
+
+			$this->flashMessageContainer->add('Schulung wurde wieder zugesagt. Die Teilnehmer werden per E-Mail benachrichtigt!');
+		}	else	{
+			$this->flashMessageContainer->add('Der Schulungstermin liegt in der Vergangenheit und kann nicht mehr verändert werden!');			
+		}
+		
 		$this->redirect('index');
+		
 	}
 
 	/**

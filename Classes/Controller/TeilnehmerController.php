@@ -27,7 +27,7 @@
 /**
  * Controller for the Teilnehmer object
  *
- * @version $Id: TeilnehmerController.php 1583 2012-01-05 13:39:45Z simm $
+ * @version $Id: TeilnehmerController.php 1590 2012-01-13 17:38:19Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
@@ -155,11 +155,11 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 		$senderName = $this->settings['mail']['fromName'];
 
 		$time = new DateTime();
-                $time->setTimestamp(time());
+		$time->setTimestamp(time());
           
 		$variables = array(
-			'nachname' => $teilnehmer->getNachname(),
-			'vorname' => $teilnehmer->getVorname(),
+						'nachname' => $teilnehmer->getNachname(),
+						'vorname' => $teilnehmer->getVorname(),
                         'email' => $teilnehmer->getEmail(),
                         'schulungsTitel' => $teilnehmer->getTermin()->getSchulung()->getTitel(),
                         'startZeit' => $teilnehmer->getTermin()->getStartzeit(),

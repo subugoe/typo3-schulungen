@@ -9,10 +9,10 @@ plugin.tx_schulungen {
 			fromMail = {$plugin.tx_schulungen.mail.fromMail}
 			fromName = {$plugin.tx_schulungen.mail.fromName}
 		}
-	}
-	persistence{
-		enableAutomaticCacheClearing = 1
-		storagePid = {$plugin.tx_schulungen.persistence.storagePid}
+		persistence{
+			enableAutomaticCacheClearing = 1
+			storagePid = {$plugin.tx_schulungen.persistence.storagePid}
+		}
 	}
 
 	useCacheHash = 1
@@ -23,11 +23,17 @@ module.tx_schulungen {
 		enableAutomaticCacheClearing = 1
 		storagePid = {$plugin.tx_schulungen.persistence.storagePid}
 	}
-	mail < {$plugin.tx_schulungen.mail}
-	view < {$plugin.tx_schulungen.view}
+	view {
+		templateRootPath = {$plugin.tx_schulungen.view.templateRootPath}
+		partialRootPath = {$plugin.tx_schulungen.view.partialRootPath}
+		layoutRootPath = {$plugin.tx_schulungen.view.layoutRootPath}
+	}
+	mail{
+		fromMail = {$plugin.tx_schulungen.mail.fromMail}
+		fromName = {$plugin.tx_schulungen.mail.fromName}
+	}
 }
 
-# config.tx_extbase.persistence < plugin.tx_schulungen.settings.persistence
 
 lib.tx_schulungen.pathSegmentTitle = TEXT
 lib.tx_schulungen.pathSegmentTitle {

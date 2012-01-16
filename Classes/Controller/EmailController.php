@@ -44,7 +44,7 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
 		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
-                $templateRootPath = t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
+		$templateRootPath = t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
 
 		$templatePathAndFilename = $templateRootPath . 'Email/' . $templateName . '.html';
 		$emailView = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
@@ -90,7 +90,7 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
 		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
-                $templateRootPath = t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
+		$templateRootPath = t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
 
 		$templatePathAndFilename = $templateRootPath . 'Email/TransactionMail.html';
 		$emailView = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
@@ -108,7 +108,7 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 
 		$mail->setFrom($sender);
 
-                $mail->addTo($sender);
+		$mail->addTo($sender);
 
 		$mail->setSubject($subject);
 		$mail->setBody($emailBody, 'text/html');

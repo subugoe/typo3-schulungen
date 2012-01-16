@@ -1,7 +1,9 @@
 Liebe Zentralinfo,<br />
 <br />
 
-folgende Teilnehmer wurden gerade benachrichtigt:
+folgende Teilnehmer haben für den Schulungstermin <strong>{schulung}</strong><br />
+am <strong><f:format.date format="d.m.Y">{termin}</f:format.date></strong>
+die Benachrichtigung <strong>'{action}'</strong> als E-Mail erhalten:
 <ul>
 <f:for each="{teilnehmer}" as="person" iteration="Iterator">
     <li>{person.nachname}, {person.vorname} ({person.email})</li>

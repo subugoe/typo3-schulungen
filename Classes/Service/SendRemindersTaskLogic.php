@@ -81,11 +81,11 @@ class Tx_Schulungen_Service_SendRemindersTaskLogic extends Tx_Extbase_Core_Boots
 			'switchableControllerActions' => array(
 				 'Benachrichtigung' => array('actions' => 'sendeBenachrichtigung')
    			),
-			'mail' => array(
-				'fromMail' => 'zentralinfo@sub.uni-goettingen.de', 
+//			'mail' => array(
+//				'fromMail' => 'zentralinfo@sub.uni-goettingen.de', 
 //				'fromMail' => 'dominic.simm@sub.uni-goettingen.de', 
-				'fromName' => 'SUB Göttingen'
-			),
+//				'fromName' => 'SUB Göttingen'
+//			),
 		);
 
 		$this->mailConfig = $configuration['mail'];

@@ -30,6 +30,11 @@
         background-color: #EEE !important;
 }
 
+.tx-schulungen-mod .soon{
+        background-color: #F00 !important;
+		font-weight: bold;
+}
+
 .tx-schulungen-mod .anzahlTeilnehmer    {
     text-align: center;    
 }

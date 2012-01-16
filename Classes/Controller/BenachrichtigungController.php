@@ -38,6 +38,21 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 	 * 2 = Termin wurde gecanceled
 	 */
 	private $mailType = array('Reminder', 'ReminderParticipation', 'ReminderCancelation');
+	private $mailTypeMsg = array('Normale Erinnerung', 'Zu wenig Teilnehmer', 'Termin wurde abgesagt');
+
+	/**
+	 * Initializes the current action
+	 *
+	 * @return void
+	 */
+	protected function initializeAction() {
+		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
+		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$this->settings = $extbaseFrameworkConfiguration;
+
+		$this->terminRepository = t3lib_div::makeInstance('Tx_Schulungen_Domain_Repository_TerminRepository');
+		$this->teilnehmerRepository = t3lib_div::makeInstance('Tx_Schulungen_Domain_Repository_TeilnehmerRepository');
+	}
 
 	/**
 	 * DI fuer Termine
@@ -61,16 +76,11 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 	 * Action für den Scheduler: Berechnung der anstehenden Termine plus Mailversand an betroffene Teilnehmer
 	 */
 	public function sendeBenachrichtigungAction() {
-		if(!isset($this->settings)) $this->settings = $this->config;
-		
-		$this->terminRepository = t3lib_div::makeInstance('Tx_Schulungen_Domain_Repository_TerminRepository');
+		$this->initializeAction();
+				
 		$anstehendeTermine = $this->terminRepository->errechneAnstehendeTermine();
 //		$this->view->assign('termine', $anstehendeTermine);
 		
-		/* debugging */
-//		echo count($anstehendeTermine);
-//		print_r($this->settings);
-
 		foreach ($anstehendeTermine as $erinnerungsTermin) {
 			$this->verschickeMailAnTeilnehmer($erinnerungsTermin->getTeilnehmer(), $erinnerungsTermin, true);
 		}
@@ -81,9 +91,10 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
         /**
          * Action für das Backend: Einfacher Mailversand bei Ab/-Zusage von Schulungsterminen
          */
-	public function sendeBenachrichtigungSofortAction($teilnehmer, $termin) {
-		$this->terminRepository = t3lib_div::makeInstance('Tx_Schulungen_Domain_Repository_TerminRepository');
-		$this->verschickeMailAnTeilnehmer($teilnehmer, $termin, true);
+	public function sendeBenachrichtigungSofortAction($teilnehmer, $termin, &$obj) {
+		$this->initializeAction();
+		$result = $this->verschickeMailAnTeilnehmer($teilnehmer, $termin, true);
+		return $result;
 	}
 
 	/**
@@ -130,12 +141,16 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 				/* Transaktionsmail an Admin/Redakteur */
 			$mail = t3lib_div::makeInstance('Tx_Schulungen_Controller_EmailController');
 			$result = $mail->sendeTransactionMail($this->settings['mail']['fromMail'], $this->settings['mail']['fromName'], 'Transaktionsinformation',
-						array("teilnehmer" => $teilnehmer)
+						array("teilnehmer" => $teilnehmer,
+							  "action" => $this->mailTypeMsg[$mailType],
+							  "schulung" => $schulung->getTitel(),
+							  "termin" => $termin->getStartzeit()
+							)
 							/* ggf. noch Transaktion ergänzen */
 					  );
 		}
 
-		return !$fail;
+		return !$fail; // returns true, when all messages could be sent
 	}
 
 	private function sendeMail(Tx_Schulungen_Domain_Model_Teilnehmer $tn, $type, $cc) {

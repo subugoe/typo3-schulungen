@@ -14,8 +14,7 @@ plugin.tx_schulungen {
 	}
 	mail {
 		# cat=plugin.tx_schulungen/string; type=string; label=Mailsender
-		fromMail = zentralinfo@sub.uni-goettingen.de
-#		fromMail = dominic.simm@sub.uni-goettingen.de
+		fromMail = dominic.simm@sub.uni-goettingen.de
 		fromName = SUB Goettingen
 	}
 }

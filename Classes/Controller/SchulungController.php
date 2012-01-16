@@ -27,7 +27,7 @@
 /**
  * Controller for the Schulung object
  *
- * @version $Id: SchulungController.php 1558 2011-12-18 10:01:41Z simm $
+ * @version $Id: SchulungController.php 1590 2012-01-13 17:38:19Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
@@ -106,14 +106,13 @@ class Tx_Schulungen_Controller_SchulungController extends Tx_Extbase_MVC_Control
 	 */
 	public function showAction(Tx_Schulungen_Domain_Model_Schulung $schulung) {
 
-//		$termine = $this->terminRepository->findBySchulung($schulung);
 		$termine = $this->terminRepository->errechneAnstehendeSchulungTermine($schulung);
 
-                $time = new DateTime();
-                $time->setTimestamp(time());
+		$time = new DateTime();
+		$time->setTimestamp(time());
 
-                $this->view->assign('time',$time);
-                if(count($termine) > 0) $this->view->assign('termine', $termine);
+		$this->view->assign('time',$time);
+		if(count($termine) > 0) $this->view->assign('termine', $termine);
 		$this->view->assign('schulung', $schulung);
 	}
 
