@@ -24,9 +24,6 @@
 			<fileset dir="${basedir}/">
 				<include name="**/*.php"/>
 			</fileset>
-			<fileset dir="${basedir}/Tests">
-				<include name="**/*.php"/>
-			</fileset>
 		</apply>
 	</target>
 	<target name="phpunit" description="Run unit tests with PHPUnit">
