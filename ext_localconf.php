@@ -14,7 +14,8 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 		),
 		// notCacheAbleActions
 		array(
-			'Schulung' => 'show'
+			'Schulung' => 'show',
+			'Teilnehmer' => 'new, create, list'
 		)
 );
 
