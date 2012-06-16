@@ -12,11 +12,13 @@
 
 	function splitter(id) {
 	  // alert(jQuery('#schulung_' + id).html());
+	  expand = "Alle Termine anzeigen";
+	  collapse = "Zukünftige Termine anzeigen";
 	  jQuery('.schulung_' + id).toggle();
-	  var addOrHide = jQuery('#span_splitter_' + id).attr('title') == 'Collapse' ? true : false;
+	  var addOrHide = jQuery('#span_splitter_' + id).attr('title') == collapse ? true : false;
 	  jQuery('#span_splitter_' + id).toggleClass('t3-icon-pagetree-collapse', addOrHide);
 	  jQuery('#span_splitter_' + id).toggleClass('t3-icon-pagetree-expand', !addOrHide);
-	  jQuery('#span_splitter_' + id).attr('title', (addOrHide == true ? 'Expand' : 'Collapse'));
+	  jQuery('#span_splitter_' + id).attr('title', (addOrHide == true ? expand : collapse));
 	}
 
 	</script>
@@ -31,7 +33,7 @@
 				<thead>
 				  <tr>
 					<th width="5%">
-					  <span onclick="javascript:splitter('{schulungIterator.index}');" id="span_splitter_{schulungIterator.index}" class="t3-icon t3-icon-actions t3-icon-actions-pagetree t3-icon-pagetree-collapse" alt="" title="Expand"></span>	  
+					  <span onclick="javascript:splitter('{schulungIterator.index}');" id="span_splitter_{schulungIterator.index}" class="t3-icon t3-icon-actions t3-icon-actions-pagetree t3-icon-pagetree-collapse" alt="" title="Alle Termine anzeigen"></span>	  
 					  <f:translate key="tx_schulungen_domain_model_schulung.details" />
 					</th>						  
 					<th width="10%"><f:translate key="tx_schulungen_domain_model_schulung.datum" /></th>

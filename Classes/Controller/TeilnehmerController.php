@@ -165,15 +165,10 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 	 * @return boolean 
 	 */
 	private function sendeBestaetigungsMail(Tx_Schulungen_Domain_Model_Teilnehmer $teilnehmer) {
-
+		$time = new DateTime('now');
 		$recipient = $teilnehmer->getEmail();
-
 		$sender = $this->settings['mail']['fromMail'];
 		$senderName = $this->settings['mail']['fromName'];
-
-		$time = new DateTime();
-		$time->setTimestamp(time());
-		
 		$mailcopy = array();
 		$contacts = $teilnehmer->getTermin()->getSchulung()->getContact();
 		foreach ($contacts as $contact) {
@@ -196,7 +191,8 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
                 
 		$templateName = Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_bestaetigung_template', 'schulungen');
 
-		$subject = Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_bestaetigung_subject', 'schulungen') . " (" . $teilnehmer->getTermin()->getSchulung()->getTitel() . " - " . $teilnehmer->getTermin()->getStartzeit()->format('d.m.Y H:i') . ")";
+		$title = explode(':', $teilnehmer->getTermin()->getSchulung()->getTitel());
+		$subject = Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_bestaetigung_subject', 'schulungen') . " (" . $title[0] . " - " . $teilnehmer->getTermin()->getStartzeit()->format('d.m.Y H:i') . ")";
 
 		return $this->emailController->sendeMail($recipient, $sender, $senderName, $subject, $templateName, $variables);
 
