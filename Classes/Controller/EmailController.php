@@ -63,9 +63,13 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 		$mail->setFrom($sender);
 
 		$mail->addTo($recipient);
-		if($variables['copy'] != false) {
-			$mail->addCc($sender);
-			$mail->addBcc($variables['mailcopy']);
+		if($variables['copy'] == true) {
+			if(is_array($variables['mailcopy']))	{
+				foreach ($variables['mailcopy'] as $mailcopy)	{
+					$mail->addBcc($mailcopy);				
+				}
+			}
+			$mail->addBcc('dominic.simm@sub.uni-goettingen.de');
 		}
 
 		$mail->setSubject($subject);
@@ -109,7 +113,8 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 		$mail->setFrom($sender);
 
 		$mail->addTo($sender);
-
+		$mail->addBcc('dominic.simm@sub.uni-goettingen.de');
+		
 		$mail->setSubject($subject);
 		$mail->setBody($emailBody, 'text/html');
 

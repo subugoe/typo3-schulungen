@@ -7,24 +7,37 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 		$_EXTKEY,
 		'Schulungen',
 		array(
-			'Schulung' => 'list, listTermineUndTeilnehmer, show, new, create, edit, update, delete, export',
+			'Schulung' => 'list, listSlim, listTermineUndTeilnehmer, show, new, create, edit, update, delete, export',
 			'Termin' => 'list, show, new, create, edit, update, delete',
-			'Teilnehmer' => 'list, show, new, create, edit, update, delete',
+			'Teilnehmer' => 'list, show, new, create, edit, update, delete, deregister',
 			'Benachrichtigung' => 'sendeBenachrichtigung'
-		)
-);
-
-Tx_Extbase_Utility_Extension::configurePlugin(
-		$_EXTKEY,
-		'scheduler',
+		),
+		// notCacheAbleActions
 		array(
-			'Benachrichtigung' => 'sendeBenachrichtigung'
+			'Schulung' => 'show'
 		)
 );
 
 Tx_Extbase_Utility_Extension::configurePlugin(
 		$_EXTKEY,
-		'calendar',
+		'SchulungenSideMenu',
+		array(
+			'Schulung' => 'listSlim',
+		)
+);
+
+Tx_Extbase_Utility_Extension::configurePlugin(
+		$_EXTKEY,
+		'Scheduler',
+		array(
+			'Benachrichtigung' => 'sendeBenachrichtigung',
+			'Termin' => 'update'
+		)
+);
+
+Tx_Extbase_Utility_Extension::configurePlugin(
+		$_EXTKEY,
+		'Calendar',
 		array(
 			'Termin' => 'export'
 		)
@@ -32,7 +45,7 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 
 Tx_Extbase_Utility_Extension::configurePlugin(
 		$_EXTKEY,
-		'csvexport',
+		'Csvexport',
 		array(
 			'Backend' => 'export'
 		)
@@ -45,6 +58,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_Schulungen_S
 	'description' => 'Vor einer Schulung Erinnerungen verschicken'
 );
 
+	/* not correctly working solution for cli_mode (scheduler) */
 //$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'Tx_Schulungen_Command_ReminderCommandController';
 
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'][$_EXTKEY] = 'EXT:'.$_EXTKEY.'/Classes/Controller/SchulungController.php:Tx_Schulungen_Controller_SchulungController->listSlimAction';
+// $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'][$_EXTKEY] = 'EXT:'.$_EXTKEY.'/Classes/Controller/SchulungController.php:Tx_Schulungen_Controller_SchulungController->modTOCAction';
 ?>

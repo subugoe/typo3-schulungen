@@ -1,0 +1,25 @@
+<div class="tx-ttaddress-pi1">
+
+	<div class="singleAddress">
+		<strong>{contact.title} {contact.firstName} {contact.lastName}</strong>		
+		<f:if condition="{contact.organization}"><strong>{contact.organization}</strong></f:if>
+		<ul>
+		<f:if condition="{contact.address}">
+			<li>{contact.address}</li>
+		</f:if>
+			<li>{contact.zip} {contact.city}, {contact.country}</li>
+
+		<f:if condition="{contact.phone}">
+			<li>{contact.phone} <f:translate key="tx_schulungen_domain_model_schulung.phone" /></li>
+		</f:if>
+		<f:if condition="{contact.fax}">
+			<li>{contact.fax} <f:translate key="tx_schulungen_domain_model_schulung.fax" /></li>
+		</f:if>
+		<f:if condition="{contact.email}">
+			<li><a href="mailto:{contact.email}">{contact.email}</a></li>
+		</f:if>
+		</ul>
+	</div>
+
+</div>
+

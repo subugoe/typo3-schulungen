@@ -7,10 +7,10 @@ if (!defined('TYPO3_MODE')) {
 $TCA['tx_schulungen_domain_model_termin'] = array(
 	'ctrl' => $TCA['tx_schulungen_domain_model_termin']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'startzeit,ende,abgesagt,teilnehmer',
+		'showRecordFieldList' => 'schulung,startzeit,ende,abgesagt,teilnehmer',
 	),
 	'types' => array(
-		'1' => array('showitem' => 'startzeit,ende,abgesagt,teilnehmer'),
+		'1' => array('showitem' => 'schulung,startzeit,ende,abgesagt,teilnehmer'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
@@ -94,7 +94,7 @@ $TCA['tx_schulungen_domain_model_termin'] = array(
 				'default' => 0
 			),
 		),
-		'erinnerungenverschickt' => array(
+		'erinnerungen_verschickt' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_termin.erinnerungenverschickt',
 			'config' => array(
@@ -102,17 +102,41 @@ $TCA['tx_schulungen_domain_model_termin'] = array(
 				'default' => 0
 			),
 		),
-		'schulung' => array(
+/*		'schulung' => array(
 			'config' => array(
 				'type' => 'passthrough',
 			),
 		),
-/*		'teilnehmer' => array(
+		'schulung' => array(
+			'label'		=> 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_schulung',
+			'config' => array(
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_schulungen_domain_model_schulung',
+				'size' => 2,
+				'minitems' => 0,
+				'maxitems' => 1
+			)
+		),
+*/		'schulung' => array(
+			'exclude' => 0,
+			'label'		=> 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_schulung',
+			'config' => array(
+				'type' => 'select',
+				'loadingStrategy' => 'eager',
+				'foreign_table' => 'tx_schulungen_domain_model_schulung',
+//				'foreign_field' => 'titel',
+				'size' => 1,
+				'minitems' => 1,
+				'maxitems' => 1
+			)
+		),		
+		/*		'teilnehmer' => array(
 			'config' => array(
 				'type' => 'passthrough',
 			),
 		), */
-                'teilnehmer' => array(
+		'teilnehmer' => array(
 			'exclude'	=> 0,
 			'label'		=> 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_termin.termin_teilnehmer',
 			'config'	=> array(
@@ -129,7 +153,7 @@ $TCA['tx_schulungen_domain_model_termin'] = array(
 					'showAllLocalizationLink' => 1
 				),
 			),
-                ),
-        ),
+		),
+	),
 );
 ?>

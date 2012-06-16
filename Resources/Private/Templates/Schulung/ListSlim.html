@@ -1,18 +1,11 @@
-<f:layout name="default" />
 
-<f:section name="main">
-	<h2><f:translate key="tx_schulungen_domain_model_schulung.schulungsangebote" /></h2>
+<f:for each="{schulungs}" as="schulungSet">
+	<f:if condition="{schulungSet}">
+		<strong><f:translate key="LLL:EXT:schulungen/Resources/Private/Language/locallang.xml:tx_schulungen_domain_model_schulung.kategorie.{schulungSet.0.kategorie}" />:</strong><br />
+	</f:if>
+	<f:for each="{schulungSet}" as="schulung">
 
-	<f:flashMessages />
-
-	<f:for each="{schulungs}" as="schulung">
-		<h3><f:link.action action="show" arguments="{schulung : schulung}">{schulung.titel}</f:link.action></h3>
-		<p><f:format.html>{schulung.beschreibung}</f:format.html></p>
-
+		<li><f:link.action action="show" arguments="{schulung : schulung}" extensionName="Schulungen" 
+						controller="Schulung" pluginName="Schulungen">{schulung.titel}</f:link.action></li>
 	</f:for>
-
-<!--	<f:link.action action="new">Neue Schulung</f:link.action> -->
-<!--	<f:link.action action="listTermineUndTeilnehmer">Termine und Teilnehmer</f:link.action>-->
-<!--	<f:link.action controller="Benachrichtigung" action="sendeBenachrichtigung">Benachrichtigung</f:link.action>-->
-
-</f:section>
+</f:for>

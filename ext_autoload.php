@@ -6,7 +6,7 @@
 $extensionPath = t3lib_extMgm::extPath('schulungen');
 $extensionClassesPath = t3lib_extMgm::extPath('schulungen') . 'Classes/';
 return array(
-        'tx_schulungen_command_remindercommandcontroller' => $extensionClassesPath . 'Command/ReminderCommandController.php',
+	'tx_schulungen_command_remindercommandcontroller' => $extensionClassesPath . 'Command/ReminderCommandController.php',
 	'tx_schulungen_controller_schulungcontroller' => $extensionClassesPath . 'Controller/SchulungController.php',
 	'tx_schulungen_controller_emailcontroller' => $extensionClassesPath . 'Controller/EmailController.php',
 	'tx_schulungen_controller_teilnehmercontroller' => $extensionClassesPath . 'Controller/TeilnehmerController.php',

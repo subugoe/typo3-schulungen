@@ -1,0 +1,24 @@
+Dear {vorname} {nachname},<br />
+<br />
+you are now registered to the training '{schulungsTitel}'.<br />
+<br />
+The following data has been transmitted at <f:format.date format="Y-m-d">{timestamp}</f:format.date> <f:format.date format="H:i">{timestamp}</f:format.date>:<br />
+<br />
+First name: {nachname}<br />
+Last name: {vorname}<br />
+Email: {email}<br />
+Field of studies: {studienfach}<br />
+<br />
+Training: <strong>{schulungsTitel}</strong><br />
+Date / Time: <strong><f:format.date format="Y-m-d - H:i">{startZeit}</f:format.date></strong><br />
+<br />
+Remark: {bemerkung}<br />
+<br />
+If you aren't able to attend the course, it would be kind if you could give us a hint<br /> per mail or follow this link to <f:link.action absolute="absolute" action="deregister" controller="Teilnehmer" arguments="{identifier:identifier}" pluginName="Schulungen" extensionName="Schulungen">deregister</f:link.action>. Thank you!<br />
+<br />
+Your SUB Goettingen / Central Information<br />
+<br />
+Platz der Goettinger Sieben 1<br />
+37073 Goettingen<br />
+Phone: 0551/39-5231<br />
+Email: zentralinfo@sub.uni-goettingen.de<br />

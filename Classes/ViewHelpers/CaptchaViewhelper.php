@@ -1,4 +1,5 @@
-<!--
+<?php
+
 /* * *************************************************************
  *  Copyright notice
  *
@@ -21,14 +22,29 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
--->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <title></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    TODO write content
-  </body>
-</html>
+
+/**
+ * ReCAPTCHA-ViewHelper-Klasse zur Abwehr von Spam 
+ *
+ * @author dsimm
+ */
+class Tx_Schulungen_Viewhelpers_CaptchaViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+
+	/**
+	 * Erzeugt ein ReCAPTCHA 
+	 *
+	 * @param string $theme Theme von ReCAPTCHA
+	 * @return $content ReCAPTCHA-Sourcecode
+	 */
+	public function render() {
+
+		require_once(t3lib_extMgm::extPath('jm_recaptcha')."class.tx_jmrecaptcha.php"); 
+		$recaptcha = new tx_jmrecaptcha(); 
+		$content = $recaptcha->getReCaptcha(); 
+		return $content;
+
+	}
+
+}
+
+?>

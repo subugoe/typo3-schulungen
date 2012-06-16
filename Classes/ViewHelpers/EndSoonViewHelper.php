@@ -1,4 +1,5 @@
-<!--
+<?php
+
 /* * *************************************************************
  *  Copyright notice
  *
@@ -21,14 +22,34 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
--->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <title></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    TODO write content
-  </body>
-</html>
+
+/**
+ * Klasse zur Berechnung der nächsten Termine
+ *
+ * @author dsimm
+ */
+class Tx_Schulungen_ViewHelpers_EndSoonViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+
+	/**
+	 * Berechnet, ob der übergebene Termin in den nächsten 2 Tage stattfindet
+	 *
+	 * @param DateTime $time Startzeitpunkt des Termin
+	 * @return $result Ended bald: true/false
+	 */
+	public function render($time) {
+
+		$currentTime = new DateTime();
+		$currentTime->setTimestamp(time());
+
+		$interval = date_diff($currentTime, $time);
+		
+		if($currentTime < $time && $interval->format("%r%a")<=2)	{
+			return $result = true;
+		}	else	{
+			return $result = false;
+		}
+	}
+
+}
+
+?>

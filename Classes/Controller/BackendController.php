@@ -27,7 +27,7 @@
 /**
  * Controller for the Schulung object
  *
- * @version $Id: BackendController.php 1590 2012-01-13 17:38:19Z simm $
+ * @version $Id: BackendController.php 1877 2012-05-16 09:50:07Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
@@ -61,7 +61,7 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$this->settings = $extbaseFrameworkConfiguration;
 	}
-
+		
 	/**
 	 * inject Schulung
 	 *
@@ -96,22 +96,56 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	 * @return string The rendered list view
 	 */
 	public function indexAction() {
-		$schulungs = $this->schulungRepository->findAll();
-		$numberOfTermine = $this->terminRepository->countAll();
-		$numberOfTeilnehmer = $this->teilnehmerRepository->countAll();
 
-		$time = new DateTime();
-		$time->setTimestamp(time());//+84600*2);
+//		debug($this->settings);
+//		$schulungs = $this->schulungRepository->findAll();
+		
+		// workaround if findAll-method of schulungsRepository doesn't work
+		// => no data is displayed in Backend
+		$schulungs = $this->schulungRepository->findByPid('1648');
+		$termine = $this->terminRepository->findAll();
+		foreach ($schulungs as $schulung) {
+		  $schulungTermine = t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
+		  foreach($termine as $termin)  {
+			try {
+			  if($schulung->getTitel() == $termin->getSchulung()->getTitel())	{
+				$schulungTermine->attach($termin);
+			  }
+			} catch (Exception $e) {
+			  t3lib_div::devlog($e->getMessage(), "Schulungen", 3, array($termin));
+			} 
+		  
+		  }
+		  $schulung->setSchulungTermine($schulungTermine);
+		}
+
+
+/*		$numberOfTermine = 0;
+		foreach ($schulungs as $schulung)	{
+			$termine = $schulung->getSchulungTermine();
+			$numberOfTermine += count($termine);
+		}
+*/		$numberOfTeilnehmer = $this->teilnehmerRepository->countAll();
+		$numberOfTermine = $this->terminRepository->countAll();
+		
+		  // include JQUERY
+		  // checks if t3jquery is loaded
+		if (t3lib_extMgm::isLoaded('t3jquery')) {
+		  require_once(t3lib_extMgm::extPath('t3jquery').'class.tx_t3jquery.php');
+		  $path_to_lib = tx_t3jquery::getJqJSBE();
+		  $script_to_lib = tx_t3jquery::getJqJSBE(true);
+		}
 
 		$values = array(
 						'schulungs' => $schulungs,
-						'time' => $time,
 						'termine' => $numberOfTermine,
-						'teilnehmer' => $numberOfTeilnehmer
+						'teilnehmer' => $numberOfTeilnehmer,
+						'jquery' => $script_to_lib
 					);
+		
 		$this->view->assignMultiple($values);
-
-        }
+		
+	}
 
 	/**
 	 * Displays a single Termin with Details
@@ -176,9 +210,9 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 			$teilnehmer = $termin->getTeilnehmer();
 			$result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
 
-			$this->flashMessageContainer->add('Schulung wurde abgesagt. Die Teilnehmer werden per E-Mail benachrichtigt!');
+			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_backend_cancel.success', 'schulungen'));
 		}	else	{
-			$this->flashMessageContainer->add('Der Schulungstermin liegt in der Vergangenheit und kann nicht mehr verändert werden!');			
+			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_backend_timeout', 'schulungen'));			
 		}
 		
 		$this->redirect('index');
@@ -202,9 +236,9 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 			$teilnehmer = $termin->getTeilnehmer();
 			$result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
 
-			$this->flashMessageContainer->add('Schulung wurde wieder zugesagt. Die Teilnehmer werden per E-Mail benachrichtigt!');
+			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_backend_uncancel.success', 'schulungen'));
 		}	else	{
-			$this->flashMessageContainer->add('Der Schulungstermin liegt in der Vergangenheit und kann nicht mehr verändert werden!');			
+			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_backend_timeout', 'schulungen'));			
 		}
 		
 		$this->redirect('index');
@@ -219,6 +253,12 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	 */
 	public function updateAction(Tx_Schulungen_Domain_Model_Schulung $schulung) {
 		$this->schulungRepository->update($schulung);
+		
+		// Hard clean after update
+/*		$query = $this->createQuery();
+		$query->statement('SELECT * FROM `tx_schulungen_domain_model_termin` WHERE `pid` = -1 AND erinnerungen_verschickt = 0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) >= 0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) < 2 ORDER BY startzeit ASC');
+		return $query->execute();
+*/
 	}
 
 	/**

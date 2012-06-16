@@ -1,24 +1,45 @@
-<label for="vorname">
-	<f:translate key="tx_schulungen_domain_model_teilnehmer.vorname" /> <span class="required">(Pflichtfeld)</span>
-</label><br />
-<f:form.textfield property="vorname" size="40"/>
-<f:render partial="FieldError" arguments="{ errors: errors, formName: 'newTeilnehmer', fieldName: 'vorname' }" /><br />
-<label for="nachname">
-	<f:translate key="tx_schulungen_domain_model_teilnehmer.nachname" /> <span class="required">(Pflichtfeld)</span>
-</label><br />
-<f:form.textfield property="nachname" size="40"/>
-<f:render partial="FieldError" arguments="{ errors: errors, formName: 'newTeilnehmer', fieldName: 'nachname' }" /><br />
-<label for="email">
-	<f:translate key="tx_schulungen_domain_model_teilnehmer.email" /> <span class="required">(Pflichtfeld)</span>
-</label><br />
-<f:form.textfield property="email" size="40" />
-<f:render partial="FieldError" arguments="{ errors: errors, formName: 'newTeilnehmer', fieldName: 'email' }" /><br />
-<label for="studienfach">
-	<f:translate key="tx_schulungen_domain_model_teilnehmer.studienfach" />
-</label><br />
-<f:form.textfield property="studienfach" size="40" /><br />
-<label for="bemerkung">
-	<f:translate key="tx_schulungen_domain_model_teilnehmer.bemerkung" />
-</label><br />
-<f:form.textarea property="bemerkung" rows="5" cols="40" /><br />
-<f:form.hidden name="termin" value="{teilnehmerTermin}" />
+{namespace schulungen=Tx_Schulungen_ViewHelpers}
+
+<div class="tx_powermail_pi1_fieldwrap_html tx_powermail_pi1_fieldwrap_html_text">
+	<label for="vorname">
+		<f:translate key="tx_schulungen_domain_model_teilnehmer.vorname" />: <span class="required powermail_mandatory">*</span>
+	</label>
+	<f:form.textfield property="vorname" class="powermail_text" size="40"/><br />
+	<f:render partial="FieldError" arguments="{ errors: errors, formName: 'newTeilnehmer', fieldName: 'vorname' }" />
+</div>
+<div class="tx_powermail_pi1_fieldwrap_html tx_powermail_pi1_fieldwrap_html_text">
+	<label for="nachname">
+		<f:translate key="tx_schulungen_domain_model_teilnehmer.nachname" />: <span class="required powermail_mandatory">*</span>
+	</label>
+	<f:form.textfield property="nachname" class="powermail_text" size="40"/><br />
+	<f:render partial="FieldError" arguments="{ errors: errors, formName: 'newTeilnehmer', fieldName: 'nachname' }" />
+</div>
+<div class="tx_powermail_pi1_fieldwrap_html tx_powermail_pi1_fieldwrap_html_text">
+	<label for="email">
+		<f:translate key="tx_schulungen_domain_model_teilnehmer.email" />: <span class="required powermail_mandatory">*</span>
+	</label>
+	<f:form.textfield property="email" class="powermail_text" size="40" /><br />
+	<f:render partial="FieldError" arguments="{ errors: errors, formName: 'newTeilnehmer', fieldName: 'email' }" />
+</div>
+<div class="tx_powermail_pi1_fieldwrap_html tx_powermail_pi1_fieldwrap_html_text">
+	<label for="studienfach">
+		<f:translate key="tx_schulungen_domain_model_teilnehmer.studienfach" />:
+	</label>
+	<f:form.textfield property="studienfach" class="powermail_text" size="40" /><br />
+</div>
+<div class="tx_powermail_pi1_fieldwrap_html powermail_textarea">
+	<label for="bemerkung">
+		<f:translate key="tx_schulungen_domain_model_teilnehmer.bemerkung" />:
+	</label>
+	<f:form.textarea property="bemerkung" rows="5" cols="40" /><br />
+</div>
+<div class="tx_powermail_pi1_fieldwrap_html tx_powermail_pi1_fieldwrap_html_text away">
+	<label for="zusatz">
+		<f:translate key="tx_schulungen_domain_model_teilnehmer.zusatz" />:
+	</label>
+	<f:form.textarea property="zusatz" rows="5" cols="40" /><br />
+</div>
+<f:form.hidden name="termin" class="powermail_textarea" value="{teilnehmerTermin.uid}" />
+<div style="clear:both"></div>
+<small><f:translate key="tx_schulungen_domain_model_teilnehmer.required_note" /></small><br />
+

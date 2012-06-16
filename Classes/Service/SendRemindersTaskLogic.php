@@ -48,7 +48,7 @@ class Tx_Schulungen_Service_SendRemindersTaskLogic extends Tx_Extbase_Core_Boots
 		$this->benachrichtigung->config['mail'] = $this->mailConfig; 
 		$success = $this->benachrichtigung->sendeBenachrichtigungAction();
 		if (!$success) {
-				t3lib_div::devLog('SendReminder-Scheduler-Task: Problem during execution. Stopping.' , 'schulungen', 3);
+				t3lib_div::devLog('SendReminder-Task: Problem during execution. Stopping.' , 'schulungen', 3);
 		}
 
 		// $this->tearDownFramework();
@@ -75,11 +75,12 @@ class Tx_Schulungen_Service_SendRemindersTaskLogic extends Tx_Extbase_Core_Boots
 		
 		$configuration = array(
 			'extensionName' => 'schulungen',
-			'pluginName' => 'scheduler',
+			'pluginName' => 'Scheduler',
 			'settings' => '< plugin.tx_schulungen',
 			'controller' => 'Benachrichtigung',
 			'switchableControllerActions' => array(
-				 'Benachrichtigung' => array('actions' => 'sendeBenachrichtigung')
+				 'Benachrichtigung' => array('actions' => 'sendeBenachrichtigung'),
+				 'Termin' => array('actions' => 'update')
    			),
 //			'mail' => array(
 //				'fromMail' => 'zentralinfo@sub.uni-goettingen.de', 

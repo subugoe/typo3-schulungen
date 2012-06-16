@@ -27,7 +27,7 @@
 /**
  * Schulungen der SUB Goettingen
  *
- * @version $Id: Schulung.php 1154 2011-09-07 12:11:37Z simm $
+ * @version $Id: Schulung.php 1693 2012-02-24 15:09:22Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
@@ -53,9 +53,9 @@
 	/**
 	 * Mindestteilnehmerzahl
 	 *
-	 * @var int $teilnehmernMin
+	 * @var int $teilnehmerMin
 	 */
-	protected $teilnehmernMin;
+	protected $teilnehmerMin;
 
 	/**
 	 * Maximale Teilnehmerzahl
@@ -104,7 +104,41 @@
 	 *
 	 * @var string $mailKopie
 	 */
+	/**
+	 * @var string $mailKopie
+	 */
 	protected $mailKopie;
+
+	/**
+	 * tt_address-Kontakt einer Person
+	 *
+	 * @var string $contact
+	 */
+	/**
+	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Schulungen_Domain_Model_Person> $contact
+	 */
+	protected $contact;
+
+	/**
+	 * Kategorie der Schulung
+	 *
+	 * @var string $kategorie
+	 */
+	protected $kategorie;
+
+	/**
+	 * Flag, ob Schulungstermine angezeigt werden sollen
+	 *
+	 * @var boolean $termineVersteckt
+	 */
+	protected $termineVersteckt;
+
+	/**
+	 * Flag, ob Anmeldung zu Schulungsterminen deaktiviert werden soll
+	 *
+	 * @var boolean $anmeldungDeaktiviert
+	 */
+	protected $anmeldungDeaktiviert;
 
 	/**
 	 * Termine der Schulung
@@ -152,22 +186,22 @@
 	}
 
 	/**
-	 * Setter for teilnehmernMin
+	 * Setter for teilnehmerMin
 	 *
-	 * @param int $teilnehmernMin Mindestteilnehmerzahl
+	 * @param int $teilnehmerMin Mindestteilnehmerzahl
 	 * @return void
 	 */
-	public function setTeilnehmernMin($teilnehmernMin) {
-		$this->teilnehmernMin = $teilnehmernMin;
+	public function setTeilnehmerMin($teilnehmerMin) {
+		$this->teilnehmerMin = $teilnehmerMin;
 	}
 
 	/**
-	 * Getter for teilnehmernMin
+	 * Getter for teilnehmerMin
 	 *
 	 * @return int Mindestteilnehmerzahl
 	 */
-	public function getTeilnehmernMin() {
-		return $this->teilnehmernMin;
+	public function getTeilnehmerMin() {
+		return $this->teilnehmerMin;
 	}
 
 	/**
@@ -207,7 +241,7 @@
 	public function getMailKopie() {
 		return $this->mailKopie;
 	}
-
+	
 	/**
 	 * The constructor of this Schulung
 	 *
@@ -230,8 +264,9 @@
 		* You may modify the constructor of this class instead
 		*/
 		$this->schulungTermine = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->contact =  new Tx_Extbase_Persistence_ObjectStorage();
 	}
-
+	
 	/**
 	 * Adds a Termin
 	 *
@@ -270,45 +305,178 @@
 	public function setSchulungTermine($schulungTermine) {
 		$this->schulungTermine = $schulungTermine;
 	}
+		
+	/**
+	 * Returns the $contact
+	 *
+	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Schulungen_Domain_Model_Person> $contact
+	 */
+	public function getContact() {
+		return $this->contact;
+	}
 
+	/**
+	 * Sets the schulungTermine
+	 *
+	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Schulungen_Domain_Model_Person> $contact
+	 * @return void
+	 */
+	public function setContact($contact) {
+		$this->contact = $contact;
+	}
+
+	/**
+	 * Getter for voraussetzungen
+	 *
+	 * @return string voraussetzungen
+	 */
 	public function getVoraussetzungen() {
 		return $this->voraussetzungen;
 	}
 
+	/**
+	 * Setter for voraussetzungen
+	 *
+	 * @param string voraussetzungen
+	 * @return void
+	 */
 	public function setVoraussetzungen($voraussetzungen) {
 		$this->voraussetzungen = $voraussetzungen;
 	}
 
+	/**
+	 * Getter for treffpunkt
+	 *
+	 * @return string treffpunkt
+	 */
 	public function getTreffpunkt() {
 		return $this->treffpunkt;
 	}
 
+	/**
+	 * Setter for treffpunkt
+	 *
+	 * @param string treffpunkt
+	 * @return void
+	 */
 	public function setTreffpunkt($treffpunkt) {
 		$this->treffpunkt = $treffpunkt;
 	}
 
+	/**
+	 * Getter for dauer
+	 *
+	 * @return string dauer
+	 */
 	public function getDauer() {
 		return $this->dauer;
 	}
 
+	/**
+	 * Setter for dauer
+	 *
+	 * @param string dauer
+	 * @return void
+	 */
 	public function setDauer($dauer) {
 		$this->dauer = $dauer;
 	}
 
+	/**
+	 * Getter for veranstalter
+	 *
+	 * @return string veranstalter
+	 */
 	public function getVeranstalter() {
 		return $this->veranstalter;
 	}
 
+	/**
+	 * Setter for veranstalter
+	 *
+	 * @param string veranstalter
+	 * @return void
+	 */
 	public function setVeranstalter($veranstalter) {
 		$this->veranstalter = $veranstalter;
 	}
 
+	/**
+	 * Getter for untertitel
+	 *
+	 * @return string untertitel
+	 */
 	public function getUntertitel() {
 		return $this->untertitel;
 	}
 
+	/**
+	 * Setter for untertitel
+	 *
+	 * @param string untertitel
+	 * @return void
+	 */
 	public function setUntertitel($untertitel) {
 		$this->untertitel = $untertitel;
 	}
+	
+	/**
+	 * Getter for kategorie
+	 *
+	 * @return string kategorie
+	 */
+	public function getKategorie() {
+		return $this->kategorie;
+	}
+
+	/**
+	 * Setter for kategorie
+	 *
+	 * @param string kategorie
+	 * @return void
+	 */
+	public function setKategorie($kategorie) {
+		$this->kategorie = $kategorie;
+	}
+
+	/**
+	 * Getter for termineVersteckt
+	 *
+	 * @return int termineVersteckt
+	 */
+	public function getTermineVersteckt() {
+		return $this->termineVersteckt;
+	}
+
+	/**
+	 * Setter for termineVersteckt
+	 *
+	 * @param string termineVersteckt
+	 * @return void
+	 */
+	public function setTermineVersteckt($termineVersteckt) {
+		$this->termineVersteckt = $termineVersteckt;
+	}
+
+	/**
+	 * Getter for anmeldungDeaktiviert
+	 *
+	 * @return int anmeldungDeaktiviert
+	 */
+	public function getAnmeldungDeaktiviert() {
+		return $this->anmeldungDeaktiviert;
+	}
+
+	/**
+	 * Setter for anmeldungDeaktiviert
+	 *
+	 * @param int anmeldungDeaktiviert
+	 * @return void
+	 */
+	public function setAnmeldungDeaktiviert($anmeldungDeaktiviert) {
+		$this->anmeldungDeaktiviert = $anmeldungDeaktiviert;
+	}
+
+	
 }
 ?>

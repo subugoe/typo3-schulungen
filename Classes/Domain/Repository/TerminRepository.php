@@ -27,37 +27,37 @@
 /**
  * Repository for Tx_Schulungen_Domain_Model_Termin
  *
- * @version $Id: TerminRepository.php 1588 2012-01-11 17:58:42Z simm $
+ * @version $Id: TerminRepository.php 1883 2012-05-25 08:23:09Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 class Tx_Schulungen_Domain_Repository_TerminRepository extends Tx_Extbase_Persistence_Repository {
 
-//	protected $defaultPid = 1648;
+	protected $defaultPid = 1648;
 
 	// Sortierung absteigend nach Terminbeginn
 	protected $defaultOrderings = array(
 			'startzeit' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
 	);
 
-	public function initializeObject() {
-		 $querySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
-		 $querySettings->setRespectStoragePage(FALSE);
-		 $this->setDefaultQuerySettings($querySettings);
+/*	public function initializeObject() {
+		$querySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
+		$querySettings->setRespectStoragePage(TRUE);
+		$this->setDefaultQuerySettings($querySettings);
 	}
-
+*/
 	public function errechneAnstehendeTermine() {
 		$query = $this->createQuery();
 //		$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		
 		# Erinnerung, wenn Termin weniger als 2 Tage entfernt 
-//		$query->statement('SELECT * FROM tx_schulungen_domain_model_termin WHERE pid = ' . $this->defaultPid . ' AND erinnerungenverschickt = 0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) >= 0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) < 2 ORDER BY startzeit ASC');
+//		$query->statement('SELECT * FROM tx_schulungen_domain_model_termin WHERE pid = ' . $this->defaultPid . ' AND erinnerungen_verschickt = 0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) >= 0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) < 2 ORDER BY startzeit ASC');
 
 		$query->matching(
 			$query->logicalAnd( 
 //				$query->equals('pid', $this->defaultPid),
-				$query->equals('erinnerungenverschickt', 0),
-				$query->greaterThan('startzeit', time()),
+				$query->equals('erinnerungen_verschickt', 0),
+				$query->greaterThan('startzeit', time()+(60*60*24)),
 				$query->lessThan('startzeit', time()+(2*60*60*24))    
 			)
 		);
@@ -65,18 +65,18 @@ class Tx_Schulungen_Domain_Repository_TerminRepository extends Tx_Extbase_Persis
 		return $query->execute();
 	}
 
-        public function errechneAnstehendeSchulungTermine(Tx_Schulungen_Domain_Model_Schulung $schulung) {
-            $query = $this->createQuery();
-            $query->matching(
-                $query->logicalAnd( 
-                    $query->equals('schulung', $schulung),
-                    $query->greaterThan('startzeit', time())
-                )
-            );
-            $query->setOrderings(array('startzeit' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
-            return $query->execute();
-        }
-   
+	public function errechneAnstehendeSchulungTermine(Tx_Schulungen_Domain_Model_Schulung $schulung) {
+		$query = $this->createQuery();
+		$query->matching(
+			$query->logicalAnd( 
+				$query->equals('schulung', $schulung),
+				$query->greaterThan('startzeit', time())
+			)
+		);
+		$query->setOrderings(array('startzeit' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
+		return $query->execute();
+	}
+
 }
 
 ?>

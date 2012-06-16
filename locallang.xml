@@ -7,26 +7,11 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="schulung">Schulung</label>
-			<label index="address">Address (required: street, ZIP, city)</label>
-			<label index="addressbookoptions">Address Book: Single Person</label>
-			<label index="display">Select function:</label>
-			<label index="display.I.0">Single Address</label>
-			<label index="display.I.1">Address Book: Person</label>
-			<label index="display.I.2">Address Book: Persons</label>
-			<label index="display.I.3">Address Book: Group</label>
-			<label index="display.I.4">Directions</label>
-			<label index="display.I.5">Route Planner</label>
+			<label index="welcome">Begrüßungstext</label>
+			<label index="afterListing">Schlusstext (nach der Auslistung der Schulungen)</label>
+			<label index="contact">Kontakt auf der Startseite</label>
 		</languageKey>
 		<languageKey index="de" type="array">
-			<label index="address">Adresse (benötigt: Straße, PLZ, Stadt)</label>
-			<label index="addressbookoptions">Adressbuch: Einzelperson</label>
-			<label index="display">Funktion wählen:</label>
-			<label index="display.I.0">Einzeladresse</label>
-			<label index="display.I.1">Adressbuch: Einzelperson</label>
-			<label index="display.I.2">Adressbuch: Einzelpersonen</label>
-			<label index="display.I.3">Adressbuch: Gruppe</label>
-			<label index="display.I.4">Wegbeschreibung</label>
-			<label index="display.I.5">Routenplaner</label>
 		</languageKey>
 	</data>
 </T3locallang>

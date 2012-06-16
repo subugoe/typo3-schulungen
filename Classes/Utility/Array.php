@@ -1,14 +1,16 @@
-<!--
+<?php
+
 /* * *************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
+ *  (c) 2011 Dominic Simm <dominic.simm@sub.uni-goettingen.de>, Goettingen State Library
+ *  	
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation; either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  The GNU General Public License can be found at
@@ -21,14 +23,23 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
--->
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <title></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    TODO write content
-  </body>
-</html>
+
+/**
+ * Helper-Class for automatical flexform inclusion
+ *
+ * @version $Id: Helper.php 1590 2012-01-13 17:38:19Z simm $
+ * @copyright Copyright belongs to the respective authors
+ * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
+ */
+class Tx_Schulungen_Utility_Array {
+    
+	static public function sortByName($array)	{
+		return usort($array, 'Tx_Schulungen_Utility_Array::usortByName');		
+	}
+	static public function usortByName($a, $b)	{
+		return strnatcasecmp($a->getName(), $b->getName());		
+	}
+ 
+}
+
+?>

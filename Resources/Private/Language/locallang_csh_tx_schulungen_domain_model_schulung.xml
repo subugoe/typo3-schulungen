@@ -9,7 +9,7 @@
         <languageKey index="default" type="array">
 			<label index="titel.description">Titel der Schulung</label>
 			<label index="beschreibung.description">Beschreibung der Schulung</label>
-			<label index="teilnehmern_min.description">Mindestteilnehmerzahl</label>
+			<label index="teilnehmer_min.description">Mindestteilnehmerzahl</label>
 			<label index="teilnehmer_max.description">Maximale Teilnehmerzahl</label>
 			<label index="mail_kopie.description">E-Mail Adresse einer Person</label>
 			<label index="schulung_termine.description">Termine der Schulung</label>

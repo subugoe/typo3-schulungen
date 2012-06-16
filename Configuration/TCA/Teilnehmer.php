@@ -118,6 +118,15 @@ $TCA['tx_schulungen_domain_model_teilnehmer'] = array(
 				'maxitems' => 1,
 			),
 		),
+		'secret' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_teilnehmer.secret',
+			'config' => array(
+				'type' => 'none',
+				'eval' => 'trim'
+			),
+		),
+
 	),
 );
 ?>

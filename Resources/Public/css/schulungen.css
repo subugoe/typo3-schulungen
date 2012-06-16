@@ -2,6 +2,10 @@ root {
 	display: block;
 }
 
+h3 {
+	padding: 4px 0 4px 0 !important;
+}
+
 .tx-schulungen-pi1 {
 	color: #434343;
 }
@@ -37,6 +41,11 @@ root {
 	margin-left: 20px;
 }
 
+.tx-schulungen-pi1 ul {
+/*	text-indent: 20px; */
+	padding-bottom: 10px !important;
+}
+
 #icon_cal {
 	float: right;
 	border: 0px;
@@ -46,3 +55,8 @@ root {
 .middle {
 	text-align: center;
 }
+
+.away {
+	display: none !important;
+}
+

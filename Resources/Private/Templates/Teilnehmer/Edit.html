@@ -12,14 +12,14 @@ in /Configuration/Kickstarter/settings.yaml:
 Otherwise your changes will be overwritten the next time you save the extension in the kickstarter
 
 <f:section name="backend">
-<h2>Teilnehmer bearbeiten</h2>
+<h2><f:translate key="tx_schulungen_controller_teilnehmer_edit.title" /></h2>
 
 <f:flashMessages />
 
 <f:render partial="formErrors" />
 
-<f:form method="post" action="updateBackend" name="teilnehmer" object="{teilnehmer}">
-<f:render partial="Teilnehmer/formFields" arguments="{teilnehmer:teilnehmer}" />
-	<f:form.submit value="Save" />
-</f:form>
+	<f:form method="post" action="updateBackend" name="teilnehmer" object="{teilnehmer}">
+		<f:render partial="Teilnehmer/formFieldsBE" arguments="{teilnehmer:teilnehmer}" />
+		<f:form.submit value="Save" />
+	</f:form>
 </f:section>

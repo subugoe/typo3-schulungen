@@ -27,7 +27,7 @@
 /**
  * Teilnehmer an Schulungen
  *
- * @version $Id: Teilnehmer.php 1583 2012-01-05 13:39:45Z simm $
+ * @version $Id: Teilnehmer.php 1886 2012-06-13 12:31:19Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
@@ -51,7 +51,7 @@ class Tx_Schulungen_Domain_Model_Teilnehmer extends Tx_Extbase_DomainObject_Abst
 	 * E-Mail Adresse des Teilnehmers
 	 *
 	 * @var string $email
-         * @validate NotEmpty, EmailAddress
+     * @validate NotEmpty, EmailAddress
 	 */
 	protected $email;
 	/**
@@ -65,15 +65,87 @@ class Tx_Schulungen_Domain_Model_Teilnehmer extends Tx_Extbase_DomainObject_Abst
 	 *
 	 * @var string $bemerkung
 	 */
-       	protected $bemerkung;
+	protected $bemerkung;
+	/**
+	 * Zusatz: Hidden-Field für Robots (Anti-Spam)
+	 *
+	 * @var string $zusatz
+	 * @validate Tx_Schulungen_Domain_Validator_EmptyValidator
+	 */
+	protected $zusatz;
 	/**
 	 * Teilnehmer an einem Termin
 	 *
 	 * @var Tx_Schulungen_Domain_Model_Termin
 	 */
 	protected $termin;
+	/**
+	 * Captcha einer neuen Teilnehmers
+	 *
+	 * @var string $captcha
+	 */
+	protected $captcha;
+	/**
+	 * Secret for De-Registration eines Teilnehmers
+	 *
+	 * @var string $secret
+	 */
+	protected $secret;
 
-        /**
+	/**
+	 * Getter for secret
+	 *
+	 * @return string $secret
+	 */
+	public function getSecret() {
+		return $this->secret;
+	}
+	/**
+	 * Setter for secret
+	 *
+	 * @param string $secret
+	 * @return void
+	 */
+	public function setSecret($secret) {
+		$this->secret = $secret;
+	}
+	/**
+	 * Setter for Zusatz
+	 *
+	 * @param string $Zusatz
+	 * @return void
+	 */
+	public function setZusatz($zusatz) {
+		$this->zusatz = $zusatz;
+	}
+	/**
+	 * Getter for Zusatz
+	 *
+	 * @return string $zusatz
+	 */
+	public function getZusatz() {
+		return $this->zusatz;
+	}
+	/**
+	 * Setter for captcha
+	 *
+	 * @param string $captcha
+	 * @return void
+	 */
+	public function setCaptcha($captcha) {
+		$this->captcha = $captcha;
+	}
+
+	/**
+	 * Getter for captcha
+	 *
+	 * @return string $captcha
+	 */
+	public function getCaptcha() {
+		return $this->captcha;
+	}
+
+	/**
 	 * Setter for vorname
 	 *
 	 * @param string $vorname Vorname des Teilnehmers
@@ -83,7 +155,7 @@ class Tx_Schulungen_Domain_Model_Teilnehmer extends Tx_Extbase_DomainObject_Abst
 		$this->vorname = $vorname;
 	}
 
-        /**
+	/**
 	 * Getter for vorname
 	 *
 	 * @return string Vorname des Teilnehmers

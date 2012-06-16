@@ -2,48 +2,52 @@
 
 <f:section name="backend">
 
-	<h2 class="uppercase">Schulungen</h2>
+	<h2 class="uppercase"><f:translate key="tx_schulungen_controller_backend_index.title" /></h2>
 	<div id="tx_schulungen-inhalt">
 
 	<h4>{termin.schulung.titel}</h4>
-	<strong>Termin:</strong> <f:format.date format="d.m.Y H:i">{termin.startZeit}</f:format.date> - <f:format.date format="H:i">{termin.ende}</f:format.date><br /><br />
-    <table>
-		<tr>
-			<th width="30%">Teilnehmer ({termin.anzahlTeilnehmer})</th>
-			<th width="30%">E-Mail</th>
-			<th width="30%">Fach / Studiengang</th>
-                        <th width="10%">Operationen</th>
-		 </tr>    
+	<strong><f:translate key="tx_schulungen_domain_model_termin" />:</strong> <f:format.date format="{f:translate(key: 'tx_schulungen_format.date')}">{termin.startZeit}</f:format.date> - <f:format.date format="{f:translate(key: 'tx_schulungen_format.hour')}">{termin.ende}</f:format.date><br />
+	<strong><f:translate key="tx_schulungen_domain_model_schulung.teilnehmerzahl" />:</strong> {termin.anzahlTeilnehmer}<br /><br />
+	<table>
+		<thead>
+			<tr>
+				<th width="30%"><f:translate key="tx_schulungen_controller_backend_index.teilnehmer" /></th>
+				<th width="30%"><f:translate key="tx_schulungen_domain_model_teilnehmer.email" /></th>
+				<th width="30%"><f:translate key="tx_schulungen_domain_model_teilnehmer.studienfach" /></th>
+				<th width="30%"><f:translate key="tx_schulungen_domain_model_teilnehmer.bemerkung" /></th>
+				<th width="10%"><f:translate key="tx_schulungen_controller_backend_detail.operationen" /></th>
+			</tr>
+		</thead>
 		<f:if condition="{termin.teilnehmer}">
 			<f:then>
-				  <f:for each="{termin.teilnehmer}" as="teilnehmer" iteration="Iterator">
-					  <tr>
-						  <td class="date {f:if(condition: Iterator.isEven, then: 'Even')}">{teilnehmer.vorname} {teilnehmer.nachname}</td>
-						  <td class="date {f:if(condition: Iterator.isEven, then: 'Even')}"><f:link.email email="{teilnehmer.email}">{teilnehmer.email}</f:link.email></td>
-						  <td class="date {f:if(condition: Iterator.isEven, then: 'Even')}">{f:if(condition: teilnehmer.studienfach, then: teilnehmer.studienfach, else: '-')}</td>
-						  <td class="date {f:if(condition: Iterator.isEven, then: 'Even')}">
+				<f:for each="{termin.teilnehmer}" as="teilnehmer" iteration="Iterator">
+					<tbody>
+						<tr class="{f:if(condition: Iterator.isEven, then: 'Even')}">
+							<td class="date">{teilnehmer.vorname} {teilnehmer.nachname}</td>
+							<td class="date"><f:link.email email="{teilnehmer.email}">{teilnehmer.email}</f:link.email></td>
+							<td class="date">{f:if(condition: teilnehmer.studienfach, then: teilnehmer.studienfach, else: '-')}</td>
+							<td class="date" title="{f:if(condition: teilnehmer.bemerkung, then: teilnehmer.bemerkung, else: '-')}"><f:format.crop maxCharacters="50" append="&nbsp;...">{f:if(condition: teilnehmer.bemerkung, then: teilnehmer.bemerkung, else: '-')}</f:format.crop></td>
+							<td class="date">
 								<f:link.action action="edit" controller="Teilnehmer" arguments="{teilnehmer:teilnehmer}" additionalParams="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-open" alt="Edit" title="Edit"></span></f:link.action>
 								<f:link.action action="deleteBackend" controller="Teilnehmer" arguments="{teilnehmer:teilnehmer}"><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-delete" alt="Delete" title="Delete"></span></f:link.action>
-						  </td>
-					  </tr>
-				  </f:for>
+							</td>
+						</tr>
+					</tbody>
+				</f:for>
 			</f:then>
 			<f:else>
-				  <tr><td colspan="4">Bisher liegen noch keine Anmeldungen vor!</td></tr>
+				  <tr><td colspan="5"><f:translate key="tx_schulungen_controller_backend_detail.keine_anmeldungen" /></td></tr>
 			</f:else>
 		</f:if>
-    </table>
-
-	
+    	</table>
 	<f:if condition="{termin.abgesagt}">
 		<f:then>
-			<f:link.action action="uncancel" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-hide" alt="Uncancel" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} zusagen"></span> Termin zusagen</f:link.action>
+			<f:link.action action="uncancel" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-hide" style="top:-2px;" alt="Uncancel" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} zusagen"></span> <f:translate key="tx_schulungen_domain_model_termin.zusagen" /></f:link.action>
 			<!--<f:be.buttons.icon uri="{f:uri.action(action:'uncancel',arguments:{termin:termin})}" icon="button_unhide" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} zusagen" />-->
 		</f:then>
 		<f:else>
-			<f:link.action action="cancel" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-unhide" alt="Cancel" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} absagen"></span> Termin absagen</f:link.action>
+			<f:link.action action="cancel" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-unhide" style="top:-2px;" alt="Cancel" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} absagen"></span> <f:translate key="tx_schulungen_domain_model_termin.absagen"/></f:link.action>
 		</f:else>
 	</f:if>
-	<br /><br />
-	<f:link.action action="index"><span class="t3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-go-up" alt="Index" title="Index"></span> Zurück zur Übersicht</f:link.action>
+	<span style="float:right;"><f:link.action action="index"><span class="t3-icon t3-icon-actions t3-icon-actions-view t3-icon-view-go-up" style="top:-2px;" alt="Index" title="Index"></span> <f:translate key="tx_schulungen_zurueck" /></f:link.action></span>
 </f:section>

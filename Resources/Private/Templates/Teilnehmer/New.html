@@ -1,15 +1,36 @@
 <f:layout name="default" />
 
 <f:section name="main">
-<h2>Anmeldung</h2>
+	<link href="{f:uri.resource(path:'css/schulungen_mod.css')}" rel="stylesheet" />
+	{namespace schulungen=Tx_Schulungen_ViewHelpers}
 
-<!--<f:flashMessages />-->
-<!--<f:render partial="formErrors" />-->
+	<h1><f:translate key="tx_schulungen_controller_teilnehmer_new.title" /></h1>
+	<h2>{schulungsTitel}</h2>
+	<!--<h3><f:translate key="tx_schulungen_domain_model_termin.wochentag.{teilnehmerTermin.startzeit -> f:format.date(format: 'N')}" />,
+		<f:format.date format="{f:translate(key: 'tx_schulungen_format.date_long')}">{teilnehmerTermin.startzeit}</f:format.date> - <f:format.date format="{f:translate(key: 'tx_schulungen_format.hour')}">{teilnehmerTermin.ende}</f:format.date></h3>-->
+	<!--<f:flashMessages />-->
+	<!--<f:render partial="formErrors" />-->
 
-<f:form method="post" action="create" name="newTeilnehmer" object="{newTeilnehmer}" additionalParams="{tx_schulungen_schulungen: {schulung: '{teilnehmerTermin.schulung.uid}', termin: '{teilnehmerTermin.uid}'}}">
+	<div class="tx-powermail-pi1">	
+		<div class="tx-powermail-pi1_formwrap">
+		<f:form method="post" action="create" controller="Teilnehmer" class="tx_powermail_pi1_form" name="newTeilnehmer" object="{newTeilnehmer}" additionalParams="{tx_schulungen_schulungen: {schulung: '{teilnehmerTermin.schulung.uid}', termin: '{teilnehmerTermin.uid}'}}">
+			<div class="fieldsets">
+				<fieldset class=" tx-powermail-pi1_fieldset">
+					<f:render partial="Teilnehmer/formFields" arguments="{domainObject:domainObject, teilnehmerTermin:teilnehmerTermin}" />
+					<div class="tx_powermail_pi1_fieldwrap_html tx_powermail_pi1_fieldwrap_html_submit">
+						<f:form.submit value="{f:translate(key: 'tx_schulungen_controller_teilnehmer_new.anmelden')}" class="powermail_submit" />
+					</div>
+				</fieldset>
+			</div>
+		</f:form>
+	</div></div>
+	<br /><br />
 
-	{teilnehmerTermin.schulung.titel}
-<f:render partial="Teilnehmer/formFields" arguments="{domainObject:domainObject, teilnehmerTermin:teilnehmerTermin}" />
-	<f:form.submit value="Eintragen" />
-</f:form>
+	<f:if condition="{contacts}">
+		<div><h2><f:translate key="tx_schulungen_domain_model_schulung.kontakt" /></h2></div>
+		<f:for each="{contacts}" as="contact" iteration="Iterator">
+			<f:render partial="Schulung/contact" arguments="{contact:contact}" />
+		</f:for>
+	</f:if>
+
 </f:section>

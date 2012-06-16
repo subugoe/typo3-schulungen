@@ -6,10 +6,10 @@ if (!defined ('TYPO3_MODE')) {
 $TCA['tx_schulungen_domain_model_schulung'] = array(
 	'ctrl' => $TCA['tx_schulungen_domain_model_schulung']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList'	=> 'titel,untertitel,beschreibung,voraussetzungen,treffpunkt,dauer,veranstalter,teilnehmern_min,teilnehmer_max,mail_kopie,schulung_termine',
+		'showRecordFieldList'	=> 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, titel,untertitel,kategorie,beschreibung,voraussetzungen,treffpunkt,dauer,veranstalter,teilnehmer_min,teilnehmer_max,contact,anmeldung_deaktiviert,termine_versteckt',
 	),
 	'types' => array(
-		'1' => array('showitem'	=> 'titel,untertitel,beschreibung;;;richtext[]:rte_transform[mode=ts_css|imgpath=uploads/tx_patenschaften/rte/],voraussetzungen,treffpunkt,dauer,veranstalter,teilnehmern_min,teilnehmer_max,mail_kopie,schulung_termine'),
+		'1' => array('showitem'	=> 'sys_language_uid;;;;1-1-1,titel,untertitel,kategorie,beschreibung;;;richtext[]:rte_transform[mode=ts_css|imgpath=uploads/tx_patenschaften/rte/],voraussetzungen,treffpunkt,dauer,veranstalter,teilnehmer_min,teilnehmer_max,contact,anmeldung_deaktiviert,termine_versteckt'),
 	),
 	'palettes' => array(
 		'1' => array('showitem'	=> ''),
@@ -87,7 +87,7 @@ $TCA['tx_schulungen_domain_model_schulung'] = array(
 				'cols' => 40,
 				'rows' => 15,
 				'eval' => 'required',
-                		'wizards' => array(
+				'wizards' => array(
 					'_PADDING' => 2,
 					'RTE' => array(
 						'notNewRecords' => 1,
@@ -139,9 +139,9 @@ $TCA['tx_schulungen_domain_model_schulung'] = array(
 				'eval' => 'trim'
 			),
 		),
-		'teilnehmern_min' => array(
+		'teilnehmer_min' => array(
 			'exclude'	=> 0,
-			'label'		=> 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_schulung.teilnehmern_min',
+			'label'		=> 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_schulung.teilnehmer_min',
 			'config'	=> array(
 				'type' => 'input',
 				'size' => 2,
@@ -158,13 +158,71 @@ $TCA['tx_schulungen_domain_model_schulung'] = array(
 			),
 		),
 		'mail_kopie' => array(
-			'exclude'	=> 0,
-			'label'		=> 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_schulung.mail_kopie',
-			'config'	=> array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_schulung.mail_kopie',
+			'config' => array(
 				'type' => 'input',
-				'size' => 30,
-				'eval' => 'trim'
+				'size' => 2,
+				'eval' => 'int,required'
+			)
+		),
+		'contact' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_schulung.kontakt',
+			'config' => array(
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tt_address',
+				'size' => 3,
+				'minitems' => 0,
+				'maxitems' => 3
+			)
+		),
+		'kategorie' => array(
+			'exclude'	=> 0,
+			'label'		=> 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_schulung.kategorie',
+			'config'	=> array(
+				'type' => 'select',
+				'items' => array(
+					array('LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_schulung.kategorie.0',0),
+					array('LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_schulung.kategorie.1',1),
+					array('LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_schulung.kategorie.2',2)
+				),
 			),
+		),
+		'termine_versteckt' => array(
+			'exclude'	=> 0,
+			'label'		=> 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_schulung.termine_versteckt',
+			'config'	=> array(
+				'type' => 'check',
+				'default' => '0'
+			),
+		),
+		'anmeldung_deaktiviert' => array(
+			'exclude'	=> 0,
+			'label'		=> 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_schulung.anmeldung_deaktiviert',
+			'config'	=> array(
+				'type' => 'check',
+				'default' => '0'
+			),
+		),
+		/* inactivates relation to Termine and edit-function in BE under List->Schulungen */		
+/*		'schulung_termine' => array(
+			'config' => array(
+				'type' => 'passthrough',
+			),
+		),
+ 		'schulung_termine' => array(
+			'exclude' => 0,
+			'label'		=> 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_schulung.schulung_termine',
+			'config' => array(
+				'type' => 'group',
+				'internal_type' => 'db',
+				'allowed' => 'tx_schulungen_domain_model_termin',
+				'size' => 10,
+				'minitems' => 0,
+				'maxitems' => 9999
+			)
 		),
 		'schulung_termine' => array(
 			'exclude'	=> 0,
@@ -183,6 +241,6 @@ $TCA['tx_schulungen_domain_model_schulung'] = array(
 				),
 			),
 		),
-	),
+*/	),
 );
 ?>

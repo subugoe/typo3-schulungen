@@ -27,7 +27,7 @@
 /**
  * Termine
  *
- * @version $Id: Termin.php 1098 2011-08-17 14:03:22Z simm $
+ * @version $Id: Termin.php 1877 2012-05-16 09:50:07Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
@@ -46,7 +46,7 @@ class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_Abstract
 	 */
 	protected $anzahlTeilnehmer;
 	/**
-         * Array mit Teilnehmer-Objekten
+	 * Array mit Teilnehmer-Objekten
 	 *
 	 * @var array $teilnehmer
 	 */
@@ -72,18 +72,19 @@ class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_Abstract
 	protected $abgesagt;
 	/**
 	 * Flag, ob Erinnerungen via Scheduler verschickt wurden
-         * 
-	 * @var boolean $erinnerungenverschickt
+	 * 
+	 * @var boolean $erinnerungenVerschickt
+	 * @validate NotEmpty
 	 */
-	protected $erinnerungenverschickt;
+	protected $erinnerungenVerschickt;
 
 
 	public function getErinnerungenVerschickt() {
-		return $this->erinnerungenverschickt;
+		return $this->erinnerungenVerschickt;
 	}
 
 	public function setErinnerungenVerschickt($erinnerungenVerschickt) {
-		$this->erinnerungenverschickt = $erinnerungenVerschickt;
+		$this->erinnerungenVerschickt = $erinnerungenVerschickt;
 	}
 
 	/**
@@ -173,7 +174,11 @@ class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_Abstract
 	 * @return void
 	 */
 	public function getSchulung() {
-		return $this->schulung;
+		if($this->schulung)	{
+		  return $this->schulung;
+		} else	{
+		  throw new Exception('Termin has no Schulung.');
+		}
 	}
 
 	/**

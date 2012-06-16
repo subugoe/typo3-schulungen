@@ -9,9 +9,41 @@ plugin.tx_schulungen {
 			fromMail = {$plugin.tx_schulungen.mail.fromMail}
 			fromName = {$plugin.tx_schulungen.mail.fromName}
 		}
-		persistence{
-			enableAutomaticCacheClearing = 1
-			storagePid = {$plugin.tx_schulungen.persistence.storagePid}
+	}
+	persistence{
+		enableAutomaticCacheClearing = 1
+		storagePid = {$plugin.tx_schulungen.persistence.storagePid}
+		classes {
+			Tx_Schulungen_Domain_Model_Person {
+				mapping {
+					tableName = tt_address
+					recordType = Tx_Schulungen_Domain_Model_Person
+					columns {
+						first_name = firstName
+						last_name = lastName
+						title = title
+						email = email 
+						phone = phone
+						fax = fax
+						address = address
+						building = building
+						room = room
+						company = company
+						city = city
+						zip = zip
+						country = country
+					}
+				}
+			}
+			Tx_Schulungen_Domain_Model_Group {
+				mapping {
+					tableName = tt_address_group
+					recordType = Tx_Schulungen_Domain_Model_Group
+					columns {
+						title = title
+					}
+				}
+			}
 		}
 	}
 
@@ -22,6 +54,7 @@ module.tx_schulungen {
 	persistence{
 		enableAutomaticCacheClearing = 1
 		storagePid = {$plugin.tx_schulungen.persistence.storagePid}
+		classes < plugin.tx_schulungen.persistence.classes
 	}
 	view {
 		templateRootPath = {$plugin.tx_schulungen.view.templateRootPath}
@@ -32,6 +65,13 @@ module.tx_schulungen {
 		fromMail = {$plugin.tx_schulungen.mail.fromMail}
 		fromName = {$plugin.tx_schulungen.mail.fromName}
 	}
+
+}
+
+plugin.tx_jmrecaptcha {
+    public_key = {$plugin.tx_jmrecaptcha.public_key}
+    private_key = {$plugin.tx_jmrecaptcha.private_key}
+    theme = {$plugin.tx_jmrecaptcha.theme}
 }
 
 

@@ -18,3 +18,14 @@ plugin.tx_schulungen {
 		fromName = SUB Goettingen
 	}
 }
+
+plugin.tx_jmrecaptcha {
+    # cat=plugin.recaptcha//01; type=string; label= reCAPTCHA public key: Public key of your reCAPTCHA-account
+    public_key = 6LdpJAcAAAAAAHLKPrFt1Ip6gu7tDkh6o9jKRs44
+
+    # cat=plugin.recaptcha//02; type=string; label= reCAPTCHA private key: Private key of your reCAPTCHA-account
+    private_key = 6LdpJAcAAAAAALos-0IzJAc8Eo4PqrSj0msG9s93
+
+    # cat=plugin.recaptcha//07; type=options[,red,white,blackglass,clean,custom]; label= reCAPTCHA Theme: Predefined reCAPTCHA themes
+    theme = clean
+} 

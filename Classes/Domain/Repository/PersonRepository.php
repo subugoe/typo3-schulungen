@@ -25,32 +25,14 @@
 
 
 /**
- * Repository for Tx_Schulungen_Domain_Model_Schulung
+ * Repository for Tx_Schulungen_Domain_Model_Person
  *
- * @version $Id: SchulungRepository.php 1717 2012-03-02 12:47:53Z simm $
+ * @version $Id: PersonRepository.php 1797 2012-03-28 15:25:15Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 
- class Tx_Schulungen_Domain_Repository_SchulungRepository extends Tx_Extbase_Persistence_Repository {
-
-	protected $defaultPid = 1648;
-
-	 // Sortierung absteigend nach Terminbeginn
-	protected $defaultOrderings = array(
-			'titel' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
-//				'schulungTermine' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
-	);
-
-	public function findTranslated() {
-		$query = $this->createQuery();
-		$query->statement('SELECT * FROM `tx_schulungen_domain_model_schulung` WHERE `sys_language_uid` = 1 AND `deleted` = 0 AND `pid` = '. $this->defaultPid);
-/*		$query->matching(
-			$query->equals('sys_language_uid', 1)
-		);
-*/		$query->setOrderings(array('titel' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
-		return $query->execute();
-	}
+class Tx_Schulungen_Domain_Repository_PersonRepository extends Tx_Extbase_Persistence_Repository {
 
 		
 }

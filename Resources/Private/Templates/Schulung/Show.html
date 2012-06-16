@@ -1,55 +1,72 @@
 <f:layout name="default" />
 
 <f:section name="main">
+	<link href="{f:uri.resource(path:'css/schulungen_mod.css')}" rel="stylesheet" />
 	{namespace schulungen=Tx_Schulungen_ViewHelpers}
 
 	<f:flashMessages />
 	<f:render partial="Schulung/properties" arguments="{schulung:schulung}" />
-	<br />
 
-	<h3>Termine:</h3>
-	<ul>
-		<table width="100%">
-		<tr><th><f:translate key="tx_schulungen_domain_model_termin.datum" /></th><th><f:translate key="tx_schulungen_domain_model_termin.freiePlaetze" /></th>
-			<th><f:translate key="tx_schulungen_domain_model_termin.anmeldung" /></th><th><f:translate key="tx_schulungen_domain_model_termin.entfaellt" /></th></tr>
-		<f:if condition="{termine}">
-			<f:then>
-				<f:for each="{termine}" as="termin" iteration="Iterator">
-					<tr><td><f:translate key="tx_schulungen_domain_model_termin.wochentag.{termin.startzeit -> f:format.date(format: 'N')}" />, <f:format.date format="d.m.Y H:i">{termin.startzeit}</f:format.date> - <f:format.date format="H:i">{termin.ende}</f:format.date>
-							<f:link.action controller="Termin" action="export" additionalParams="{tx_schulungen: {uid: '{termin.uid}'}}" format="ics" pluginName="calendar" pageType="1316011668" title="In Kalender eintragen"><image src="{f:uri.resource(path:'Icons/icon_calendar.gif')}" id="icon_cal" width="16px" /></f:link.action></td>
+	<f:if condition="{0: false} == {0: schulung.termineVersteckt}">
+	<f:then>
+		<dl><dt><f:translate key="tx_schulungen_domain_model_termin.title" />:</dt></dl>
+		<ul>
+			<table width="100%">
+			<tr><th><f:translate key="tx_schulungen_domain_model_termin.wochentag" /></th>
+				<th><f:translate key="tx_schulungen_domain_model_termin.datum" /></th>
+				<th><f:translate key="tx_schulungen_domain_model_termin.freiePlaetze" /></th>
+				<th><f:translate key="tx_schulungen_domain_model_termin.anmeldung" /></th>
+				<th><f:translate key="tx_schulungen_domain_model_termin.entfaellt" /></th>
+			</tr>
+			<f:if condition="{termine}">
+				<f:then>
+					<f:for each="{termine}" as="termin" iteration="Iterator">
+						<tr><td><f:translate key="tx_schulungen_domain_model_termin.wochentag.{termin.startzeit -> f:format.date(format: 'N')}" /></td>
+							<td><f:format.date format="{f:translate(key: 'tx_schulungen_format.date')}">{termin.startzeit}</f:format.date> - <f:format.date format="{f:translate(key: 'tx_schulungen_format.hour')}">{termin.ende}</f:format.date>
+								<f:link.action controller="Termin" action="export" additionalParams="{tx_schulungen: {uid: '{termin.uid}'}}" format="ics" pluginName="Calendar" pageType="1316011668" title="{f:translate(key: 'tx_schulungen_domain_model_schulung.kalender')}"><image src="{f:uri.resource(path:'Icons/icon_calendar.gif')}" id="icon_cal" width="16px" /></f:link.action></td>
 						<td class="middle"><schulungen:freiePlaetze maxPlaetze="{schulung.teilnehmerMax}" belegtePlaetze="{termin.anzahlTeilnehmer}" /></td>
-						<f:if condition="{termin.anzahlTeilnehmer} < {schulung.teilnehmerMax}">
-							<f:then>
-								<f:if condition="{termin.abgesagt}">
-									<f:then>
-										<td class="middle">-</td>
-									</f:then>    
-									<f:else>
-										<td class="middle"><f:link.action action="new" controller="Teilnehmer" arguments="{termin:termin}" additionalParams="{tx_schulungen_schulungen: {schulung: '{schulung.uid}'}}" >Teilnahme</f:link.action></td>
-									</f:else>
-								</f:if>
-							</f:then>    
-							<f:else>
-								<td class="middle">-</td>
-							</f:else>
-						</f:if>
-<!--                    <td class="middle"><f:link.action action="new" controller="Teilnehmer" arguments="{termin:termin}" additionalParams="{tx_schulungen_schulungen: {schulung: '{schulung.uid}'}}" >Teilnahme</f:link.action></td>-->
-						<td class="middle">
-						<f:if condition="{termin.abgesagt}">
-							<f:then>Ja</f:then>
-							<f:else>Nein</f:else>
-						</f:if>
-						</td>
-					</tr>
-				</f:for>
-			</f:then>
-			<f:else>
-                            <tr><td align="center" colspan="4">Keine Termine vorhanden!</td></tr>
-			</f:else>
-		</f:if>
-            </table>
-	</ul>
-
+							<f:if condition="{termin.anzahlTeilnehmer} < {schulung.teilnehmerMax}">
+								<f:then>
+									<f:if condition="{0: false, 1: false} != {0: termin.abgesagt, 1: schulung.anmeldungDeaktiviert}">
+										<f:then>
+											<td class="middle">-</td>
+										</f:then>
+										<f:else>
+											<td class="middle"><f:link.action action="new" controller="Teilnehmer" arguments="{termin:termin}" additionalParams="{tx_schulungen_schulungen: {schulung: '{schulung.uid}'}}" ><f:translate key="tx_schulungen_domain_model_termin.teilnahme" /></f:link.action></td>
+										</f:else>
+									</f:if>
+								</f:then>
+								<f:else>
+									<td class="middle">-</td>
+								</f:else>
+							</f:if>
+							<td class="middle">
+							<f:if condition="{termin.abgesagt}">
+								<f:then><f:translate key="tx_schulungen_domain_model_termin.ja" /></f:then>
+								<f:else><f:translate key="tx_schulungen_domain_model_termin.nein" /></f:else>
+							</f:if>
+							</td>
+						</tr>
+					</f:for>
+				</f:then>
+				<f:else>
+					<tr><td align="center" colspan="5"><f:translate key="tx_schulungen_domain_model_termin.keine_termine" /></td></tr>
+				</f:else>
+			</f:if>
+			</table>
+		</ul>
+	</f:then>
+	<f:else>
+		<br />
+	</f:else>
+	</f:if>
+	
+	<f:if condition="{contacts}">
+		<div><h2><f:translate key="tx_schulungen_domain_model_schulung.kontakt" /></h2></div>
+		<f:for each="{contacts}" as="contact" iteration="Iterator">
+			<f:render partial="Schulung/contact" arguments="{contact:contact}" />
+		</f:for>
+	</f:if>
 	<!--<f:link.action action="list">Back to list</f:link.action><br />-->
 
 </f:section>

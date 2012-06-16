@@ -7,13 +7,15 @@ Folgende Daten wurden am <f:format.date format="d.m.Y">{timestamp}</f:format.dat
 Name: {nachname}<br />
 Vorname: {vorname}<br />
 E-Mail: {email}<br />
+Studienfach: {studienfach}<br />
 <br />
 Schulung: <strong>{schulungsTitel}</strong><br />
 Datum / Uhrzeit: <strong><f:format.date format="d.m.Y - H:i">{startZeit}</f:format.date> Uhr</strong><br />
 <br />
 Bemerkungen: {bemerkung}<br />
 <br />
-Falls Sie doch nicht teilnehmen können, wäre es nett, wenn Sie sich bei uns abmelden würden. Vielen Dank!<br />
+Falls Sie doch nicht teilnehmen können, wäre es schön, wenn Sie sich bei uns per Mail<br /> 
+oder direkt über diesen Link <f:link.action absolute="absolute" action="deregister" controller="Teilnehmer" arguments="{identifier:identifier}" pluginName="Schulungen" extensionName="Schulungen">abmelden</f:link.action> würden. Vielen Dank!<br />
 <br />
 Ihre SUB Göttingen / Zentrale Information<br />
 <br />
