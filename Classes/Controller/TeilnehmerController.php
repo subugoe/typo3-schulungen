@@ -66,13 +66,15 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 	 * Displays all Teilnehmers
 	 *
 	 * @param Tx_Schulungen_Domain_Model_Schulung $schulung
+	 * @param string $status
 	 * @return string The rendered list view
 	 */
-	public function listAction(Tx_Schulungen_Domain_Model_Schulung $schulung) {
+	public function listAction(Tx_Schulungen_Domain_Model_Schulung $schulung, $status) {
 		$teilnehmers = $this->teilnehmerRepository->findAll();
 		$this->view->assign('teilnehmers', $teilnehmers);
 		
 		$this->view->assign('schulungsTitel', $schulung->getTitel());
+		$this->view->assign('status', $status);
 		$this->view->assign('contacts', $schulung->getContact());
 	}
 
@@ -119,12 +121,11 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 	 * @return void
 	 */
 	public function createAction(Tx_Schulungen_Domain_Model_Teilnehmer $newTeilnehmer) {
+		$status = 'fail';
+		$time = new DateTime('now');
 		$termin = intval($this->request->getArgument('termin'));
 		$termin = $this->terminRepository->findByUid($termin);
 		$schulung = $termin->getSchulung();
-                
-		$time = new DateTime();
-		$time->setTimestamp(time());
 
 		$newTeilnehmer->setTermin($termin);
 		// secret-identifier: timestamp,lastname,email,prename
@@ -134,27 +135,35 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 
 		if($termin->getAnzahlTeilnehmer() < $schulung->getTeilnehmerMax()) {
 
-			$this->teilnehmerRepository->add($newTeilnehmer);
+			if(count($this->teilnehmerRepository->teilnehmerAngemeldet($newTeilnehmer, $termin)) == 0)	{
 
-			if (count($this->teilnehmerRepository->getAddedObjects()) === 1) {
-				//mail versenden
-				$this->flashMessageContainer->flush();
-				$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_teilnehmer_create.bestaetigung.text', 'schulungen'));
+				$this->teilnehmerRepository->add($newTeilnehmer);
 
-				if ($sender = $this->sendeBestaetigungsMail($newTeilnehmer)) {
-						$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_teilnehmer_create.bestaetigung.email', 'schulungen', array($newTeilnehmer->getEmail())));
-				} else {
-						$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.fail', 'schulungen'));
+				if (count($this->teilnehmerRepository->getAddedObjects()) === 1) {
+					//mail versenden
+					$this->flashMessageContainer->flush();
+					$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_teilnehmer_create.bestaetigung.text', 'schulungen'));
+
+					if ($sender = $this->sendeBestaetigungsMail($newTeilnehmer)) {
+							$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_teilnehmer_create.bestaetigung.email', 'schulungen', array($newTeilnehmer->getEmail())));
+							$status = 'success';
+					} else {
+							$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.fail', 'schulungen'));
+					}
 				}
+				// Teilnehmer existiert schon
+			}	else {
+				$this->flashMessageContainer->flush();
+				$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_teilnehmer_create.already_registered', 'schulungen'));
 			}
-
+			// Termin ist voll
 		}   else    {
 			$this->flashMessageContainer->flush();
 			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_teilnehmer_create.fail', 'schulungen'));
 		}
 
 		//an die list-action weiterleiten
-		$this->redirect('list', 'Teilnehmer', Null, array("schulung" => $schulung));
+		$this->redirect('list', 'Teilnehmer', Null, array("schulung" => $schulung, "status" => $status));
 		// $this->schulungController->redirect('list');
 	}
 

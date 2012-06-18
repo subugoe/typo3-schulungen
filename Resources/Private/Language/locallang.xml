@@ -177,6 +177,8 @@
 			<label index="tx_schulungen_domain_model_teilnehmer.required_note">Felder, die mit einem * markiert sind, sind Pflichtfelder.</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.note">Information: Nach erfolgreicher Anmeldung erhalten Sie eine Bestätigungsmail.</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.bestaetigung">Vielen Dank für Ihre Anmeldung</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.success">Vielen Dank für Ihre Anmeldung</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.fail">Es gab ein Problem mit Ihrer Anmeldung</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.deregister.success">Sie wurden erfolgreich von der Schulung abgemeldet.</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.deregister.success.flash">Entfernter Teilnehmer: </label>
 			<label index="tx_schulungen_domain_model_teilnehmer.deregister.fail">Sie konnten leider nicht von der Schulung abgemeldet werden.</label>
@@ -185,6 +187,7 @@
 			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.text">Sie wurden erfolgreich in die Teilnehmerliste eingetragen</label>
 			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.email">Eine E-Mail zur Bestätigung wurde an %1$s gesendet</label>
 			<label index="tx_schulungen_controller_teilnehmer_create.fail">Die Veranstaltung ist leider schon voll. Bitte versuchen Sie sich zu einem anderen Termin anzumelden.</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.already_registered">Ein Teilnehmer mit diesen Daten ist bereits für diesen Schulungstermin angemeldet.</label>
 			<label index="tx_schulungen_controller_teilnehmer_new.title">Anmeldung zur Schulung</label>
 			<label index="tx_schulungen_controller_teilnehmer_new.anmelden">Anmelden</label>
 			<label index="tx_schulungen_controller_teilnehmer_edit.title">Teilnehmer bearbeiten</label>
