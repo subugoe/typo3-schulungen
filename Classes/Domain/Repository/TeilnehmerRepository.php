@@ -36,7 +36,7 @@ class Tx_Schulungen_Domain_Repository_TeilnehmerRepository extends Tx_Extbase_Pe
 
 	// Sortierung absteigend nach Terminbeginn
 	protected $defaultOrderings = array(
-			'nachname' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
+			'nachname' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
 	);
 
 	public function teilnehmerAngemeldet(Tx_Schulungen_Domain_Model_Teilnehmer $teilnehmer, Tx_Schulungen_Domain_Model_Termin $termin) {
@@ -46,7 +46,7 @@ class Tx_Schulungen_Domain_Repository_TeilnehmerRepository extends Tx_Extbase_Pe
 				$query->equals('termin', $termin),
 				$query->equals('email', $teilnehmer->getEmail()),
 				$query->equals('vorname', $teilnehmer->getVorname()),
-				$query->equals('nachname', $teilnehmer->getNachname())
+				$query->eq('nachname', $teilnehmer->getNachname())
 			)
 		);
 		$query->setOrderings(array('nachname' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));

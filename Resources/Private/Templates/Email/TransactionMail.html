@@ -6,7 +6,7 @@ am <strong><f:format.date format="d.m.Y">{termin}</f:format.date></strong>
 die Benachrichtigung <strong>'{action}'</strong> als E-Mail erhalten:
 <ul>
 <f:for each="{teilnehmer}" as="person" iteration="Iterator">
-    <li>{person.nachname}, {person.vorname} ({person.email})</li>
+    <li>{person.nachname}, {person.vorname} ({person.email}), {person.studienfach}</li>
 </f:for>
 </ul>
 
