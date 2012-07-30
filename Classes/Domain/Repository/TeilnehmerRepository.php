@@ -27,7 +27,7 @@
 /**
  * Repository for Tx_Schulungen_Domain_Model_Teilnehmer
  *
- * @version $Id: TeilnehmerRepository.php 832 2011-01-31 13:40:22Z dsimm $
+ * @version $Id: TeilnehmerRepository.php 1887 2012-07-02 14:19:47Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */

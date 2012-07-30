@@ -110,7 +110,8 @@
 			<label index="tx_schulungen_domain_model_schulung.dauer">Veranstaltungsdauer</label>
 			<label index="tx_schulungen_domain_model_schulung.veranstalter">Veranstalter</label>
 			<label index="tx_schulungen_domain_model_schulung.teilnehmer">Teilnehmer pro Schulung</label>
-			<label index="tx_schulungen_domain_model_schulung.teilnehmer_backend">Teilnehmer (Gesamt)</label>
+			<label index="tx_schulungen_domain_model_schulung.teilnehmer_backend">Teilnehmer</label>
+			<label index="tx_schulungen_domain_model_schulung.teilnehmer_backend_gesamt">Teilnehmer (Gesamt)</label>
 			<label index="tx_schulungen_domain_model_schulung.teilnehmer_min">Mindestteilnehmerzahl</label>
 			<label index="tx_schulungen_domain_model_schulung.teilnehmer_max">Maximale Teilnehmerzahl</label>
 			<label index="tx_schulungen_domain_model_schulung.teilnehmerzahl">Teilnehmerzahl</label>
@@ -126,7 +127,8 @@
 			<label index="tx_schulungen_domain_model_schulung.kategorie.1">Fortgeschrittene</label>
 			<label index="tx_schulungen_domain_model_schulung.kategorie.2">Spezielle Angebote</label>
 			<label index="tx_schulungen_domain_model_schulung.schulung_termine">Termine der Schulung</label>
-			<label index="tx_schulungen_domain_model_schulung.schulung_termine_backend">Termine (Gesamt)</label>
+			<label index="tx_schulungen_domain_model_schulung.schulung_termine_backend">Termine</label>
+			<label index="tx_schulungen_domain_model_schulung.schulung_termine_backend_gesamt">Termine (Gesamt)</label>
 			<label index="tx_schulungen_domain_model_schulung.kalender">In Kalender eintragen</label>
 			<label index="tx_schulungen_domain_model_schulung.uebersicht">Übersicht</label>
 			<label index="tx_schulungen_domain_model_schulung.kontakt">Kontakt</label>

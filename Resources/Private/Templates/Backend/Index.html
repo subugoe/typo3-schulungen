@@ -36,7 +36,7 @@
 					  <span onclick="javascript:splitter('{schulungIterator.index}');" id="span_splitter_{schulungIterator.index}" class="t3-icon t3-icon-actions t3-icon-actions-pagetree t3-icon-pagetree-collapse" alt="" title="Alle Termine anzeigen"></span>	  
 					  <f:translate key="tx_schulungen_domain_model_schulung.details" />
 					</th>						  
-					<th width="10%"><f:translate key="tx_schulungen_domain_model_schulung.datum" /></th>
+					<th width="10%" colspan="2"><f:translate key="tx_schulungen_domain_model_schulung.datum" /></th>
 					<th width="5%"><f:translate key="tx_schulungen_domain_model_schulung.beginn" /></th>
 					<th width="5%"><f:translate key="tx_schulungen_domain_model_schulung.ende" /></th>
 					<th width="5%"><f:translate key="tx_schulungen_domain_model_schulung.teilnehmer_backend" /></th>
@@ -65,7 +65,10 @@
 											  </f:if>
 										  </td>	
 										  <td class="date">
-											  <f:translate key="tx_schulungen_domain_model_termin.wochentag.{termin.startzeit -> f:format.date(format: 'N')}" />, <f:format.date format="{f:translate(key: 'tx_schulungen_format.date_only')}">{termin.startZeit}</f:format.date>
+											  <f:translate key="tx_schulungen_domain_model_termin.wochentag.{termin.startzeit -> f:format.date(format: 'N')}" />
+										  </td>
+										  <td class="date">
+											  <f:format.date format="{f:translate(key: 'tx_schulungen_format.date_only')}">{termin.startZeit}</f:format.date>
 										  </td>
 										  <td class="date">
 											  <f:format.date format="{f:translate(key: 'tx_schulungen_format.hour')}">{termin.startZeit}</f:format.date>
@@ -107,7 +110,10 @@
 											  </f:if>
 										  </td>	
 										  <td class="date">
-											  <f:translate key="tx_schulungen_domain_model_termin.wochentag.{termin.startzeit -> f:format.date(format: 'N')}" />, <f:format.date format="{f:translate(key: 'tx_schulungen_format.date_only')}">{termin.startZeit}</f:format.date>
+											  <f:translate key="tx_schulungen_domain_model_termin.wochentag.{termin.startzeit -> f:format.date(format: 'N')}" />
+										  </td>
+										  <td class="date">
+											  <f:format.date format="{f:translate(key: 'tx_schulungen_format.date_only')}">{termin.startZeit}</f:format.date>
 										  </td>
 										  <td class="date">
 											  <f:format.date format="{f:translate(key: 'tx_schulungen_format.hour')}">{termin.startZeit}</f:format.date>
@@ -137,7 +143,7 @@
 
 						<f:else>
 							<tr>
-								<td colspan="6"><f:translate key="tx_schulungen_domain_model_termin.keine_termine" /></td>
+								<td colspan="7"><f:translate key="tx_schulungen_domain_model_termin.keine_termine" /></td>
 							</tr>
 						</f:else>
 					</f:if>
@@ -155,8 +161,8 @@
 			</tbody>
 		</table>
 
-		<f:link.action controller="Backend" action="export" format="csv" pluginName="csvexport" pageType="1321464620"><span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-export-csv" alt="Details" title="Detailansicht"></span></f:link.action>
-		<f:link.action controller="Backend" action="export" format="csv" pluginName="csvexport" pageType="1321464620">CSV-Export</f:link.action>
+		<f:link.action controller="Backend" action="export" format="csv" pluginName="Csvexport" pageType="1321464620"><span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-export-csv" alt="Details" title="Detailansicht"></span></f:link.action>
+		<f:link.action controller="Backend" action="export" format="csv" pluginName="Csvexport" pageType="1321464620">CSV-Export</f:link.action>
 	</div>
 
 	<script type="text/javascript">
