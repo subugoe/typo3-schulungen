@@ -6,10 +6,10 @@ if (!defined ('TYPO3_MODE')) {
 $TCA['tx_schulungen_domain_model_schulung'] = array(
 	'ctrl' => $TCA['tx_schulungen_domain_model_schulung']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList'	=> 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, titel,untertitel,kategorie,beschreibung,voraussetzungen,treffpunkt,dauer,veranstalter,teilnehmer_min,teilnehmer_max,contact,anmeldung_deaktiviert,termine_versteckt',
+		'showRecordFieldList'	=> 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, titel,untertitel,kategorie,sort_index,beschreibung,voraussetzungen,treffpunkt,dauer,veranstalter,teilnehmer_min,teilnehmer_max,contact,anmeldung_deaktiviert,termine_versteckt',
 	),
 	'types' => array(
-		'1' => array('showitem'	=> 'sys_language_uid;;;;1-1-1,titel,untertitel,kategorie,beschreibung;;;richtext[]:rte_transform[mode=ts_css|imgpath=uploads/tx_patenschaften/rte/],voraussetzungen,treffpunkt,dauer,veranstalter,teilnehmer_min,teilnehmer_max,contact,anmeldung_deaktiviert,termine_versteckt'),
+		'1' => array('showitem'	=> 'sys_language_uid;;;;1-1-1,titel,untertitel,kategorie,sort_index,beschreibung;;;richtext[]:rte_transform[mode=ts_css|imgpath=uploads/tx_patenschaften/rte/],voraussetzungen,treffpunkt,dauer,veranstalter,teilnehmer_min,teilnehmer_max,contact,anmeldung_deaktiviert,termine_versteckt'),
 	),
 	'palettes' => array(
 		'1' => array('showitem'	=> ''),
@@ -206,6 +206,15 @@ $TCA['tx_schulungen_domain_model_schulung'] = array(
 				'default' => '0'
 			),
 		),
+		'sort_index' => array(
+			'exclude'	=> 0,
+			'label'		=> 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_schulung.sort_index',
+			'config'	=> array(
+				'type' => 'input',
+				'size' => 2,
+				'eval' => 'int,required'
+			),
+		),		
 		/* inactivates relation to Termine and edit-function in BE under List->Schulungen */		
 /*		'schulung_termine' => array(
 			'config' => array(

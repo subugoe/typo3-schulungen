@@ -74,7 +74,7 @@
 	 * @return string The rendered new action
 	 */
 	public function newAction() {
-                $this->view->assign('termin');
+		$this->view->assign('termin');
 	}
 
 	/**
@@ -83,8 +83,6 @@
 	 * @return string The rendered create action
 	 */
 	public function createAction() {
-
-		
 	}
 
 	/**
@@ -93,7 +91,6 @@
 	 * @return string The rendered edit action
 	 */
 	public function editAction() {
-
 	}
 
 	/**
@@ -102,7 +99,6 @@
 	 * @return string The rendered update action
 	 */
 	public function updateAction() {
-
 	}
 
 	/**
@@ -111,7 +107,6 @@
 	 * @return string The rendered delete action
 	 */
 	public function deleteAction() {
-
 	}
 	
 	/**

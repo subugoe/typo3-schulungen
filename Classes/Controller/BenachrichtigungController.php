@@ -163,7 +163,8 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 						array("teilnehmer" => $teilnehmer,
 							  "action" => Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.mail_type.'.$mailType, 'schulungen'),
 							  "schulung" => $schulung->getTitel(),
-							  "termin" => $termin->getStartzeit()
+							  "termin" => $termin->getStartzeit(),
+							  "ende" => $termin->getEnde()
 							)
 					  );
 		}

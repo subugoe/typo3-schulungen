@@ -25,6 +25,7 @@
 			<label index="tx_schulungen_domain_model_schulung.termine_versteckt">Termine ausblenden</label>
 			<label index="tx_schulungen_domain_model_schulung.anmeldung_deaktiviert">Anmeldung deaktivieren</label>
 			<label index="tx_schulungen_domain_model_schulung.schulung_termine">Schulung: Termine</label>
+			<label index="tx_schulungen_domain_model_schulung.sort_index">Frontend-Sortierung (Index)</label>
 			<label index="tx_schulungen_domain_model_termin">Termin</label>
 			<label index="tx_schulungen_domain_model_termin.start">Start</label>
 			<label index="tx_schulungen_domain_model_termin.ende">Ende</label>

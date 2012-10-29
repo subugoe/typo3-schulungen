@@ -192,6 +192,7 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 						'bemerkung' => $teilnehmer->getBemerkung(),
 						'schulungsTitel' => $teilnehmer->getTermin()->getSchulung()->getTitel(),
 						'startZeit' => $teilnehmer->getTermin()->getStartzeit(),
+						'ende' => $teilnehmer->getTermin()->getEnde(),
 						'timestamp' => $time,
 						'identifier' => array($teilnehmer->getSecret()),
 						'mailcopy' => $mailcopy,

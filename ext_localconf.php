@@ -48,7 +48,7 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 		$_EXTKEY,
 		'Csvexport',
 		array(
-			'Backend' => 'export'
+			'Schulung' => 'export'
 		)
 );
 

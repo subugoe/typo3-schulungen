@@ -38,7 +38,8 @@
 
 	 // Sortierung absteigend nach Terminbeginn
 	protected $defaultOrderings = array(
-			'titel' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
+//			'titel' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
+			'sort_index' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
 //				'schulungTermine' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
 	);
 

@@ -2,7 +2,7 @@ Dear {vorname} {nachname},<br />
 <br />
 you are now registered to the training '{schulungsTitel}'.<br />
 <br />
-The following data has been transmitted at <f:format.date format="Y-m-d">{timestamp}</f:format.date> <f:format.date format="H:i">{timestamp}</f:format.date>:<br />
+The following data has been transmitted at <f:format.date format="Y-m-d H:i">{timestamp}</f:format.date>:<br />
 <br />
 First name: {nachname}<br />
 Last name: {vorname}<br />
@@ -10,7 +10,7 @@ Email: {email}<br />
 Field of studies: {studienfach}<br />
 <br />
 Training: <strong>{schulungsTitel}</strong><br />
-Date / Time: <strong><f:format.date format="Y-m-d - H:i">{startZeit}</f:format.date></strong><br />
+Date / Time: <strong><f:format.date format="Y-m-d H:i">{startZeit}</f:format.date> - <f:format.date format="H:i">{ende}</f:format.date></strong><br />
 <br />
 Remark: {bemerkung}<br />
 <br />

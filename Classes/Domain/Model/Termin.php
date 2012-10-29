@@ -71,101 +71,30 @@ class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_Abstract
 	 */
 	protected $abgesagt;
 	/**
-	 * Flag, ob Erinnerungen via Scheduler verschickt wurden
+	 * Flag, whether reminder was already sent by scheduler
 	 * 
 	 * @var boolean $erinnerungenVerschickt
 	 * @validate NotEmpty
 	 */
 	protected $erinnerungenVerschickt;
 
-
-	public function getErinnerungenVerschickt() {
-		return $this->erinnerungenVerschickt;
-	}
-
-	public function setErinnerungenVerschickt($erinnerungenVerschickt) {
-		$this->erinnerungenVerschickt = $erinnerungenVerschickt;
-	}
-
 	/**
-	 * @lazy
-	 * @return array
-	 */
-	public function getTeilnehmer() {
-		$teilnehmer = t3lib_div::makeInstance('Tx_Schulungen_Domain_Repository_TeilnehmerRepository');
-		return $teilnehmer->findByTermin($this->getUid());
-	}
-
-	public function setTeilnehmer($teilnehmer) {
-		$this->teilnehmer = $teilnehmer;
-	}
-
-	public function getAnzahlTeilnehmer() {
-
-		$teilnehmer = t3lib_div::makeInstance('Tx_Schulungen_Domain_Repository_TeilnehmerRepository');
-
-		return $teilnehmer->countByTermin($this->uid);
-	}
-
-	public function setAnzahlTeilnehmer($anzahlTeilnehmer) {
-		$this->anzahlTeilnehmer = $anzahlTeilnehmer;
-	}
-
-	/**
-	 * Returns the startzeit
+	 * Initializes all Tx_Extbase_Persistence_ObjectStorage properties.
 	 *
 	 * @return void
 	 */
-	public function getStartzeit() {
-		return $this->startzeit;
+	protected function initStorageObjects() {
+		// empty
 	}
 
 	/**
-	 * Sets the startzeit
-	 *
-	 * @return void
-	 * @param $startzeit
-	 */
-	public function setStartzeit($startzeit) {
-		$this->startzeit = $startzeit;
-	}
-
-	/**
-	 * Returns the ende
+	 * The constructor of this Termin
 	 *
 	 * @return void
 	 */
-	public function getEnde() {
-		return $this->ende;
-	}
-
-	/**
-	 * Sets the ende
-	 *
-	 * @return void
-	 * @param $ende
-	 */
-	public function setEnde($ende) {
-		$this->ende = $ende;
-	}
-
-	/**
-	 * Returns the abgesagt
-	 *
-	 * @return void
-	 */
-	public function getAbgesagt() {
-		return $this->abgesagt;
-	}
-
-	/**
-	 * Sets the abgesagt
-	 *
-	 * @return void
-	 * @param $abgesagt
-	 */
-	public function setAbgesagt($abgesagt) {
-		$this->abgesagt = $abgesagt;
+	public function __construct() {
+		//Do not remove the next line: It would break the functionality
+		$this->initStorageObjects();
 	}
 
 	/**
@@ -184,21 +113,101 @@ class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_Abstract
 	/**
 	 * setSchulung
 	 *
-	 * @return void
 	 * @param $schulung
+	 * @return void
 	 */
 	public function setSchulung($schulung) {
 		$this->schulung = $schulung;
 	}
 
 	/**
-	 * The constructor of this Termin
+	 * Returns the number of Teilnehmer
 	 *
+	 * @return int
+	 */
+	public function getAnzahlTeilnehmer() {
+
+		$teilnehmer = t3lib_div::makeInstance('Tx_Schulungen_Domain_Repository_TeilnehmerRepository');
+
+		return $teilnehmer->countByTermin($this->uid);
+	}
+
+	/**
+	 * Sets the number of Teilnehmer
+	 *
+	 * @param int $anzahlTeilnehmer
 	 * @return void
 	 */
-	public function __construct() {
-		//Do not remove the next line: It would break the functionality
-		$this->initStorageObjects();
+	public function setAnzahlTeilnehmer($anzahlTeilnehmer) {
+		$this->anzahlTeilnehmer = $anzahlTeilnehmer;
+	}
+
+	/**
+	 * Returns the Teilnehmer ordered by Termin
+	 *
+	 * @lazy
+	 * @return array
+	 */
+	public function getTeilnehmer() {
+		$teilnehmer = t3lib_div::makeInstance('Tx_Schulungen_Domain_Repository_TeilnehmerRepository');
+		return $teilnehmer->findByTermin($this->getUid());
+	}
+
+	/**
+	 * Setter of Teilnehmer
+	 *
+	 * @param array Teilnehmer
+	 * @return void
+	 */
+	public function setTeilnehmer($teilnehmer) {
+		$this->teilnehmer = $teilnehmer;
+	}
+
+	/**
+	 * Returns the startzeit
+	 *
+	 * @return DateTime
+	 */
+	public function getStartzeit() {
+		return $this->startzeit;
+	}
+
+	/**
+	 * Sets the startzeit
+	 *
+	 * @param DateTime $startzeit
+	 * @return void
+	 */
+	public function setStartzeit($startzeit) {
+		$this->startzeit = $startzeit;
+	}
+
+	/**
+	 * Returns the ende
+	 *
+	 * @return DateTime
+	 */
+	public function getEnde() {
+		return $this->ende;
+	}
+
+	/**
+	 * Sets the ende
+	 *
+	 * @param DateTime $ende
+	 * @return void
+	 */
+	public function setEnde($ende) {
+		$this->ende = $ende;
+	}
+
+	/**
+	 * Returns the state of abgesagt
+	 *
+	 * @return boolean
+	 */
+	public function getAbgesagt() {
+		return $this->abgesagt;
 	}
 
 	/**
@@ -211,12 +220,32 @@ class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_Abstract
 	}
 
 	/**
-	 * Initializes all Tx_Extbase_Persistence_ObjectStorage properties.
+	 * Sets the abgesagt
 	 *
+	 * @param boolean $abgesagt
 	 * @return void
 	 */
-	protected function initStorageObjects() {
-		// empty
+	public function setAbgesagt($abgesagt) {
+		$this->abgesagt = $abgesagt;
+	}
+
+	/**
+	 * Returns the startzeit
+	 *
+	 * @return boolean
+	 */
+	public function getErinnerungenVerschickt() {
+		return $this->erinnerungenVerschickt;
+	}
+
+	/**
+	 * Returns the startzeit
+	 *
+	 * @param boolean $erinnerungenVerschickt
+	 * @return void
+	 */
+	public function setErinnerungenVerschickt($erinnerungenVerschickt) {
+		$this->erinnerungenVerschickt = $erinnerungenVerschickt;
 	}
 
 }
