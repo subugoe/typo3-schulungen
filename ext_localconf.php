@@ -60,8 +60,9 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_Schulungen_S
 );
 
 	/* not correctly working solution for cli_mode (scheduler) */
-//$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'Tx_Schulungen_Command_ReminderCommandController';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'Tx_Schulungen_Command_ReminderCommandController';
 
+// Set up Hooks
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'][$_EXTKEY] = 'EXT:'.$_EXTKEY.'/Classes/Controller/SchulungController.php:Tx_Schulungen_Controller_SchulungController->listSlimAction';
 // $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendTOC'][$_EXTKEY] = 'EXT:'.$_EXTKEY.'/Classes/Controller/SchulungController.php:Tx_Schulungen_Controller_SchulungController->modTOCAction';
 ?>

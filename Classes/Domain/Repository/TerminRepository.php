@@ -57,8 +57,8 @@ class Tx_Schulungen_Domain_Repository_TerminRepository extends Tx_Extbase_Persis
 			$query->logicalAnd( 
 //				$query->equals('pid', $this->defaultPid),
 				$query->equals('erinnerungen_verschickt', 0),
-				$query->greaterThan('startzeit', time()+(60*60*24)),
-				$query->lessThan('startzeit', time()+(2*60*60*24))    
+				$query->greaterThan('startzeit', time()),  			// > today
+				$query->lessThan('startzeit', time()+(2*60*60*24))	// < overnext day 
 			)
 		);
 		$query->setOrderings(array('startzeit' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));

@@ -49,6 +49,7 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$this->settings = $extbaseFrameworkConfiguration;
 
+		$this->persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager');
 		$this->terminRepository = t3lib_div::makeInstance('Tx_Schulungen_Domain_Repository_TerminRepository');
 		$this->teilnehmerRepository = t3lib_div::makeInstance('Tx_Schulungen_Domain_Repository_TeilnehmerRepository');
 	}
@@ -78,28 +79,25 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 		$this->initializeAction();
 				
 		$anstehendeTermine = $this->terminRepository->errechneAnstehendeTermine();
-//		$this->view->assign('termine', $anstehendeTermine);
 		
 		foreach ($anstehendeTermine as $erinnerungsTermin) {
-			/*if($erinnerungsTermin->getErinnerungenVerschickt() == false)	{
-				t3lib_div::devLog('Hallo Test', 'schulungen', 0);
-			}
-			$time = new DateTime();
-			$time->setTimestamp(time());
-
-			$erinnerungsTermin->setErinnerungenVerschickt(true);
-			$erinnerungsTermin->setEnde($time);
-			$this->terminRepository->update($erinnerungsTermin); */
 
 			if($erinnerungsTermin->getErinnerungenVerschickt() == false)	{
+
 				$result = $this->verschickeMailAnTeilnehmer($erinnerungsTermin->getTeilnehmer(), $erinnerungsTermin, true);
+
+			}	else	{
+
+				t3lib_div::devLog('Reminder mails already sent.', 'schulungen', 0);
+
 			}
 			
-				// Funktioniert nicht bei Scheduler-Durchlauf?
-			if($result == true)	{
-				$erinnerungsTermin->setErinnerungenVerschickt(true);
-				$this->terminRepository->update($erinnerungsTermin);
-			}
+		}
+		
+		if (count($anstehendeTermine) == 0)	{
+
+				t3lib_div::devLog('No Schulungen the next two days.', 'schulungen', 0);
+			
 		}
 
 		return TRUE;
@@ -144,7 +142,7 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 
 			if ($result) {
 				if(!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.success', 'schulungen') . $person->getEmail());
-				t3lib_div::devLog('Reminder mail ("' . substr($schulung->getTitel(),0,20) .'...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' successfully sent.', 'schulungen', 0);
+				t3lib_div::devLog('Reminder mail ("' . substr($schulung->getTitel(),0,20) .'...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' successfully sent.', 'schulungen', -1);
 			} else {
 				if(!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.fail', 'schulungen'));
 				t3lib_div::devLog('Reminder mail ("' . substr($schulung->getTitel(),0,20) .'...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' failed to send!', 'schulungen', 3);
@@ -153,9 +151,8 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 		}
 
 		if(!$fail && $termin->getAnzahlTeilnehmer() > 0)   {
-				// Funktioniert nicht bei Scheduler-Durchlauf?
 			$termin->setErinnerungenVerschickt(true);
-			$this->terminRepository->update($termin);
+			$this->persistenceManager->persistAll();
 
 				/* Transaktionsmail an Admin/Redakteur */
 			$mail = t3lib_div::makeInstance('Tx_Schulungen_Controller_EmailController');
@@ -167,6 +164,14 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 							  "ende" => $termin->getEnde()
 							)
 					  );
+			if ($result) {
+				if(!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.success', 'schulungen') . $person->getEmail());
+				t3lib_div::devLog('Transaction mail ("' . substr($schulung->getTitel(),0,20) .'...", ' . $termin->getStartzeit()->format('d.m.Y') . ') successfully sent!', 'schulungen', -1);
+			} else {
+				if(!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.fail', 'schulungen'));
+				t3lib_div::devLog('Transaction mail ("' . substr($schulung->getTitel(),0,20) .'...", ' . $termin->getStartzeit()->format('d.m.Y') . ') failed to send!', 'schulungen', 3);
+			}
+					  
 		}
 
 		return !$fail; // returns true, when all messages could be sent
