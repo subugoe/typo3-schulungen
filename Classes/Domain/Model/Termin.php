@@ -27,7 +27,7 @@
 /**
  * Termine
  *
- * @version $Id: Termin.php 1877 2012-05-16 09:50:07Z simm $
+ * @version $Id: Termin.php 1974 2012-11-15 09:27:31Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */

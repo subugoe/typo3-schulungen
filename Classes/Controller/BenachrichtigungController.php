@@ -196,7 +196,8 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 						"bemerkung" => $tn->getBemerkung(),
 						"start" => $termin->getStartzeit(), 
 						"ende" => $termin->getEnde(), 
-						"schulung" => $schulung->getTitel(), 
+						"schulung" => $schulung->getTitel(),
+						"identifier" => array($tn->getSecret()),
 						"mailcopy" => $mailcopy,
 						"copy" => $cc
 					)

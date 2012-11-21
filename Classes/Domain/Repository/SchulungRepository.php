@@ -27,7 +27,7 @@
 /**
  * Repository for Tx_Schulungen_Domain_Model_Schulung
  *
- * @version $Id: SchulungRepository.php 1717 2012-03-02 12:47:53Z simm $
+ * @version $Id: SchulungRepository.php 1974 2012-11-15 09:27:31Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
