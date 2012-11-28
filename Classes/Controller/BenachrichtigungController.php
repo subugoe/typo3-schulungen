@@ -76,28 +76,20 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 	 * Action für den Scheduler: Berechnung der anstehenden Termine plus Mailversand an betroffene Teilnehmer
 	 */
 	public function sendeBenachrichtigungAction() {
-		$this->initializeAction();
-				
+		
+		$this->initializeAction();		
 		$anstehendeTermine = $this->terminRepository->errechneAnstehendeTermine();
 		
 		foreach ($anstehendeTermine as $erinnerungsTermin) {
-
 			if($erinnerungsTermin->getErinnerungenVerschickt() == false)	{
-
 				$result = $this->verschickeMailAnTeilnehmer($erinnerungsTermin->getTeilnehmer(), $erinnerungsTermin, true);
-
 			}	else	{
-
 				t3lib_div::devLog('Reminder mails already sent.', 'schulungen', 0);
-
 			}
-			
 		}
 		
 		if (count($anstehendeTermine) == 0)	{
-
 				t3lib_div::devLog('No Schulungen the next two days.', 'schulungen', 0);
-			
 		}
 
 		return TRUE;
@@ -170,11 +162,10 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 			} else {
 				if(!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.fail', 'schulungen'));
 				t3lib_div::devLog('Transaction mail ("' . substr($schulung->getTitel(),0,20) .'...", ' . $termin->getStartzeit()->format('d.m.Y') . ') failed to send!', 'schulungen', 3);
-			}
-					  
+			}	  
 		}
 
-		return !$fail; // returns true, when all messages could be sent
+		return !$fail; // returns true, wenn alle Nachrichten erfolgreich versendet wurden
 	}
 
 	private function sendeMail(Tx_Schulungen_Domain_Model_Teilnehmer $tn, $type, $cc) {
@@ -188,6 +179,7 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 		foreach ($contacts as $contact) {
 			array_push($mailcopy, $contact->getEmail());
 		}
+
 		$result = $mail->sendeMail($tn->getEmail(), $this->settings['mail']['fromMail'], $this->settings['mail']['fromName'], Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.reminder_title', 'schulungen'), $this->mailType[$type],
 					array(
 						"vorname" => $tn->getVorname(), 
@@ -197,7 +189,8 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 						"start" => $termin->getStartzeit(), 
 						"ende" => $termin->getEnde(), 
 						"schulung" => $schulung->getTitel(),
-						"identifier" => array($tn->getSecret()),
+						"identifier" => $tn->getSecret(),
+						"contact" => $mailcopy[0],
 						"mailcopy" => $mailcopy,
 						"copy" => $cc
 					)

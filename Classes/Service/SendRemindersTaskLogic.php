@@ -23,6 +23,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+require_once(t3lib_extMgm::extPath('schulungen') . '/Classes/Utility/Uri.php');
+
 /**
  * Reminder an die Teilnehmer versenden
  *
@@ -48,13 +50,14 @@ class Tx_Schulungen_Service_SendRemindersTaskLogic extends Tx_Extbase_Core_Boots
 		$this->benachrichtigung->config['mail'] = $this->mailConfig; 
 		$success = $this->benachrichtigung->sendeBenachrichtigungAction();
 		if (!$success) {
-				t3lib_div::devLog('SendReminder-Task: Problem during execution. Stopping.' , 'schulungen', 3);
+			t3lib_div::devLog('SendReminder-Task: Problem during execution. Stopping.' , 'schulungen', 3);
+		}	else 	{	
+			t3lib_div::devLog('SendReminder-Task: Successfully executed.' , 'schulungen', -1);
 		}
 
 		// $this->tearDownFramework();
                 
 		return $success;
-
 	}
         
 	protected function setupFramework()     {
@@ -88,8 +91,7 @@ class Tx_Schulungen_Service_SendRemindersTaskLogic extends Tx_Extbase_Core_Boots
 //				'fromName' => 'SUB Göttingen'
 //			),
 		);
-
-		$this->mailConfig = $configuration['mail'];
+		// $this->mailConfig = $configuration['mail'];
 		$this->initialize($configuration);
                 
 	}

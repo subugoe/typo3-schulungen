@@ -27,7 +27,7 @@
 /**
  * Controller for the Teilnehmer object
  *
- * @version $Id: TeilnehmerController.php 1974 2012-11-15 09:27:31Z simm $
+ * @version $Id: TeilnehmerController.php 1976 2012-11-28 08:14:00Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
@@ -258,9 +258,13 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 			$this->view->assign('schulungsTitel', $schulung->getTitel() . ' (' . $termin->getStartzeit()->format($time_format) . ')');
 			$this->view->assign('contacts', $schulung->getContact());
 
-			$limit = $termin->getStartzeit()->sub(new DateInterval('P1D'));
-			$limit = new DateTime($limit->format('Y-m-d') . ' 04:30');
-				// only delete Teilnehmer, if deadline isn't crossed
+			// Deadline one day before the event
+			// $limit = $termin->getStartzeit()->sub(new DateInterval('P1D'));
+			// $limit = new DateTime($limit->format('Y-m-d') . ' 04:30');
+			
+			// Deadline is the start time of the event
+			$limit = $termin->getStartzeit();
+			// Only delete Teilnehmer, if deadline isn't crossed
 			if($now < $limit)	{
 				$this->teilnehmerRepository->remove($teilnehmer);
 				$flashMsg = Tx_Extbase_Utility_Localization::translate('tx_schulungen_domain_model_teilnehmer.deregister.success.flash', 'schulungen');

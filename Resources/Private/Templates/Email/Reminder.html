@@ -8,12 +8,12 @@ Zeit: <f:format.date format="d.m.Y H:i">{start}</f:format.date> - <f:format.date
 <br />
 Diese Schulung findet zum angegebenen Termin statt.<br />
 <br />
-Falls Sie doch nicht teilnehmen können, wäre es schön, wenn Sie sich bei uns per Mail<br /> 
-oder direkt über diesen Link <f:link.action absolute="absolute" action="deregister" controller="Teilnehmer" arguments="{identifier:identifier}" pluginName="Schulungen" extensionName="Schulungen">abmelden</f:link.action> würden. Vielen Dank!<br />
+Falls Sie doch nicht teilnehmen k&ouml;nnen, w&auml;re es sch&ouml;n, wenn Sie sich bei uns per Mail<br /> 
+oder direkt &uuml;ber diesen Link <a href="http://www.sub.uni-goettingen.de/lernen-lehren/schulungsangebote/s/Teilnehmer/deregister/?tx_schulungen_schulungen[identifier][0]={identifier}">abmelden</a> w&uuml;rden. Vielen Dank!<br />
 <br />
 Ihre SUB G&ouml;ttingen / Zentrale Information<br />
 <br />
 Platz der G&ouml;ttinger Sieben 1<br />
 37073 G&ouml;ttingen<br />
 Telefon: 0551/39-5231<br />
-E-Mail: zentralinfo@sub.uni-goettingen.de
+E-Mail: <f:link.email email="{contact}">{contact}</f:link.email>

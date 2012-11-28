@@ -40,8 +40,9 @@ class Tx_Schulungen_Service_SendRemindersTask extends tx_scheduler_Task {
 	 * @return  boolean TRUE if success, otherwise FALSE
 	 */
 	public function execute() {
-	
-		/* Trying the tutorial: Reason #10 for choosing TYPO3: ExtBase + Scheduler = WIN */
+
+		/* Current running Scheduler	
+		 * Trying the tutorial: Reason #10 for choosing TYPO3: ExtBase + Scheduler = WIN */
 		$reminder = t3lib_div::makeInstance('Tx_Schulungen_Service_SendRemindersTaskLogic');
 		$reminder->execute($this);
 		return TRUE;

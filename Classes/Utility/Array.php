@@ -25,7 +25,7 @@
  * ************************************************************* */
 
 /**
- * Helper-Class for automatical flexform inclusion
+ * Helper-Class for array sorting
  *
  * @version $Id: Helper.php 1590 2012-01-13 17:38:19Z simm $
  * @copyright Copyright belongs to the respective authors

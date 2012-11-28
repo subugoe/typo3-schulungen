@@ -49,16 +49,16 @@ class Tx_Schulungen_Command_ReminderCommandController extends Tx_Extbase_MVC_Con
 		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
 		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		$configuration = array(
-							'settings' => array(
-								'persistence' => array(
-									'storagePid' => 1648
-								),
-								'mail' => array(
-									'fromMail' => $extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['mail.']['fromMail'],
-									'fromName' => $extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['mail.']['fromName']
-								)
-							)
-						);
+			'settings' => array(
+				'persistence' => array(
+					'storagePid' => 1648
+				),
+				'mail' => array(
+					'fromMail' => $extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['mail.']['fromMail'],
+					'fromName' => $extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['mail.']['fromName']
+				)
+			)
+		);
 		
 		$benachrichtigung = t3lib_div::makeInstance('tx_schulungen_controller_benachrichtigungcontroller');
 //		$benachrichtigung->injectConfigurationManager($extbaseFrameworkConfiguration);
