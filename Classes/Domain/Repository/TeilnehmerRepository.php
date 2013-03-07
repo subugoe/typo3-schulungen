@@ -46,7 +46,7 @@ class Tx_Schulungen_Domain_Repository_TeilnehmerRepository extends Tx_Extbase_Pe
 				$query->equals('termin', $termin),
 				$query->equals('email', $teilnehmer->getEmail()),
 				$query->equals('vorname', $teilnehmer->getVorname()),
-				$query->eq('nachname', $teilnehmer->getNachname())
+				$query->equals('nachname', $teilnehmer->getNachname())
 			)
 		);
 		$query->setOrderings(array('nachname' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
