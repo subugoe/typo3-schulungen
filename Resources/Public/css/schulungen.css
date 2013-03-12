@@ -2,7 +2,7 @@ root {
 	display: block;
 }
 
-h3 {
+.tx-schulungen-pi1 h3 {
 	padding: 4px 0 4px 0 !important;
 }
 
@@ -29,6 +29,10 @@ h3 {
 	padding: 2px;
 }
 
+.tx-schulungen-pi1 td.middle {
+	text-align: center;
+}
+
 .tx-schulungen-pi1 dt {
 	margin-top: 12px;
 	color: #626262;
@@ -46,17 +50,12 @@ h3 {
 	padding-bottom: 10px !important;
 }
 
-#icon_cal {
+.tx-schulungen-pi1 .tx-powermail-pi1_fieldset .away {
+	display: none !important;
+}
+
+.tx-schulungen-pi1 #icon_cal {
 	float: right;
 	border: 0px;
 	margin-right: 4px;
 }
-
-.middle {
-	text-align: center;
-}
-
-.away {
-	display: none !important;
-}
-
