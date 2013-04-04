@@ -148,7 +148,7 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 
 				/* Transaktionsmail an Admin/Redakteur */
 			$mail = t3lib_div::makeInstance('Tx_Schulungen_Controller_EmailController');
-			$result = $mail->sendeTransactionMail($this->settings['mail']['fromMail'], $this->settings['mail']['fromName'], Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.transaction_title', 'schulungen'),
+			$result = $mail->sendeTransactionMail($this->settings['mail']['fromMail'], $this->settings['mail']['fromName'], Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.transaction_title', 'schulungen'), '',
 						array("teilnehmer" => $teilnehmer,
 							  "action" => Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.mail_type.'.$mailType, 'schulungen'),
 							  "schulung" => $schulung->getTitel(),
@@ -158,10 +158,10 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 					  );
 			if ($result) {
 				if(!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.success', 'schulungen') . $person->getEmail());
-				t3lib_div::devLog('Transaction mail ("' . substr($schulung->getTitel(),0,20) .'...", ' . $termin->getStartzeit()->format('d.m.Y') . ') successfully sent!', 'schulungen', -1);
+				t3lib_div::devLog('Transaction mail ("' . substr($schulung->getTitel(),0,20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') successfully sent!', 'schulungen', -1);
 			} else {
 				if(!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.fail', 'schulungen'));
-				t3lib_div::devLog('Transaction mail ("' . substr($schulung->getTitel(),0,20) .'...", ' . $termin->getStartzeit()->format('d.m.Y') . ') failed to send!', 'schulungen', 3);
+				t3lib_div::devLog('Transaction mail ("' . substr($schulung->getTitel(),0,20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') failed to send!', 'schulungen', 3);
 			}	  
 		}
 		$this->persistenceManager->persistAll();

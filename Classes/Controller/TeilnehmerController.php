@@ -253,7 +253,8 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 		t3lib_div::devlog("De-Registration: Passed value " . $identifier, "Schulungen", 1, $identifier);
 		if(count($teilnehmer = $this->teilnehmerRepository->findOneBySecret($identifier[0])) > 0)	{
 			$schulung = $teilnehmer->getTermin()->getSchulung();
-				// create deep copy of termin to prevent db-update
+			
+			// create deep copy of termin to prevent db-update
 			$termin = unserialize(serialize($teilnehmer->getTermin()));
 			$this->view->assign('schulungsTitel', $schulung->getTitel() . ' (' . $termin->getStartzeit()->format($time_format) . ')');
 			$this->view->assign('contacts', $schulung->getContact());
@@ -264,11 +265,29 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 			
 			// Deadline is the start time of the event
 			$limit = $termin->getStartzeit();
+
 			// Only delete Teilnehmer, if deadline isn't crossed
 			if($now < $limit)	{
 				$this->teilnehmerRepository->remove($teilnehmer);
 				$flashMsg = Tx_Extbase_Utility_Localization::translate('tx_schulungen_domain_model_teilnehmer.deregister.success.flash', 'schulungen');
 				$this->flashMessageContainer->add($flashMsg . $teilnehmer->getVorname() . ' ' . $teilnehmer->getNachname() . ' (' . $teilnehmer->getEmail() . ')');
+				
+				// Mail notification
+				$sender = $this->settings['mail']['fromMail'];
+				$senderName = $this->settings['mail']['fromName'];
+				$title = explode(':', $teilnehmer->getTermin()->getSchulung()->getTitel());
+				$subject = Tx_Extbase_Utility_Localization::translate('tx_schulungen_domain_model_teilnehmer.deregister', 'schulungen') . " (" . $title[0] . " - " . $teilnehmer->getTermin()->getStartzeit()->format('d.m.Y H:i') . ")";
+				$templateName = Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_deregistration_template', 'schulungen');
+				$result = $this->emailController->sendeTransactionMail($sender, $senderName, $subject, $templateName, 
+					array(
+						'teilnehmer' => $teilnehmer,
+						'schulung' => $schulung->getTitel(),
+						'termin' => $termin->getStartzeit(),
+						'ende' => $termin->getEnde()
+					)
+				);
+				t3lib_div::devlog("De-Registration: TransactionMail sent?", "Schulungen", 1, array($result));
+
 				$this->view->assign('status', 'success');
 			}	else 	{
 				$flashMsg = Tx_Extbase_Utility_Localization::translate('tx_schulungen_domain_model_teilnehmer.deregister.fail.flash', 'schulungen');

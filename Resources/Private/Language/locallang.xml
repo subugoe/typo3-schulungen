@@ -182,6 +182,7 @@
 			<label index="tx_schulungen_domain_model_teilnehmer.bestaetigung">Vielen Dank für Ihre Anmeldung</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.success">Vielen Dank für Ihre Anmeldung</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.fail">Es gab ein Problem mit Ihrer Anmeldung</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.deregister">Schulungen: Abmeldung</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.deregister.success">Sie wurden erfolgreich von der Schulung abgemeldet.</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.deregister.success.flash">Entfernter Teilnehmer: </label>
 			<label index="tx_schulungen_domain_model_teilnehmer.deregister.fail">Sie konnten leider nicht von der Schulung abgemeldet werden.</label>
@@ -199,10 +200,12 @@
 			<label index="tx_schulungen_controller_backend_timeout">Der Schulungstermin liegt in der Vergangenheit und kann nicht mehr verändert werden!</label>
 			<label index="tx_schulungen_controller_backend_index.title">Schulungen</label>
 			<label index="tx_schulungen_controller_backend_index.teilnehmer">Teilnehmer</label>
-			<label index="tx_schulungen_controller_backend_detail.operationen">Oprationen</label>
+			<label index="tx_schulungen_controller_backend_detail.operationen">Operationen</label>
 			<label index="tx_schulungen_controller_backend_detail.keine_anmeldungen">Bisher liegen noch keine Anmeldungen vor!</label>
 			<label index="tx_schulungen_email_bestaetigung_subject">Vielen Dank für Ihre Anmeldung</label>
 			<label index="tx_schulungen_email_bestaetigung_template">Bestaetigung</label>			
+			<label index="tx_schulungen_email_deregistration_template">Deregistration</label>			
+			<label index="tx_schulungen_email_transaction_template">TransactionMail</label>			
 			<label index="tx_schulungen_email_versand.success">Eine E-Mail zur Erinnerung wurde an gesendet: </label>
 			<label index="tx_schulungen_email_versand.fail">Ein Fehler beim E-Mail Versand trat auf.</label>
 			<label index="tx_schulungen_email_versand.reminder_title">Erinnerung an Ihre Schulung</label>
