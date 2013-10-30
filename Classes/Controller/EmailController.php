@@ -24,12 +24,12 @@
  * ************************************************************* */
 
 /**
- * Zentraler Controller fuer das Versenden von E-Mails 
+ * Zentraler Controller fuer das Versenden von E-Mails
  * Funktioniert mit unterschiedlichen Methoden im Extbase Kontext und im Scheduler
  * @author ingop
  */
 class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller_AbstractController {
-    
+
 	/**
 	 * Methode zum Versenden von E-Mails
 	 * @param string $recipient
@@ -38,7 +38,7 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 	 * @param string $subject
 	 * @param string $templateName
 	 * @param array $variables
-	 * @return boolean 
+	 * @return boolean
 	 */
 	public function sendeMail($recipient, $sender, $senderName, $subject, $templateName, array $variables = array()) {
 		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
@@ -63,13 +63,12 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 		$mail->setFrom($sender);
 
 		$mail->addTo($recipient);
-		if($variables['copy'] == true) {
-			if(is_array($variables['mailcopy']))	{
-				foreach ($variables['mailcopy'] as $mailcopy)	{
-					$mail->addBcc($mailcopy);				
+		if ($variables['copy'] == true) {
+			if (is_array($variables['mailcopy'])) {
+				foreach ($variables['mailcopy'] as $mailcopy) {
+					$mail->addBcc($mailcopy);
 				}
 			}
-			$mail->addBcc('dominic.simm@sub.uni-goettingen.de');
 		}
 
 		$mail->setSubject($subject);
@@ -89,16 +88,16 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 	 * @param string $subject
 	 * @param string $templateName
 	 * @param array $variables
-	 * @return boolean 
+	 * @return boolean
 	 */
 	public function sendeTransactionMail($sender, $senderName, $subject, $templateName, array $variables = array()) {
 		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
 		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
 		$templateRootPath = t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
-		if (strlen($templateName) == 0)	{
+		if (strlen($templateName) == 0) {
 			$templatePathAndFilename = $templateRootPath . 'Email/TransactionMail.html';
-		}	else 	{
+		} else {
 			$templatePathAndFilename = $templateRootPath . 'Email/' . $templateName . '.html';
 		}
 		$emailView = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
@@ -117,8 +116,7 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 		$mail->setFrom($sender);
 
 		$mail->addTo($sender);
-		$mail->addBcc('dominic.simm@sub.uni-goettingen.de');
-		
+
 		$mail->setSubject($subject);
 		$mail->setBody($emailBody, 'text/html');
 
@@ -136,7 +134,7 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 	 * @param string $sender
 	 * @param string $senderName
 	 * @param string $subject
-	 * @return boolean 
+	 * @return boolean
 	 */
 	public function sendeSchedulerMail($recipient, $sender, $senderName, $subject) {
 
