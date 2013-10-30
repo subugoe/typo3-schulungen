@@ -27,19 +27,19 @@
 /**
  * Helper-Class for array sorting
  *
- * @version $Id: Helper.php 1590 2012-01-13 17:38:19Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 class Tx_Schulungen_Utility_Array {
-    
-	static public function sortByName($array)	{
-		return usort($array, 'Tx_Schulungen_Utility_Array::usortByName');		
+
+	static public function sortByName($array) {
+		return usort($array, 'Tx_Schulungen_Utility_Array::usortByName');
 	}
-	static public function usortByName($a, $b)	{
-		return strnatcasecmp($a->getName(), $b->getName());		
+
+	static public function usortByName($a, $b) {
+		return strnatcasecmp($a->getName(), $b->getName());
 	}
- 
+
 }
 
 ?>

@@ -41,7 +41,7 @@ class Tx_Schulungen_Service_SendRemindersTask extends tx_scheduler_Task {
 	 */
 	public function execute() {
 
-		/* Current running Scheduler	
+		/* Current running Scheduler
 		 * Trying the tutorial: Reason #10 for choosing TYPO3: ExtBase + Scheduler = WIN */
 		$reminder = t3lib_div::makeInstance('Tx_Schulungen_Service_SendRemindersTaskLogic');
 		$reminder->execute($this);
@@ -49,84 +49,19 @@ class Tx_Schulungen_Service_SendRemindersTask extends tx_scheduler_Task {
 
 	}
 
-	
-	/**
-	 * Method executed from the Scheduler.
-	 * @return  boolean TRUE if success, otherwise FALSE
-	 */
-//	public function execute() {
-//
-//		$configuration = array(
-//			'extensionName' => 'schulungen',
-//			'pluginName' => 'scheduler',
-//			'settings' => array('mail' => 
-//							array(
-//								'fromMail' => "dominic.simm@sub.uni-goettingen.de",
-//								'fromName' => "SUB Zentralinformation"
-//							)
-//						  ),
-//			
-//				/* funktioniert so alles nicht: Typo3 findet keinen "default controller" */
-//			'controller' => 'Benachrichtigung',
-//			'action' => 'sendeBenachrichtigung',
-//			'switchableControllerActions' => array(
-//				 'Benachrichtigung' => array('actions' => 'sendeBenachrichtigung')
-//   			),
-//		);
-//                
-//		$_SERVER['REQUEST_METHOD'] = 'GET'; // 'CLI|GET'
-//
-//			/* Trying to set the default controller */
-//		$_GET['scheduler']['controller'] = 'Benachrichtigung';     // Typo3 findet keinen "default controller"
-//		$_GET['scheduler']['action'] = 'sendeBenachrichtigung';    // "
-//
-//		/* Set the default controller, this works */
-//		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['schulungen']['modules']['scheduler']['controllers'] 
-//		= array(
-//			 'Benachrichtigung' => array('actions' => array('sendeBenachrichtigung'))
-//		);
-//
-//			/* Fixing no autoloader bug => load by myself */
-//		if (!class_exists('Tx_Extbase_Utility_ClassLoader', FALSE)) {
-//			$classLoader = t3lib_div::makeInstance('Tx_Extbase_Utility_ClassLoader');
-//			spl_autoload_register(array($classLoader, 'loadClass'));
-//		}
-//
-//		$bootstrap = t3lib_div::makeInstance('Tx_Extbase_Core_Bootstrap');
-//		$bootstrap->run('', $configuration);
-//
-//		return TRUE;
-//        
-//	}
-        
-	/**
-	 * Function executed by the Scheduler.
-	 * @return	boolean	TRUE if success, otherwise FALSE
-	 */
-/*	public function execute() {
-		$success = true;
-		$benachrichtigung = t3lib_div::makeInstance('tx_schulungen_controller_benachrichtigungcontroller');
-		$success = $benachrichtigung->sendeBenachrichtigungAction();
-		if (!$success) {
-				t3lib_div::devLog('SendReminder Scheduler Task: Problem during execution. Stopping.' , 'schulungen', 3);
-		}
-
-		return $success;
-	} */
-        
 
 	/**
 	 * Suche aller anstehenden Schulungen
-	 * @return boolean 
+	 * @return boolean
 	 */
 	public function getTermine() {
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'*', //WHAT
-						'tx_schulungen_domain_model_termin', //FROM
-						'WHERE erinnerungenverschickt = 0 AND abgesagt = 0 AND  TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) >=0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) <2', //WHERE
-						'', '', //ORDER BY
-						'' //LIMIT
+			'*', //WHAT
+			'tx_schulungen_domain_model_termin', //FROM
+			'WHERE erinnerungenverschickt = 0 AND abgesagt = 0 AND  TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) >=0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) <2', //WHERE
+			'', '', //ORDER BY
+			'' //LIMIT
 		);
 		while ($termin = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$this->terminModel = t3lib_div::makeInstance('Tx_Schulungen_Domain_Model_Termin');
@@ -139,15 +74,15 @@ class Tx_Schulungen_Service_SendRemindersTask extends tx_scheduler_Task {
 
 	/**
 	 * Auswahl der Teilnehmer pro Schulung
-	 * @param type $schulungstermin 
+	 * @param type $schulungstermin
 	 */
 	private function getTeilnehmer($schulungstermin) {
 		$teilnehmerquery = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-						'*', //WHAT
-						'tx_schulungen_domain_model_teilnehmer', //FROM
-						'WHERE termin = '                  . $schulungstermin, //WHERE
-						'', '', //ORDER BY
-						'' //LIMIT
+			'*', //WHAT
+			'tx_schulungen_domain_model_teilnehmer', //FROM
+				'WHERE termin = ' . $schulungstermin, //WHERE
+			'', '', //ORDER BY
+			'' //LIMIT
 		);
 		while ($teilnehmer = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$this->sendeErinnerungsMail($teilnehmer['email']);
@@ -162,7 +97,6 @@ class Tx_Schulungen_Service_SendRemindersTask extends tx_scheduler_Task {
 	private function sendeErinnerungsMail($teilnehmer) {
 		return $this->mail->sendeSchedulerMail($teilnehmer, 'info@sub.uni-goettingen.de', 'Schulungserinnerung', 'Erinnerung an Ihre Veranstaltung');
 	}
-
 }
 
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/schulungen/Classes/Service/SendRemindersTask.php'])) {

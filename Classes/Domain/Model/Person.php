@@ -29,7 +29,6 @@
  * Model for Persons as mapped by tt_address table
  *
  * @author Dominic Simm <dominic.simm@sub.goettingen.de>, Goettingen State Library
- * $Id$
  */
 class Tx_Schulungen_Domain_Model_Person extends Tx_Extbase_DomainObject_AbstractEntity {
 
@@ -52,7 +51,7 @@ class Tx_Schulungen_Domain_Model_Person extends Tx_Extbase_DomainObject_Abstract
 	 * @var string
 	 */
 	protected $email;
-	
+
 	/**
 	 * @var string
 	 */
@@ -62,43 +61,43 @@ class Tx_Schulungen_Domain_Model_Person extends Tx_Extbase_DomainObject_Abstract
 	 * @var string
 	 */
 	protected $fax;
-	
+
 	/**
 	 * @var string
 	 */
 	protected $address;
-	
+
 	/**
 	 * @var string
 	 */
 	protected $building;
-	
+
 	/**
 	 * @var string
 	 */
 	protected $room;
-	
+
 	/**
 	 * @var string
 	 */
 	protected $company;
-	
+
 	/**
 	 * @var string
 	 */
 	protected $city;
-	
+
 	/**
 	 * @var string
 	 */
 	protected $zip;
-	
+
 	/**
 	 * @var string
 	 */
 	protected $country;
 
-	
+
 	/**
 	 * @param string $firstName
 	 */
@@ -140,7 +139,7 @@ class Tx_Schulungen_Domain_Model_Person extends Tx_Extbase_DomainObject_Abstract
 	public function getTitle() {
 		return $this->title;
 	}
-	
+
 	/**
 	 * @return string
 	 */

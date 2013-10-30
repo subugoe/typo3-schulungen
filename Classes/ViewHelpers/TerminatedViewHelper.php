@@ -41,9 +41,9 @@ class Tx_Schulungen_ViewHelpers_TerminatedViewHelper extends Tx_Fluid_Core_ViewH
 		$currentTime = new DateTime();
 		$currentTime->setTimestamp(time());
 
-		if($currentTime < $time)	{
+		if ($currentTime < $time) {
 			return $result = false;
-		}	else	{
+		} else {
 			return $result = true;
 		}
 	}

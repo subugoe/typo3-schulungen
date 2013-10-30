@@ -4,7 +4,7 @@
  *  Copyright notice
  *
  *  (c) 2011 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>, Goettingen State Library
- *  	
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -61,7 +61,7 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$this->settings = $extbaseFrameworkConfiguration;
 	}
-		
+
 	/**
 	 * inject Schulung
 	 *
@@ -97,54 +97,45 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	 */
 	public function indexAction() {
 
-//		debug($this->settings);
-//		$schulungs = $this->schulungRepository->findAll();
-		
 		// workaround if findAll-method of schulungsRepository doesn't work
 		// => no data is displayed in Backend
 		$schulungs = $this->schulungRepository->findByPid('1648');
 		$termine = $this->terminRepository->findAll();
 		foreach ($schulungs as $schulung) {
-		  $schulungTermine = t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
-		  foreach($termine as $termin)  {
-			try {
-			  if($schulung->getTitel() == $termin->getSchulung()->getTitel())	{
-				$schulungTermine->attach($termin);
-			  }
-			} catch (Exception $e) {
-			  t3lib_div::devlog($e->getMessage(), "Schulungen", 3, array($termin));
-			} 
-		  
-		  }
-		  $schulung->setSchulungTermine($schulungTermine);
+			$schulungTermine = t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
+			foreach ($termine as $termin) {
+				try {
+					if ($schulung->getTitel() == $termin->getSchulung()->getTitel()) {
+						$schulungTermine->attach($termin);
+					}
+				} catch (Exception $e) {
+					t3lib_div::devlog($e->getMessage(), "Schulungen", 3, array($termin));
+				}
+
+			}
+			$schulung->setSchulungTermine($schulungTermine);
 		}
 
-
-/*		$numberOfTermine = 0;
-		foreach ($schulungs as $schulung)	{
-			$termine = $schulung->getSchulungTermine();
-			$numberOfTermine += count($termine);
-		}
-*/		$numberOfTeilnehmer = $this->teilnehmerRepository->countAll();
+		$numberOfTeilnehmer = $this->teilnehmerRepository->countAll();
 		$numberOfTermine = $this->terminRepository->countAll();
-		
-		  // include JQUERY
-		  // checks if t3jquery is loaded
+
+		// include JQUERY
+		// checks if t3jquery is loaded
 		if (t3lib_extMgm::isLoaded('t3jquery')) {
-		  require_once(t3lib_extMgm::extPath('t3jquery').'class.tx_t3jquery.php');
-		  $path_to_lib = tx_t3jquery::getJqJSBE();
-		  $script_to_lib = tx_t3jquery::getJqJSBE(true);
+			require_once(t3lib_extMgm::extPath('t3jquery') . 'class.tx_t3jquery.php');
+			$path_to_lib = tx_t3jquery::getJqJSBE();
+			$script_to_lib = tx_t3jquery::getJqJSBE(true);
 		}
 
 		$values = array(
-						'schulungs' => $schulungs,
-						'termine' => $numberOfTermine,
-						'teilnehmer' => $numberOfTeilnehmer,
-						'jquery' => $script_to_lib
-					);
-		
+			'schulungs' => $schulungs,
+			'termine' => $numberOfTermine,
+			'teilnehmer' => $numberOfTeilnehmer,
+			'jquery' => $script_to_lib
+		);
+
 		$this->view->assignMultiple($values);
-		
+
 	}
 
 	/**
@@ -198,11 +189,11 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	 * @param Tx_Schulungen_Domain_Model_Termin $termin
 	 */
 	public function cancelAction(Tx_Schulungen_Domain_Model_Termin $termin) {
-		
+
 		$time = new DateTime();
 		$time->setTimestamp(time());
 
-		if($termin->getStartzeit() > $time)	{
+		if ($termin->getStartzeit() > $time) {
 			$termin->setAbgesagt(true);
 			$this->terminRepository->update($termin);
 
@@ -211,12 +202,12 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 			$result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
 
 			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_backend_cancel.success', 'schulungen'));
-		}	else	{
-			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_backend_timeout', 'schulungen'));			
+		} else {
+			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_backend_timeout', 'schulungen'));
 		}
-		
+
 		$this->redirect('index');
-		
+
 	}
 
 	/**
@@ -224,11 +215,11 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	 * @param Tx_Schulungen_Domain_Model_Termin $termin
 	 */
 	public function uncancelAction(Tx_Schulungen_Domain_Model_Termin $termin) {
-		
+
 		$time = new DateTime();
 		$time->setTimestamp(time());
 
-		if($termin->getStartzeit() > $time)	{
+		if ($termin->getStartzeit() > $time) {
 			$termin->setAbgesagt(false);
 			$this->terminRepository->update($termin);
 
@@ -237,12 +228,12 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 			$result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
 
 			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_backend_uncancel.success', 'schulungen'));
-		}	else	{
-			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_backend_timeout', 'schulungen'));			
+		} else {
+			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_backend_timeout', 'schulungen'));
 		}
-		
+
 		$this->redirect('index');
-		
+
 	}
 
 	/**
@@ -253,12 +244,6 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	 */
 	public function updateAction(Tx_Schulungen_Domain_Model_Schulung $schulung) {
 		$this->schulungRepository->update($schulung);
-		
-		// Hard clean after update
-/*		$query = $this->createQuery();
-		$query->statement('SELECT * FROM `tx_schulungen_domain_model_termin` WHERE `pid` = -1 AND erinnerungen_verschickt = 0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) >= 0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) < 2 ORDER BY startzeit ASC');
-		return $query->execute();
-*/
 	}
 
 	/**
@@ -266,8 +251,8 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	 *
 	 * @return void
 	 */
-	public function exportAction(){
-		
+	public function exportAction() {
+
 		$schulungs = $this->schulungRepository->findAll();
 		$this->view->assign('fluidVarsObject', $schulungs);
 	}

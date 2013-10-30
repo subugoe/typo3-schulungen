@@ -24,23 +24,23 @@
  * ************************************************************* */
 
 /**
- * ReCAPTCHA-ViewHelper-Klasse zur Abwehr von Spam 
+ * ReCAPTCHA-ViewHelper-Klasse zur Abwehr von Spam
  *
  * @author dsimm
  */
 class Tx_Schulungen_Viewhelpers_CaptchaViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * Erzeugt ein ReCAPTCHA 
+	 * Erzeugt ein ReCAPTCHA
 	 *
 	 * @param string $theme Theme von ReCAPTCHA
 	 * @return $content ReCAPTCHA-Sourcecode
 	 */
 	public function render() {
 
-		require_once(t3lib_extMgm::extPath('jm_recaptcha')."class.tx_jmrecaptcha.php"); 
-		$recaptcha = new tx_jmrecaptcha(); 
-		$content = $recaptcha->getReCaptcha(); 
+		require_once(t3lib_extMgm::extPath('jm_recaptcha') . "class.tx_jmrecaptcha.php");
+		$recaptcha = new tx_jmrecaptcha();
+		$content = $recaptcha->getReCaptcha();
 		return $content;
 
 	}

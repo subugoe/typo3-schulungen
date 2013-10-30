@@ -45,11 +45,11 @@ class Tx_Schulungen_ViewHelpers_SortViewHelper extends Tx_Fluid_Core_ViewHelper_
 	 * @return Tx_Extbase_Persistence_ObjectStorage sorted Objects
 	 * @api
 	 */
-	public function render(Tx_Extbase_Persistence_ObjectStorage $objects, $orderBy=NULL, $order=NULL) {
-		
+	public function render(Tx_Extbase_Persistence_ObjectStorage $objects, $orderBy = NULL, $order = NULL) {
+
 		$this->orderBy = $orderBy;
 		$this->order = $order;
-		
+
 		$sort_objects = $this->sortObjectStorage($objects);
 		return $sort_objects;
 	}
@@ -62,7 +62,7 @@ class Tx_Schulungen_ViewHelpers_SortViewHelper extends Tx_Fluid_Core_ViewHelper_
 			$sorted_array[] = $item;
 		}
 
-		usort($sorted_array,array($this,compare));
+		usort($sorted_array, array($this, compare));
 
 		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 		$sorted_storage = $this->objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
@@ -73,7 +73,7 @@ class Tx_Schulungen_ViewHelpers_SortViewHelper extends Tx_Fluid_Core_ViewHelper_
 		return $sorted_storage;
 	}
 
-	protected function compare($object1, $object2){
+	protected function compare($object1, $object2) {
 
 		if ($this->getSortValue($object1) == $this->getSortValue($object2)) {
 			return 0;
@@ -94,7 +94,7 @@ class Tx_Schulungen_ViewHelpers_SortViewHelper extends Tx_Fluid_Core_ViewHelper_
 
 		if (method_exists($object, $getter)) {
 			$value = $object->$getter();
-		} else if (is_object ($object)) {
+		} else if (is_object($object)) {
 			$value = $object->$field;
 		} else if (is_array($object)) {
 			$value = $object[$field];

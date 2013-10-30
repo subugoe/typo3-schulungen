@@ -74,7 +74,7 @@
 	 * @return string The rendered new action
 	 */
 	public function newAction() {
-		$this->view->assign('termin');
+		$this->view->assign('termin', 'termin');
 	}
 
 	/**

@@ -27,7 +27,6 @@
 /**
  * Controller for the Schulung object
  *
- * @version $Id: SchulungController.php 1797 2012-03-28 15:25:15Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
@@ -37,62 +36,28 @@ class Tx_Schulungen_Controller_SchulungController extends Tx_Extbase_MVC_Control
 	 * schulungRepository
 	 *
 	 * @var Tx_Schulungen_Domain_Repository_SchulungRepository
+	 * @inject
 	 */
 	protected $schulungRepository;
 	/**
 	 * terminRepository
 	 *
 	 * @var Tx_Schulungen_Domain_Repository_TerminRepository
+	 * @inject
 	 */
 	protected $terminRepository;
 	/**
 	 * Teilnehmer
 	 * @var Tx_Schulungen_Domain_Repository_TeilnehmerRepository
+	 * @inject
 	 */
 	protected $teilnehmerRepository;
 	/**
 	 * Person
 	 * @var Tx_Schulungen_Domain_Repository_PersonRepository
+	 * @inject
 	 */
 	protected $personRepository;
-
-	/**
-	 * inject Schulung
-	 *
-	 * @param Tx_Schulungen_Domain_Repository_SchulungRepository $schulungRepository
-	 * @return
-	 */
-	public function injectSchulung(Tx_Schulungen_Domain_Repository_SchulungRepository $schulungRepository) {
-		$this->schulungRepository = $schulungRepository;
-	}
-
-	/**
-	 * inject Person
-	 *
-	 * @param Tx_Schulungen_Domain_Repository_PersonRepository $personRepository
-	 * @return
-	 */
-	public function injectPerson(Tx_Schulungen_Domain_Repository_PersonRepository $personRepository) {
-		$this->personRepository = $personRepository;
-	}
-
-	/**
-	 * DI fuer Termin
-	 *
-	 * @param Tx_Schulungen_Domain_Repository_TerminRepository $terminRepository
-	 */
-	public function injectTermin(Tx_Schulungen_Domain_Repository_TerminRepository $terminRepository) {
-		$this->terminRepository = $terminRepository;
-	}
-
-	/**
-	 * DI fuer Teilnehmer
-	 *
-	 * @param Tx_Schulungen_Domain_Repository_TeilnehmerRepository $teilnehmerRepository
-	 */
-	public function injectTeilnehmer(Tx_Schulungen_Domain_Repository_TeilnehmerRepository $teilnehmerRepository) {
-		$this->teilnehmerRepository = $teilnehmerRepository;
-	}
 
 	/**
 	 * Displays all Schulungs
@@ -100,36 +65,28 @@ class Tx_Schulungen_Controller_SchulungController extends Tx_Extbase_MVC_Control
 	 * @return string The rendered list view
 	 */
 	public function listAction() {
-		
+
 		$schulungSet = array();
-		for ($i=0; $i<3; $i++)	{
-			if($this->schulungRepository->countByKategorie($i) > 0)
+		for ($i = 0; $i < 3; $i++) {
+			if ($this->schulungRepository->countByKategorie($i) > 0)
 				$schulungSet[$i] = $this->schulungRepository->findByKategorie($i);
 		}
 		$contact = $this->personRepository->findByUid($this->settings['contact']);
-		
+
 		$values = array(
 			"schulungs" => $schulungSet,
-			"contact"	=> $contact
+			"contact" => $contact
 		);
-		
+
 		$this->view->assignMultiple($values);
-		
+
 	}
 
 	/**
 	 * Displays all Schulungs in slim format
-	 */
-/*	public function listSlimAction() {
-		$schulungs = $this->schulungRepository->findAll();
-		$this->view->assign('schulungs', $schulungs);
-	}
-*/
-	/**
-	 * Displays all Schulungs in slim format
 	 *
 	 * @param string &$tmp
-	 * @param object &$obj 
+	 * @param object &$obj
 	 */
 	public function listSlimAction(&$tmp = NULL, &$obj = NULL) {
 
@@ -138,41 +95,36 @@ class Tx_Schulungen_Controller_SchulungController extends Tx_Extbase_MVC_Control
 
 		$templateRootPath = t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
 		$templatePathAndFilename = $templateRootPath . 'Schulung/ListSlim.html';
-		
+
 		$view = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
 		$view->setTemplatePathAndFilename($templatePathAndFilename);
 		$view->setFormat('html');
 
 		$this->schulungRepository = t3lib_div::makeInstance('Tx_Schulungen_Domain_Repository_SchulungRepository');
 		$schulungSet = array();
-		for ($i=0; $i<3; $i++)	{
-			if($this->schulungRepository->countByKategorie($i) > 0)
+		for ($i = 0; $i < 3; $i++) {
+			if ($this->schulungRepository->countByKategorie($i) > 0)
 				$schulungSet[$i] = $this->schulungRepository->findByKategorie($i);
 		}
 		$values = array(
 			"schulungs" => $schulungSet,
 		);
-		
-		/* Anzeige der englischen Titel (auch wenn versteckt): führt zu Fehlern auf allen anderen englischen Seiten */
-#		if($GLOBALS['TSFE']->lang == "en")
-#			$schulungs = $this->schulungRepository->findTranslated();
-		
+
 		$view->assignMultiple($values);
 
-//		$menu = '<li>' . $obj->pi_linkTP("Schulungen", array(), 1) . '</li>'."\n";
 		$tmp = $menu . $view->render() . $tmp;
 
 	}
-	
+
 	/**
 	 * Insert into TOC-menu-section: english appreciation for no translation
 	 *
 	 * @param string &$tmp
-	 * @param object &$obj 
+	 * @param object &$obj
 	 */
 	public function modTOCAction(&$tmp = NULL, &$obj = NULL) {
 
-		if($GLOBALS['TSFE']->lang == "en")
+		if ($GLOBALS['TSFE']->lang == "en")
 			$tmp = "<li>We regret that this page is not available in English.</li>";
 
 	}
@@ -199,8 +151,10 @@ class Tx_Schulungen_Controller_SchulungController extends Tx_Extbase_MVC_Control
 		$time = new DateTime();
 		$time->setTimestamp(time());
 
-		$this->view->assign('time',$time);
-		if(count($termine) > 0) $this->view->assign('termine', $termine);
+		$this->view->assign('time', $time);
+		if (count($termine) > 0) {
+			$this->view->assign('termine', $termine);
+		}
 		$this->view->assign('schulung', $schulung);
 		$this->view->assign('contacts', $schulung->getContact());
 	}
@@ -260,16 +214,16 @@ class Tx_Schulungen_Controller_SchulungController extends Tx_Extbase_MVC_Control
 		$this->schulungRepository->update($schulung);
 	}
 
-	
+
 	/**
 	 * action export
 	 *
 	 * @return void
 	 * @param int $uid
 	 */
-	public function exportAction($uid = null){
+	public function exportAction($uid = null) {
 		$schulungs = $this->schulungRepository->findAll();
- 		$this->view->assign('fluidVarsObject', $schulungs);
+		$this->view->assign('fluidVarsObject', $schulungs);
 	}
 
 }

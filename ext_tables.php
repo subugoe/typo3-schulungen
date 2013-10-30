@@ -43,9 +43,7 @@ $TCA['tx_schulungen_domain_model_schulung'] = array(
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
-		'versioningWS' => TRUE, 
-/*		'versioningWS' => 2, 
-		'versioning_followPages' => TRUE, */
+		'versioningWS' => TRUE,
 		'origUid' => 't3_origuid',
 		'languageField' => 'sys_language_uid',
 		'transOrigPointerField' => 'l18n_parent',
@@ -68,9 +66,7 @@ $TCA['tx_schulungen_domain_model_termin'] = array(
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
-		'versioningWS' => TRUE, 
-/*		'versioningWS' => 2, 
-		'versioning_followPages' => TRUE, */
+		'versioningWS' => TRUE,
 		'origUid' => 't3_origuid',
 		'languageField' => 'sys_language_uid',
 		'transOrigPointerField' => 'l18n_parent',
@@ -81,7 +77,6 @@ $TCA['tx_schulungen_domain_model_termin'] = array(
 		),
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Termin.php',
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_schulungen_domain_model_termin.gif',
-/*		'default_sortby' => 'ORDER BY schulung, startzeit DESC' */
 		'default_sortby' => 'ORDER BY tstamp DESC'
 	)
 );
@@ -95,8 +90,6 @@ $TCA['tx_schulungen_domain_model_teilnehmer'] = array(
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'versioningWS' => TRUE,
-/*		'versioningWS' => 2, 
-		'versioning_followPages' => TRUE, */
 		'origUid' => 't3_origuid',
 		'languageField' => 'sys_language_uid',
 		'transOrigPointerField' => 'l18n_parent',
@@ -110,14 +103,6 @@ $TCA['tx_schulungen_domain_model_teilnehmer'] = array(
 		'default_sortby' => 'ORDER BY termin, nachname DESC'
 	)
 );
-
-/*
-$extensionName = t3lib_div::underscoredToUpperCamelCase($_EXTKEY);
-	//Schulungen Flexform
-$pluginSignature = strtolower($extensionName) . '_schulungen';
-$TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
-t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/schulungen.xml');
- */
 
 Tx_Schulungen_Utility_HelperUtility::flexFormAutoLoader();
 

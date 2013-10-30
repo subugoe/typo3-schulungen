@@ -44,7 +44,6 @@ class Tx_Schulungen_Command_ReminderCommandController extends Tx_Extbase_MVC_Con
 	* @return void
 	*/
 	public function remindCommand() {
-		$success = true;
 
 		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
 		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
@@ -61,7 +60,6 @@ class Tx_Schulungen_Command_ReminderCommandController extends Tx_Extbase_MVC_Con
 		);
 		
 		$benachrichtigung = t3lib_div::makeInstance('tx_schulungen_controller_benachrichtigungcontroller');
-//		$benachrichtigung->injectConfigurationManager($extbaseFrameworkConfiguration);
 		$benachrichtigung->config = $configuration['settings'];
 
 		$success = $benachrichtigung->sendeBenachrichtigungAction();

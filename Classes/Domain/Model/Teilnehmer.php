@@ -27,7 +27,6 @@
 /**
  * Teilnehmer an Schulungen
  *
- * @version $Id: Teilnehmer.php 1886 2012-06-13 12:31:19Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */

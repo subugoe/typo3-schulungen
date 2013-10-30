@@ -27,32 +27,31 @@
 /**
  * Helper-Class for automatical flexform inclusion
  *
- * @version $Id: Helper.php 1590 2012-01-13 17:38:19Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 class Tx_Schulungen_Utility_HelperUtility {
-    
+
 	/**
-     * Call this function at the end of your ext_tables.php to autoregister the flexforms
-     * of the extension to the given plugins.
-     */
-    public static function flexFormAutoLoader() {
-        global $TCA, $_EXTKEY;
-        $FlexFormPath = t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/FlexForms/';
-        $extensionName = t3lib_div::underscoredToUpperCamelCase($_EXTKEY);
- 
-        $FlexForms = t3lib_div::getFilesInDir($FlexFormPath, 'xml');
-        foreach ($FlexForms as $FlexForm) {
-            $fileKey = str_replace('.xml', '', $FlexForm);
- 
-            $pluginSignature = strtolower($extensionName . '_' . $fileKey);
-            $TCA['tt_content']['types']['list']['subtypes_excludelist'][$pluginSignature] = 'layout,select_key,recursive';
-            $TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
-            t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/' . $fileKey . '.xml');
-        }
-    }
- 
+	 * Call this function at the end of your ext_tables.php to autoregister the flexforms
+	 * of the extension to the given plugins.
+	 */
+	public static function flexFormAutoLoader() {
+		global $TCA, $_EXTKEY;
+		$FlexFormPath = t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/FlexForms/';
+		$extensionName = t3lib_div::underscoredToUpperCamelCase($_EXTKEY);
+
+		$FlexForms = t3lib_div::getFilesInDir($FlexFormPath, 'xml');
+		foreach ($FlexForms as $FlexForm) {
+			$fileKey = str_replace('.xml', '', $FlexForm);
+
+			$pluginSignature = strtolower($extensionName . '_' . $fileKey);
+			$TCA['tt_content']['types']['list']['subtypes_excludelist'][$pluginSignature] = 'layout,select_key,recursive';
+			$TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
+			t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/' . $fileKey . '.xml');
+		}
+	}
+
 }
 
 ?>

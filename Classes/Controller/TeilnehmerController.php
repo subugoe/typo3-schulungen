@@ -27,7 +27,6 @@
 /**
  * Controller for the Teilnehmer object
  *
- * @version $Id: TeilnehmerController.php 1976 2012-11-28 08:14:00Z simm $
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
@@ -72,7 +71,7 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 	public function listAction(Tx_Schulungen_Domain_Model_Schulung $schulung, $status) {
 		$teilnehmers = $this->teilnehmerRepository->findAll();
 		$this->view->assign('teilnehmers', $teilnehmers);
-		
+
 		$this->view->assign('schulungsTitel', $schulung->getTitel());
 		$this->view->assign('status', $status);
 		$this->view->assign('contacts', $schulung->getContact());
@@ -102,13 +101,13 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 		$schulung = $terminObj->getSchulung();
 		$schulungsTitel = $schulung->getTitel();
 		$contacts = $schulung->getContact();
-		
+
 		$this->view->assign('teilnehmerTermin', $terminObj);
 		$this->view->assign('newTeilnehmer', $newTeilnehmer);
 		$this->view->assign('schulungsTitel', $schulungsTitel);
 		$this->view->assign('contacts', $contacts);
 
-		if($terminObj->getAnzahlTeilnehmer() >= $terminObj->getSchulung()->getTeilnehmerMax()) {
+		if ($terminObj->getAnzahlTeilnehmer() >= $terminObj->getSchulung()->getTeilnehmerMax()) {
 			$this->redirect('show', 'Schulung', Null, array('schulung' => $schulung));
 		}
 
@@ -129,13 +128,13 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 
 		$newTeilnehmer->setTermin($termin);
 		// secret-identifier: timestamp,lastname,email,prename
-		$identifier = md5($time->getTimestamp() . $newTeilnehmer->getNachname() . 
-						$newTeilnehmer->getEmail() . $newTeilnehmer->getVorname());
+		$identifier = md5($time->getTimestamp() . $newTeilnehmer->getNachname() .
+			$newTeilnehmer->getEmail() . $newTeilnehmer->getVorname());
 		$newTeilnehmer->setSecret($identifier);
 
-		if($termin->getAnzahlTeilnehmer() < $schulung->getTeilnehmerMax()) {
+		if ($termin->getAnzahlTeilnehmer() < $schulung->getTeilnehmerMax()) {
 
-			if(count($this->teilnehmerRepository->teilnehmerAngemeldet($newTeilnehmer, $termin)) == 0)	{
+			if (count($this->teilnehmerRepository->teilnehmerAngemeldet($newTeilnehmer, $termin)) == 0) {
 
 				$this->teilnehmerRepository->add($newTeilnehmer);
 
@@ -145,33 +144,32 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 					$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_teilnehmer_create.bestaetigung.text', 'schulungen'));
 
 					if ($sender = $this->sendeBestaetigungsMail($newTeilnehmer)) {
-							$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_teilnehmer_create.bestaetigung.email', 'schulungen', array($newTeilnehmer->getEmail())));
-							$status = 'success';
+						$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_teilnehmer_create.bestaetigung.email', 'schulungen', array($newTeilnehmer->getEmail())));
+						$status = 'success';
 					} else {
-							$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.fail', 'schulungen'));
+						$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.fail', 'schulungen'));
 					}
 				}
 				// Teilnehmer existiert schon
-			}	else {
+			} else {
 				$this->flashMessageContainer->flush();
 				$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_teilnehmer_create.already_registered', 'schulungen'));
 			}
 			// Termin ist voll
-		}   else    {
+		} else {
 			$this->flashMessageContainer->flush();
 			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_teilnehmer_create.fail', 'schulungen'));
 		}
 
 		//an die list-action weiterleiten
 		$this->redirect('list', 'Teilnehmer', Null, array("schulung" => $schulung, "status" => $status));
-		// $this->schulungController->redirect('list');
 	}
 
 	/**
 	 * Mailsendemethode
 	 * @todo Termin usw in Mail mit angeben. View?
 	 * @param Tx_Schulungen_Domain_Model_Teilnehmer $teilnehmer
-	 * @return boolean 
+	 * @return boolean
 	 */
 	private function sendeBestaetigungsMail(Tx_Schulungen_Domain_Model_Teilnehmer $teilnehmer) {
 		$time = new DateTime('now');
@@ -185,20 +183,20 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 		}
 
 		$variables = array(
-						'nachname' => $teilnehmer->getNachname(),
-						'vorname' => $teilnehmer->getVorname(),
-						'email' => $teilnehmer->getEmail(),
-						'studienfach' => $teilnehmer->getStudienfach(),
-						'bemerkung' => $teilnehmer->getBemerkung(),
-						'schulungsTitel' => $teilnehmer->getTermin()->getSchulung()->getTitel(),
-						'startZeit' => $teilnehmer->getTermin()->getStartzeit(),
-						'ende' => $teilnehmer->getTermin()->getEnde(),
-						'timestamp' => $time,
-						'identifier' => array($teilnehmer->getSecret()),
-						'mailcopy' => $mailcopy,
-						'copy' => true,
-            	);
-                
+			'nachname' => $teilnehmer->getNachname(),
+			'vorname' => $teilnehmer->getVorname(),
+			'email' => $teilnehmer->getEmail(),
+			'studienfach' => $teilnehmer->getStudienfach(),
+			'bemerkung' => $teilnehmer->getBemerkung(),
+			'schulungsTitel' => $teilnehmer->getTermin()->getSchulung()->getTitel(),
+			'startZeit' => $teilnehmer->getTermin()->getStartzeit(),
+			'ende' => $teilnehmer->getTermin()->getEnde(),
+			'timestamp' => $time,
+			'identifier' => array($teilnehmer->getSecret()),
+			'mailcopy' => $mailcopy,
+			'copy' => true,
+		);
+
 		$templateName = Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_bestaetigung_template', 'schulungen');
 
 		$title = explode(':', $teilnehmer->getTermin()->getSchulung()->getTitel());
@@ -238,7 +236,7 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 		$this->teilnehmerRepository->update($teilnehmer);
 		$this->flashMessageContainer->add('Your Teilnehmer was updated.');
 		// $this->redirect('index','Backend');
-		$this->redirect('detail', 'Backend', $_EXTKEY, array("termin" => $teilnehmer->getTermin()));
+		$this->redirect('detail', 'Backend', 'schulungen', array("termin" => $teilnehmer->getTermin()));
 	}
 
 	/**
@@ -251,34 +249,30 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 		$time_format = Tx_Extbase_Utility_Localization::translate('tx_schulungen_format.date', 'schulungen');
 		$now = new DateTime("now");
 		t3lib_div::devlog("De-Registration: Passed value " . $identifier, "Schulungen", 1, $identifier);
-		if(count($teilnehmer = $this->teilnehmerRepository->findOneBySecret($identifier[0])) > 0)	{
+		if (count($teilnehmer = $this->teilnehmerRepository->findOneBySecret($identifier[0])) > 0) {
 			$schulung = $teilnehmer->getTermin()->getSchulung();
-			
+
 			// create deep copy of termin to prevent db-update
 			$termin = unserialize(serialize($teilnehmer->getTermin()));
 			$this->view->assign('schulungsTitel', $schulung->getTitel() . ' (' . $termin->getStartzeit()->format($time_format) . ')');
 			$this->view->assign('contacts', $schulung->getContact());
 
-			// Deadline one day before the event
-			// $limit = $termin->getStartzeit()->sub(new DateInterval('P1D'));
-			// $limit = new DateTime($limit->format('Y-m-d') . ' 04:30');
-			
 			// Deadline is the start time of the event
 			$limit = $termin->getStartzeit();
 
 			// Only delete Teilnehmer, if deadline isn't crossed
-			if($now < $limit)	{
+			if ($now < $limit) {
 				$this->teilnehmerRepository->remove($teilnehmer);
 				$flashMsg = Tx_Extbase_Utility_Localization::translate('tx_schulungen_domain_model_teilnehmer.deregister.success.flash', 'schulungen');
 				$this->flashMessageContainer->add($flashMsg . $teilnehmer->getVorname() . ' ' . $teilnehmer->getNachname() . ' (' . $teilnehmer->getEmail() . ')');
-				
+
 				// Mail notification
 				$sender = $this->settings['mail']['fromMail'];
 				$senderName = $this->settings['mail']['fromName'];
 				$title = explode(':', $teilnehmer->getTermin()->getSchulung()->getTitel());
 				$subject = Tx_Extbase_Utility_Localization::translate('tx_schulungen_domain_model_teilnehmer.deregister', 'schulungen') . " (" . $title[0] . " - " . $teilnehmer->getTermin()->getStartzeit()->format('d.m.Y H:i') . ")";
 				$templateName = Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_deregistration_template', 'schulungen');
-				$result = $this->emailController->sendeTransactionMail($sender, $senderName, $subject, $templateName, 
+				$result = $this->emailController->sendeTransactionMail($sender, $senderName, $subject, $templateName,
 					array(
 						'teilnehmer' => $teilnehmer,
 						'schulung' => $schulung->getTitel(),
@@ -289,12 +283,12 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 				t3lib_div::devlog("De-Registration: TransactionMail sent?", "Schulungen", 1, array($result));
 
 				$this->view->assign('status', 'success');
-			}	else 	{
+			} else {
 				$flashMsg = Tx_Extbase_Utility_Localization::translate('tx_schulungen_domain_model_teilnehmer.deregister.fail.flash', 'schulungen');
 				$this->flashMessageContainer->add(str_replace('###TEILNEHMER###', $teilnehmer->getVorname() . ' ' . $teilnehmer->getNachname() . ' (' . $teilnehmer->getEmail() . ')', $flashMsg));
 				$this->view->assign('status', 'fail');
 			}
-		}	else 	{
+		} else {
 			$this->redirect('list', 'Schulung');
 		}
 	}
@@ -309,10 +303,10 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 		$this->teilnehmerRepository->remove($teilnehmer);
 		$this->flashMessageContainer->add('Your Teilnehmer was removed.');
 		$this->redirect('list');
-		$this->redirect('detail', 'Backend', $_EXTKEY, array("termin" => $teilnehmer->getTermin()));
+		$this->redirect('detail', 'Backend', 'schulungen', array("termin" => $teilnehmer->getTermin()));
 	}
 
-        /**
+	/**
 	 * Deletes an existing Teilnehmer
 	 *
 	 * @param Tx_Schulungen_Domain_Model_Teilnehmer $teilnehmer the Teilnehmer to be deleted
@@ -321,7 +315,7 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 	public function deleteBackendAction(Tx_Schulungen_Domain_Model_Teilnehmer $teilnehmer) {
 		$this->teilnehmerRepository->remove($teilnehmer);
 		$this->flashMessageContainer->add('Your Teilnehmer was removed.');
-		$this->redirect('detail', 'Backend', $_EXTKEY, array("termin" => $teilnehmer->getTermin()));
+		$this->redirect('detail', 'Backend', 'schulungen', array("termin" => $teilnehmer->getTermin()));
 	}
 
 }

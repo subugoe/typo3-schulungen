@@ -42,10 +42,10 @@ class Tx_Schulungen_ViewHelpers_EndSoonViewHelper extends Tx_Fluid_Core_ViewHelp
 		$currentTime->setTimestamp(time());
 
 		$interval = date_diff($currentTime, $time);
-		
-		if($currentTime < $time && $interval->format("%r%a")<=2)	{
+
+		if ($currentTime < $time && $interval->format("%r%a") <= 2) {
 			return $result = true;
-		}	else	{
+		} else {
 			return $result = false;
 		}
 	}

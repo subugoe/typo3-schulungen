@@ -53,19 +53,22 @@ class Tx_PtExtlist_View_Export_CsvListView extends Tx_PtExtlist_View_Export_Abst
 		// Headers
 		if ($templateVariableContainer->exists('listCaptions')) {
 			$row = array();
-			foreach ($templateVariableContainer['listCaptions'] as $caption) { /* @var $header Tx_PtExtlist_Domain_Model_List_Header_HeaderColumn */
+			foreach ($templateVariableContainer['listCaptions'] as $caption) {
+				/* @var $header Tx_PtExtlist_Domain_Model_List_Header_HeaderColumn */
 				$row[] = $caption;
 			}
 			fputcsv($out, $row, ";"); // todo - delimiter configurabe by ts
 		}
 
 		// Rows
-		foreach ($templateVariableContainer['listData'] as $listRow) { /* @var $row Tx_PtExtlist_Domain_Model_List_Row */
+		foreach ($templateVariableContainer['listData'] as $listRow) {
+			/* @var $row Tx_PtExtlist_Domain_Model_List_Row */
 			$row = array();
-			foreach ($listRow as $listCell) { /* @var $listCell Tx_PtExtlist_Domain_Model_List_Cell */
+			foreach ($listRow as $listCell) {
+				/* @var $listCell Tx_PtExtlist_Domain_Model_List_Cell */
 				$row[] = $listCell->getValue();
 			}
-			$row = tx_pttools_div::iconvArray($row, 'UTF-8', 'ISO-8859-1');     // TODO: make encoding configurable via TS
+			$row = tx_pttools_div::iconvArray($row, 'UTF-8', 'ISO-8859-1'); // TODO: make encoding configurable via TS
 			fputcsv($out, $row, ";");
 		}
 
