@@ -112,7 +112,7 @@ class Tx_Schulungen_Controller_SchulungController extends Tx_Extbase_MVC_Control
 
 		$view->assignMultiple($values);
 
-		$tmp = $menu . $view->render() . $tmp;
+		$tmp = $view->render() . $tmp;
 
 	}
 

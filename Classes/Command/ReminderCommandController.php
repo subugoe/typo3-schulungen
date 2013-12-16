@@ -44,7 +44,7 @@ class Tx_Schulungen_Command_ReminderCommandController extends Tx_Extbase_MVC_Con
 	* @return void
 	*/
 	public function remindCommand() {
-
+		/** @var Tx_Extbase_Configuration_ConfigurationManager $configurationManager */
 		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
 		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		$configuration = array(

@@ -30,7 +30,16 @@
  */
 class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC_Controller_ActionController {
 
+	/**
+	 * @var Tx_Schulungen_Domain_Repository_TerminRepository
+	 * @inject
+	 */
 	protected $terminRepository;
+
+	/**
+	 * @var Tx_Schulungen_Domain_Repository_TeilnehmerRepository
+	 * @inject
+	 */
 	protected $teilnehmerRepository;
 	/* 
 	 * 0 = normale Erinnerung
@@ -55,41 +64,23 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 	}
 
 	/**
-	 * DI fuer Termine
-	 *
-	 * @param Tx_Schulungen_Domain_Repository_TerminRepository $terminRepository
-	 */
-	public function injectTerminRepository(Tx_Schulungen_Domain_Repository_TerminRepository $terminRepository) {
-		$this->terminRepository = $terminRepository;
-	}
-
-	/**
-	 * DI fuer Teilnehmer
-	 *
-	 * @param Tx_Schulungen_Domain_Repository_TeilnehmerRepository $teilnehmerRepository
-	 */
-	public function injectTeilnehmerRepository(Tx_Schulungen_Domain_Repository_TeilnehmerRepository $teilnehmerRepository) {
-		$this->teilnehmerRepository = $teilnehmerRepository;
-	}
-
-	/**
 	 * Action für den Scheduler: Berechnung der anstehenden Termine plus Mailversand an betroffene Teilnehmer
 	 */
 	public function sendeBenachrichtigungAction() {
-		
-		$this->initializeAction();		
+
+		$this->initializeAction();
 		$anstehendeTermine = $this->terminRepository->errechneAnstehendeTermine();
-		
+
 		foreach ($anstehendeTermine as $erinnerungsTermin) {
-			if($erinnerungsTermin->getErinnerungenVerschickt() == false)	{
-				$result = $this->verschickeMailAnTeilnehmer($erinnerungsTermin->getTeilnehmer(), $erinnerungsTermin, true);
-			}	else	{
+			if ($erinnerungsTermin->getErinnerungenVerschickt() == FALSE) {
+				$result = $this->verschickeMailAnTeilnehmer($erinnerungsTermin->getTeilnehmer(), $erinnerungsTermin, TRUE);
+			} else {
 				t3lib_div::devLog('Reminder mails already sent.', 'schulungen', 0);
 			}
 		}
-		
-		if (count($anstehendeTermine) == 0)	{
-				t3lib_div::devLog('No Schulungen the next two days.', 'schulungen', 0);
+
+		if (count($anstehendeTermine) === 0) {
+			t3lib_div::devLog('No Schulungen the next two days.', 'schulungen', 0);
 		}
 
 		return TRUE;
@@ -100,73 +91,77 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 	 */
 	public function sendeBenachrichtigungSofortAction($teilnehmer, $termin, &$obj) {
 		$this->initializeAction();
-		$result = $this->verschickeMailAnTeilnehmer($teilnehmer, $termin, true);
+		$result = $this->verschickeMailAnTeilnehmer($teilnehmer, $termin, TRUE);
 		return $result;
 	}
 
 	/**
 	 * Logik-Methode: Legt Typ der zu versendenden Mails fest und sendet diese an übergebene Teilnehmer
-	 * 
+	 *
 	 * Methode wird von Scheduler und Backend verwendet
-	 * 
-	 * Wegen Problemen mit der Darstellung der flashMessages (BE-Aufruf) 
+	 *
+	 * Wegen Problemen mit der Darstellung der flashMessages (BE-Aufruf)
 	 * lassen sich diese über das $silent-Flag abschalten
 	 */
-	private function verschickeMailAnTeilnehmer($teilnehmer, &$termin, $silent = false) {    
-		
-		$fail = false; $mailType = 0;
+	private function verschickeMailAnTeilnehmer($teilnehmer, &$termin, $silent = FALSE) {
+
+		$fail = FALSE;
+		$mailType = 0;
 		$schulung = $termin->getSchulung();
 		foreach ($teilnehmer as $person) {
-			if(!$termin->isAbgesagt())  {
-				if($termin->getAnzahlTeilnehmer() >= $schulung->getTeilnehmerMin())    {
-						/* normale Erinnerung */
-					$mailType = 0; $cc = false;
-				}   else    {
-						/* zu wenig Teilnehmer */
-					$mailType = 1; $cc = false;
+			if (!$termin->isAbgesagt()) {
+				if ($termin->getAnzahlTeilnehmer() >= $schulung->getTeilnehmerMin()) {
+					/* normale Erinnerung */
+					$mailType = 0;
+					$cc = FALSE;
+				} else {
+					/* zu wenig Teilnehmer */
+					$mailType = 1;
+					$cc = FALSE;
 				}
-			}   else    {
-					/* Termin wurde ohne Begründung abgesagt */
-				$mailType = 2; $cc = false;
-			}  
-				/* Abschalten der Copy ($cc) für Reminder, da Transaktionsmail existiert */
+			} else {
+				/* Termin wurde ohne Begründung abgesagt */
+				$mailType = 2;
+				$cc = FALSE;
+			}
+			/* Abschalten der Copy ($cc) für Reminder, da Transaktionsmail existiert */
 			$result = $this->sendeMail($person, $mailType, $cc);
 
 			if ($result) {
-				if(!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.success', 'schulungen') . $person->getEmail());
-				t3lib_div::devLog('Reminder mail ("' . substr($schulung->getTitel(),0,20) .'...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' successfully sent.', 'schulungen', -1);
+				if (!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.success', 'schulungen') . $person->getEmail());
+				t3lib_div::devLog('Reminder mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' successfully sent.', 'schulungen', -1);
 			} else {
-				if(!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.fail', 'schulungen'));
-				t3lib_div::devLog('Reminder mail ("' . substr($schulung->getTitel(),0,20) .'...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' failed to send!', 'schulungen', 3);
-				$fail = true;
+				if (!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.fail', 'schulungen'));
+				t3lib_div::devLog('Reminder mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' failed to send!', 'schulungen', 3);
+				$fail = TRUE;
 			}
 		}
-		$termin->setAbgesagt($mailType > 0 ? true : false);
+		$termin->setAbgesagt($mailType > 0 ? TRUE : FALSE);
 
-		if(!$fail && $termin->getAnzahlTeilnehmer() > 0)   {
-			$termin->setErinnerungenVerschickt(true);
+		if (!$fail && $termin->getAnzahlTeilnehmer() > 0) {
+			$termin->setErinnerungenVerschickt(TRUE);
 
-				/* Transaktionsmail an Admin/Redakteur */
+			/* Transaktionsmail an Admin/Redakteur */
 			$mail = t3lib_div::makeInstance('Tx_Schulungen_Controller_EmailController');
 			$result = $mail->sendeTransactionMail($this->settings['mail']['fromMail'], $this->settings['mail']['fromName'], Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.transaction_title', 'schulungen'), '',
-						array("teilnehmer" => $teilnehmer,
-							  "action" => Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.mail_type.'.$mailType, 'schulungen'),
-							  "schulung" => $schulung->getTitel(),
-							  "termin" => $termin->getStartzeit(),
-							  "ende" => $termin->getEnde()
-							)
-					  );
+				array("teilnehmer" => $teilnehmer,
+					"action" => Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.mail_type.' . $mailType, 'schulungen'),
+					"schulung" => $schulung->getTitel(),
+					"termin" => $termin->getStartzeit(),
+					"ende" => $termin->getEnde()
+				)
+			);
 			if ($result) {
-				if(!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.success', 'schulungen') . $person->getEmail());
-				t3lib_div::devLog('Transaction mail ("' . substr($schulung->getTitel(),0,20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') successfully sent!', 'schulungen', -1);
+				if (!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.success', 'schulungen') . $person->getEmail());
+				t3lib_div::devLog('Transaction mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') successfully sent!', 'schulungen', -1);
 			} else {
-				if(!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.fail', 'schulungen'));
-				t3lib_div::devLog('Transaction mail ("' . substr($schulung->getTitel(),0,20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') failed to send!', 'schulungen', 3);
-			}	  
+				if (!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.fail', 'schulungen'));
+				t3lib_div::devLog('Transaction mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') failed to send!', 'schulungen', 3);
+			}
 		}
 		$this->persistenceManager->persistAll();
 
-		return !$fail; // returns true, wenn alle Nachrichten erfolgreich versendet wurden
+		return !$fail; // returns TRUE, wenn alle Nachrichten erfolgreich versendet wurden
 	}
 
 	private function sendeMail(Tx_Schulungen_Domain_Model_Teilnehmer $tn, $type, $cc) {
@@ -182,20 +177,20 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 		}
 
 		$result = $mail->sendeMail($tn->getEmail(), $this->settings['mail']['fromMail'], $this->settings['mail']['fromName'], Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.reminder_title', 'schulungen'), $this->mailType[$type],
-					array(
-						"vorname" => $tn->getVorname(), 
-						"nachname" => $tn->getNachname(), 
-						"studienfach" => $tn->getStudienfach(),
-						"bemerkung" => $tn->getBemerkung(),
-						"start" => $termin->getStartzeit(), 
-						"ende" => $termin->getEnde(), 
-						"schulung" => $schulung->getTitel(),
-						"identifier" => $tn->getSecret(),
-						"contact" => $mailcopy[0],
-						"mailcopy" => $mailcopy,
-						"copy" => $cc
-					)
-				  );
+			array(
+				"vorname" => $tn->getVorname(),
+				"nachname" => $tn->getNachname(),
+				"studienfach" => $tn->getStudienfach(),
+				"bemerkung" => $tn->getBemerkung(),
+				"start" => $termin->getStartzeit(),
+				"ende" => $termin->getEnde(),
+				"schulung" => $schulung->getTitel(),
+				"identifier" => $tn->getSecret(),
+				"contact" => $mailcopy[0],
+				"mailcopy" => $mailcopy,
+				"copy" => $cc
+			)
+		);
 
 		return $result;
 	}

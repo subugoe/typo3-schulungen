@@ -36,17 +36,20 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	 * schulungRepository
 	 *
 	 * @var Tx_Schulungen_Domain_Repository_SchulungRepository
+	 * @inject
 	 */
 	protected $schulungRepository;
 	/**
 	 * terminRepository
 	 *
 	 * @var Tx_Schulungen_Domain_Repository_TerminRepository
+	 * @inject
 	 */
 	protected $terminRepository;
 	/**
 	 * Teilnehmer
 	 * @var Tx_Schulungen_Domain_Repository_TeilnehmerRepository
+	 * @inject
 	 */
 	protected $teilnehmerRepository;
 
@@ -62,35 +65,7 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	}
 
 	/**
-	 * inject Schulung
-	 *
-	 * @param Tx_Schulungen_Domain_Repository_SchulungRepository $schulungRepository
-	 * @return
-	 */
-	public function injectSchulung(Tx_Schulungen_Domain_Repository_SchulungRepository $schulungRepository) {
-		$this->schulungRepository = $schulungRepository;
-	}
-
-	/**
-	 * DI fuer Termin
-	 *
-	 * @param Tx_Schulungen_Domain_Repository_TerminRepository $terminRepository
-	 */
-	public function injectTermin(Tx_Schulungen_Domain_Repository_TerminRepository $terminRepository) {
-		$this->terminRepository = $terminRepository;
-	}
-
-	/**
-	 * DI fuer Teilnehmer
-	 *
-	 * @param Tx_Schulungen_Domain_Repository_TeilnehmerRepository $teilnehmerRepository
-	 */
-	public function injectTeilnehmer(Tx_Schulungen_Domain_Repository_TeilnehmerRepository $teilnehmerRepository) {
-		$this->teilnehmerRepository = $teilnehmerRepository;
-	}
-
-	/**
-	 * Displays all Schulungs
+	 * Displays all Schulungen
 	 *
 	 * @return string The rendered list view
 	 */
@@ -196,6 +171,7 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 			$termin->setAbgesagt(true);
 			$this->terminRepository->update($termin);
 
+			/** @var Tx_Schulungen_Controller_BenachrichtigungController benachrichtigung */
 			$this->benachrichtigung = t3lib_div::makeInstance('Tx_Schulungen_Controller_BenachrichtigungController');
 			$teilnehmer = $termin->getTeilnehmer();
 			$result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
@@ -222,6 +198,7 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 			$termin->setAbgesagt(false);
 			$this->terminRepository->update($termin);
 
+			/** @var Tx_Schulungen_Controller_BenachrichtigungController benachrichtigung */
 			$this->benachrichtigung = t3lib_div::makeInstance('Tx_Schulungen_Controller_BenachrichtigungController');
 			$teilnehmer = $termin->getTeilnehmer();
 			$result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
@@ -251,7 +228,6 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	 * @return void
 	 */
 	public function exportAction() {
-
 		$schulungs = $this->schulungRepository->findAll();
 		$this->view->assign('fluidVarsObject', $schulungs);
 	}
