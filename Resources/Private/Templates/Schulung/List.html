@@ -8,11 +8,7 @@
 		<h3><f:translate key="tx_schulungen_domain_model_schulung.kategorie.{schulungSet.0.kategorie}" />:</h3>
 		<ul>
 		<f:for each="{schulungSet}" as="schulung">
-			
 			<li><f:link.action action="show" arguments="{schulung : schulung}">{schulung.titel}</f:link.action></li>
-<!--		<h3><f:link.action action="show" arguments="{schulung : schulung}">{schulung.titel}</f:link.action></h3>-->
-<!--		<p><f:format.html>{schulung.untertitel}</f:format.html></p>-->
-
 		</f:for>
 		</ul>
 	</f:for>
@@ -24,9 +20,4 @@
 		<div><h2><f:translate key="tx_schulungen_domain_model_schulung.kontakt" /></h2></div>
 		<f:render partial="Schulung/contact" arguments="{contact:contact}" />
 	</f:if>
-
-<!--	<f:link.action action="new">Neue Schulung</f:link.action> -->
-<!--	<f:link.action action="listTermineUndTeilnehmer">Termine und Teilnehmer</f:link.action>-->
-<!--	<f:link.action controller="Benachrichtigung" action="sendeBenachrichtigung">Benachrichtigung</f:link.action>-->
-
 </f:section>
