@@ -1,5 +1,5 @@
 <?php
-
+namespace Subugoe\Standorte\Controller;
 /* * *************************************************************
  *  Copyright notice
  *
@@ -23,32 +23,31 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Controller for the Schulung object
- *
- * @copyright Copyright belongs to the respective authors
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controller_ActionController {
+class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
 	 * schulungRepository
 	 *
-	 * @var Tx_Schulungen_Domain_Repository_SchulungRepository
+	 * @var \Subugoe\Schulungen\Domain\Repository\SchulungRepository
 	 * @inject
 	 */
 	protected $schulungRepository;
 	/**
 	 * terminRepository
 	 *
-	 * @var Tx_Schulungen_Domain_Repository_TerminRepository
+	 * @var \Subugoe\Schulungen\Domain\Repository\TerminRepository
 	 * @inject
 	 */
 	protected $terminRepository;
 	/**
 	 * Teilnehmer
-	 * @var Tx_Schulungen_Domain_Repository_TeilnehmerRepository
+	 * @var \Subugoe\Schulungen\Domain\Repository\TeilnehmerRepository
 	 * @inject
 	 */
 	protected $teilnehmerRepository;
@@ -59,8 +58,7 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	 * @return void
 	 */
 	protected function initializeAction() {
-		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
-		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$this->settings = $extbaseFrameworkConfiguration;
 	}
 
@@ -76,14 +74,14 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 		$schulungs = $this->schulungRepository->findByPid('1648');
 		$termine = $this->terminRepository->findAll();
 		foreach ($schulungs as $schulung) {
-			$schulungTermine = t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
+			$schulungTermine = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 			foreach ($termine as $termin) {
 				try {
 					if ($schulung->getTitel() == $termin->getSchulung()->getTitel()) {
 						$schulungTermine->attach($termin);
 					}
 				} catch (Exception $e) {
-					t3lib_div::devlog($e->getMessage(), "Schulungen", 3, array($termin));
+					GeneralUtility::devlog($e->getMessage(), "Schulungen", 3, array($termin));
 				}
 
 			}
@@ -95,10 +93,10 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 
 		// include JQUERY
 		// checks if t3jquery is loaded
-		if (t3lib_extMgm::isLoaded('t3jquery')) {
-			require_once(t3lib_extMgm::extPath('t3jquery') . 'class.tx_t3jquery.php');
-			$path_to_lib = tx_t3jquery::getJqJSBE();
-			$script_to_lib = tx_t3jquery::getJqJSBE(true);
+		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3jquery')) {
+			require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3jquery') . 'class.tx_t3jquery.php');
+			$path_to_lib = \tx_t3jquery::getJqJSBE();
+			$script_to_lib = \tx_t3jquery::getJqJSBE(true);
 		}
 
 		$values = array(
@@ -115,97 +113,95 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	/**
 	 * Displays a single Termin with Details
 	 *
-	 * @param Tx_Schulungen_Domain_Model_Termin $termin the Schulung to display
+	 * @param \Subugoe\Schulungen\Domain\Model\Termin $termin the Schulung to display
 	 * @return string The rendered view
 	 */
-	public function detailAction(Tx_Schulungen_Domain_Model_Termin $termin) {
+	public function detailAction(\Subugoe\Schulungen\Domain\Model\Termin $termin) {
 		$this->view->assign('termin', $termin);
 	}
 
 	/**
 	 * Creates a new Schulung and forwards to the list action.
 	 *
-	 * @param Tx_Schulungen_Domain_Model_Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
+	 * @param \Subugoe\Schulungen\Domain\Model\Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
 	 * @return string An HTML form for creating a new Schulung
 	 * @dontvalidate $newSchulung
 	 */
-	public function newAction(Tx_Schulungen_Domain_Model_Schulung $newSchulung = null) {
+	public function newAction(\Subugoe\Schulungen\Domain\Model\Schulung $newSchulung = null) {
 		$this->view->assign('newSchulung', $newSchulung);
 	}
 
 	/**
 	 * Creates a new Schulung and forwards to the list action.
 	 *
-	 * @param Tx_Schulungen_Domain_Model_Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
+	 * @param \Subugoe\Schulungen\Domain\Model\Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
 	 * @return void
 	 */
-	public function createAction(Tx_Schulungen_Domain_Model_Schulung $newSchulung) {
+	public function createAction(\Subugoe\Schulungen\Domain\Model\Schulung $newSchulung) {
 		$this->schulungRepository->add($newSchulung);
-		$this->flashMessageContainer->add('Your new Schulung was created.');
+		$this->addFlashMessage('Your new Schulung was created.');
 		$this->redirect('list');
 	}
 
 	/**
 	 * Deletes an existing Schulung
 	 *
-	 * @param Tx_Schulungen_Domain_Model_Schulung $schulung the Schulung to be deleted
+	 * @param \Subugoe\Schulungen\Domain\Model\Schulung $schulung the Schulung to be deleted
 	 * @return void
 	 */
-	public function deleteAction(Tx_Schulungen_Domain_Model_Schulung $schulung) {
+	public function deleteAction(\Subugoe\Schulungen\Domain\Model\Schulung $schulung) {
 		$this->schulungRepository->remove($schulung);
-		$this->flashMessageContainer->add('Your Schulung was removed.');
+		$this->addFlashMessage('Your Schulung was removed.');
 		$this->redirect('list');
 	}
 
 	/**
 	 * Absagen eines Schulungstermins
 	 *
-	 * @param Tx_Schulungen_Domain_Model_Termin $termin
+	 * @param \Subugoe\Schulungen\Domain\Model\Termin $termin
 	 */
-	public function cancelAction(Tx_Schulungen_Domain_Model_Termin $termin) {
+	public function cancelAction(\Subugoe\Schulungen\Domain\Model\Termin $termin) {
 
-		$time = new DateTime();
+		$time = new \DateTime();
 		$time->setTimestamp(time());
 
 		if ($termin->getStartzeit() > $time) {
 			$termin->setAbgesagt(true);
 			$this->terminRepository->update($termin);
 
-			/** @var Tx_Schulungen_Controller_BenachrichtigungController benachrichtigung */
-			$this->benachrichtigung = t3lib_div::makeInstance('Tx_Schulungen_Controller_BenachrichtigungController');
+			/** @var \Subugoe\Schulungen\Controller\BenachrichtigungController benachrichtigung */
+			$this->benachrichtigung = $this->objectManager->get('Subugoe\\Schulungen\\Controller\\BenachrichtigungController');
 			$teilnehmer = $termin->getTeilnehmer();
 			$result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
 
-			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_backend_cancel.success', 'schulungen'));
+			$this->addFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_schulungen_controller_backend_cancel.success', 'schulungen'));
 		} else {
-			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_backend_timeout', 'schulungen'));
+			$this->addFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_schulungen_controller_backend_timeout', 'schulungen'));
 		}
-
 		$this->redirect('index');
-
 	}
 
 	/**
 	 * Wieder Zusagen eines Schulungstermins
-	 * @param Tx_Schulungen_Domain_Model_Termin $termin
+	 * @param \Subugoe\Schulungen\Domain\Model\Termin $termin
 	 */
-	public function uncancelAction(Tx_Schulungen_Domain_Model_Termin $termin) {
+	public function uncancelAction(\Subugoe\Schulungen\Domain\Model\Termin $termin) {
 
-		$time = new DateTime();
+		$time = new \DateTime();
 		$time->setTimestamp(time());
 
 		if ($termin->getStartzeit() > $time) {
 			$termin->setAbgesagt(false);
 			$this->terminRepository->update($termin);
 
-			/** @var Tx_Schulungen_Controller_BenachrichtigungController benachrichtigung */
-			$this->benachrichtigung = t3lib_div::makeInstance('Tx_Schulungen_Controller_BenachrichtigungController');
+			/** @var \Subugoe\Schulungen\Controller\BenachrichtigungController benachrichtigung */
+			$this->benachrichtigung = $this->objectManager-get('Subugoe\\Schulungen\\Controller\\BenachrichtigungController');
 			$teilnehmer = $termin->getTeilnehmer();
 			$result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
 
-			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_backend_uncancel.success', 'schulungen'));
+			$this->addFlashMessage(LocalizationUtility::translate('\Subugoe\Schulungen\controller\backend\uncancel.success', 'schulungen'));
 		} else {
-			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_controller_backend_timeout', 'schulungen'));
+			$this->addFlashMessage(LocalizationUtility::translate('\Subugoe\Schulungen\controller\backend\timeout', 'schulungen'));
 		}
 
 		$this->redirect('index');
@@ -218,7 +214,7 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	 * @return string The rendered update action
 	 * @param $schulung
 	 */
-	public function updateAction(Tx_Schulungen_Domain_Model_Schulung $schulung) {
+	public function updateAction(\Subugoe\Schulungen\Domain\Model\Schulung $schulung) {
 		$this->schulungRepository->update($schulung);
 	}
 
@@ -233,5 +229,3 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 	}
 
 }
-
-?>

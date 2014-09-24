@@ -10,29 +10,7 @@
 				</TCEforms>
 				<type>array</type>
 				<el>
-<!--					<switchableControllerActions>
-						<TCEforms>
-							<label>Funktion</label>
-							<config>
-								<type>select</type>
-								<items type="array">
-									<numIndex index="0" type="array">
-										<numIndex index="0">Normaler Modus</numIndex>
-										<numIndex index="1">Schulung->list;Schulung->show;
-										Termin->list;Termin->show;Teilnehmer->list;Teilnehmer->show;
-										Teilnehmer->new;Teilnehmer->create</numIndex>
-									</numIndex>
-									<numIndex index="1" type="array">
-										<numIndex index="0">Mehr auf diesen Seiten</numIndex>
-										<numIndex index="1">Schulung->listSlim</numIndex>
-									</numIndex>
-								</items>
-								<maxitems>1</maxitems>
-								<size>1</size>
-							</config>
-						</TCEforms>
-					</switchableControllerActions>
--->					<settings.welcome>
+					<settings.welcome>
 						<TCEforms>
 							<label>LLL:EXT:schulungen/locallang.xml:welcome</label>
 							<config>

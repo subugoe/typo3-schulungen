@@ -1,4 +1,5 @@
 <?php
+namespace Subugoe\Schulungen\Utility;
 
 /* * *************************************************************
  *  Copyright notice
@@ -23,14 +24,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Helper-Class for automatical flexform inclusion
+ * Helper-Class for automatic flexform inclusion
  *
- * @copyright Copyright belongs to the respective authors
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Schulungen_Utility_HelperUtility {
+class HelperUtility {
 
 	/**
 	 * Call this function at the end of your ext_tables.php to autoregister the flexforms
@@ -38,20 +39,18 @@ class Tx_Schulungen_Utility_HelperUtility {
 	 */
 	public static function flexFormAutoLoader() {
 		global $TCA, $_EXTKEY;
-		$FlexFormPath = t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/FlexForms/';
-		$extensionName = t3lib_div::underscoredToUpperCamelCase($_EXTKEY);
+		$FlexFormPath = ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/FlexForms/';
+		$extensionName = GeneralUtility::underscoredToUpperCamelCase($_EXTKEY);
 
-		$FlexForms = t3lib_div::getFilesInDir($FlexFormPath, 'xml');
+		$FlexForms = GeneralUtility::getFilesInDir($FlexFormPath, 'xml');
 		foreach ($FlexForms as $FlexForm) {
 			$fileKey = str_replace('.xml', '', $FlexForm);
 
 			$pluginSignature = strtolower($extensionName . '_' . $fileKey);
 			$TCA['tt_content']['types']['list']['subtypes_excludelist'][$pluginSignature] = 'layout,select_key,recursive';
 			$TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
-			t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/' . $fileKey . '.xml');
+			\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/' . $fileKey . '.xml');
 		}
 	}
 
 }
-
-?>

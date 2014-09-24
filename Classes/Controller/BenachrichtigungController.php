@@ -1,5 +1,5 @@
 <?php
-
+namespace Subugoe\Schulungen\Controller;
 /* * *************************************************************
  *  Copyright notice
  *
@@ -22,22 +22,23 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Zentraler Controller fuer das Versenden von Benachrichtigungen
  * Funktioniert mit unterschiedlichen Methoden im Extbase Kontext und im Scheduler
- * @author Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
  */
-class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC_Controller_ActionController {
+class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
-	 * @var Tx_Schulungen_Domain_Repository_TerminRepository
+	 * @var \Subugoe\Schulungen\Domain\Repository\TerminRepository
 	 * @inject
 	 */
 	protected $terminRepository;
 
 	/**
-	 * @var Tx_Schulungen_Domain_Repository_TeilnehmerRepository
+	 * @var \Subugoe\Schulungen\Domain\Repository\TeilnehmerRepository
 	 * @inject
 	 */
 	protected $teilnehmerRepository;
@@ -54,13 +55,13 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 	 * @return void
 	 */
 	protected function initializeAction() {
-		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
-		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$configurationManager = $this->configurationManager;
+		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$this->settings = $extbaseFrameworkConfiguration;
 
-		$this->persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager');
-		$this->terminRepository = t3lib_div::makeInstance('Tx_Schulungen_Domain_Repository_TerminRepository');
-		$this->teilnehmerRepository = t3lib_div::makeInstance('Tx_Schulungen_Domain_Repository_TeilnehmerRepository');
+		$this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence_Manager');
+		$this->terminRepository = $this->objectManager->get('Subugoe\\Schulungen\\Domain\\Repository\\TerminRepository');
+		$this->teilnehmerRepository = $this->objectManager->get('Subugoe\\Schulungen\\Domain\\Repository\\TeilnehmerRepository');
 	}
 
 	/**
@@ -75,12 +76,12 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 			if ($erinnerungsTermin->getErinnerungenVerschickt() == FALSE) {
 				$result = $this->verschickeMailAnTeilnehmer($erinnerungsTermin->getTeilnehmer(), $erinnerungsTermin, TRUE);
 			} else {
-				t3lib_div::devLog('Reminder mails already sent.', 'schulungen', 0);
+				GeneralUtility::devLog('Reminder mails already sent.', 'schulungen', 0);
 			}
 		}
 
 		if (count($anstehendeTermine) === 0) {
-			t3lib_div::devLog('No Schulungen the next two days.', 'schulungen', 0);
+			GeneralUtility::devLog('No Schulungen the next two days.', 'schulungen', 0);
 		}
 
 		return TRUE;
@@ -128,11 +129,11 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 			$result = $this->sendeMail($person, $mailType, $cc);
 
 			if ($result) {
-				if (!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.success', 'schulungen') . $person->getEmail());
-				t3lib_div::devLog('Reminder mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' successfully sent.', 'schulungen', -1);
+				if (!$silent) $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.success', 'schulungen') . $person->getEmail());
+				GeneralUtility::devLog('Reminder mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' successfully sent.', 'schulungen', -1);
 			} else {
-				if (!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.fail', 'schulungen'));
-				t3lib_div::devLog('Reminder mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' failed to send!', 'schulungen', 3);
+				if (!$silent) $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.fail', 'schulungen'));
+				GeneralUtility::devLog('Reminder mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' failed to send!', 'schulungen', 3);
 				$fail = TRUE;
 			}
 		}
@@ -142,21 +143,21 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 			$termin->setErinnerungenVerschickt(TRUE);
 
 			/* Transaktionsmail an Admin/Redakteur */
-			$mail = t3lib_div::makeInstance('Tx_Schulungen_Controller_EmailController');
-			$result = $mail->sendeTransactionMail($this->settings['mail']['fromMail'], $this->settings['mail']['fromName'], Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.transaction_title', 'schulungen'), '',
+			$mail = $this->objectManager->get('Subugoe\\Schulungen\\Controller\\EmailController');
+			$result = $mail->sendeTransactionMail($this->settings['mail']['fromMail'], $this->settings['mail']['fromName'], LocalizationUtility::translate('tx_schulungen_email_versand.transaction_title', 'schulungen'), '',
 				array("teilnehmer" => $teilnehmer,
-					"action" => Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.mail_type.' . $mailType, 'schulungen'),
+					"action" => LocalizationUtility::translate('tx_schulungen_email_versand.mail_type.' . $mailType, 'schulungen'),
 					"schulung" => $schulung->getTitel(),
 					"termin" => $termin->getStartzeit(),
 					"ende" => $termin->getEnde()
 				)
 			);
 			if ($result) {
-				if (!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.success', 'schulungen') . $person->getEmail());
-				t3lib_div::devLog('Transaction mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') successfully sent!', 'schulungen', -1);
+				if (!$silent) $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.success', 'schulungen') . $person->getEmail());
+				GeneralUtility::devLog('Transaction mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') successfully sent!', 'schulungen', -1);
 			} else {
-				if (!$silent) $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.fail', 'schulungen'));
-				t3lib_div::devLog('Transaction mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') failed to send!', 'schulungen', 3);
+				if (!$silent) $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.fail', 'schulungen'));
+				GeneralUtility::devLog('Transaction mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') failed to send!', 'schulungen', 3);
 			}
 		}
 		$this->persistenceManager->persistAll();
@@ -164,11 +165,11 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 		return !$fail; // returns TRUE, wenn alle Nachrichten erfolgreich versendet wurden
 	}
 
-	private function sendeMail(Tx_Schulungen_Domain_Model_Teilnehmer $tn, $type, $cc) {
+	private function sendeMail(\Subugoe\Schulungen\Domain\Model\Teilnehmer $tn, $type, $cc) {
 
 		$termin = $tn->getTermin();
 		$schulung = $termin->getSchulung();
-		$mail = t3lib_div::makeInstance('Tx_Schulungen_Controller_EmailController');
+		$mail = $this->objectManager->get('Subugoe\\Schulungen\\Controller\\EmailController');
 
 		$mailcopy = array();
 		$contacts = $schulung->getContact();
@@ -176,7 +177,7 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 			array_push($mailcopy, $contact->getEmail());
 		}
 
-		$result = $mail->sendeMail($tn->getEmail(), $this->settings['mail']['fromMail'], $this->settings['mail']['fromName'], Tx_Extbase_Utility_Localization::translate('tx_schulungen_email_versand.reminder_title', 'schulungen'), $this->mailType[$type],
+		$result = $mail->sendeMail($tn->getEmail(), $this->settings['mail']['fromMail'], $this->settings['mail']['fromName'], LocalizationUtility::translate('tx_schulungen_email_versand.reminder_title', 'schulungen'), $this->mailType[$type],
 			array(
 				"vorname" => $tn->getVorname(),
 				"nachname" => $tn->getNachname(),
@@ -196,5 +197,3 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 	}
 
 }
-
-?>

@@ -1,36 +1,34 @@
 <?php
+namespace Subugoe\Schulungen\Domain\Model;
 
-/* * *************************************************************
- *  Copyright notice
- *
- *  (c) 2011 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>, Goettingen State Library
- *  	
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- * ************************************************************* */
+	/* * *************************************************************
+	 *  Copyright notice
+	 *
+	 *  (c) 2011 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>, Goettingen State Library
+	 *
+	 *  All rights reserved
+	 *
+	 *  This script is part of the TYPO3 project. The TYPO3 project is
+	 *  free software; you can redistribute it and/or modify
+	 *  it under the terms of the GNU General Public License as published by
+	 *  the Free Software Foundation; either version 3 of the License, or
+	 *  (at your option) any later version.
+	 *
+	 *  The GNU General Public License can be found at
+	 *  http://www.gnu.org/copyleft/gpl.html.
+	 *
+	 *  This script is distributed in the hope that it will be useful,
+	 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+	 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	 *  GNU General Public License for more details.
+	 *
+	 *  This copyright notice MUST APPEAR in all copies of the script!
+	 * ************************************************************* */
 
 /**
  * Teilnehmer an Schulungen
- *
- * @copyright Copyright belongs to the respective authors
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Schulungen_Domain_Model_Teilnehmer extends Tx_Extbase_DomainObject_AbstractEntity {
+class Teilnehmer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * Vorname des Teilnehmers
@@ -38,7 +36,7 @@ class Tx_Schulungen_Domain_Model_Teilnehmer extends Tx_Extbase_DomainObject_Abst
 	 * @var string $vorname
 	 * @validate NotEmpty
 	 */
-	protected $vorname ;
+	protected $vorname;
 	/**
 	 * Nachname des Teilnehmers
 	 *
@@ -50,7 +48,7 @@ class Tx_Schulungen_Domain_Model_Teilnehmer extends Tx_Extbase_DomainObject_Abst
 	 * E-Mail Adresse des Teilnehmers
 	 *
 	 * @var string $email
-     * @validate NotEmpty, EmailAddress
+	 * @validate NotEmpty, EmailAddress
 	 */
 	protected $email;
 	/**
@@ -69,13 +67,13 @@ class Tx_Schulungen_Domain_Model_Teilnehmer extends Tx_Extbase_DomainObject_Abst
 	 * Zusatz: Hidden-Field für Robots (Anti-Spam)
 	 *
 	 * @var string $zusatz
-	 * @validate Tx_Schulungen_Domain_Validator_EmptyValidator
+	 * @validate \Subugoe\Schulungen\Domain\Validation\EmptyValidator
 	 */
 	protected $zusatz;
 	/**
 	 * Teilnehmer an einem Termin
 	 *
-	 * @var Tx_Schulungen_Domain_Model_Termin
+	 * @var \Subugoe\Schulungen\Domain\Model\Termin
 	 */
 	protected $termin;
 	/**
@@ -99,6 +97,7 @@ class Tx_Schulungen_Domain_Model_Teilnehmer extends Tx_Extbase_DomainObject_Abst
 	public function getSecret() {
 		return $this->secret;
 	}
+
 	/**
 	 * Setter for secret
 	 *
@@ -108,6 +107,7 @@ class Tx_Schulungen_Domain_Model_Teilnehmer extends Tx_Extbase_DomainObject_Abst
 	public function setSecret($secret) {
 		$this->secret = $secret;
 	}
+
 	/**
 	 * Setter for Zusatz
 	 *
@@ -117,6 +117,7 @@ class Tx_Schulungen_Domain_Model_Teilnehmer extends Tx_Extbase_DomainObject_Abst
 	public function setZusatz($zusatz) {
 		$this->zusatz = $zusatz;
 	}
+
 	/**
 	 * Getter for Zusatz
 	 *
@@ -125,6 +126,7 @@ class Tx_Schulungen_Domain_Model_Teilnehmer extends Tx_Extbase_DomainObject_Abst
 	public function getZusatz() {
 		return $this->zusatz;
 	}
+
 	/**
 	 * Setter for captcha
 	 *
@@ -206,9 +208,9 @@ class Tx_Schulungen_Domain_Model_Teilnehmer extends Tx_Extbase_DomainObject_Abst
 	 *
 	 * @return string Studienfach des Teilnehmers
 	 */
-        public function getStudienfach() {
-            return $this->studienfach;
-        }
+	public function getStudienfach() {
+		return $this->studienfach;
+	}
 
 	/**
 	 * Setter for studienfach
@@ -216,18 +218,18 @@ class Tx_Schulungen_Domain_Model_Teilnehmer extends Tx_Extbase_DomainObject_Abst
 	 * @param string $studienfach Studienfach des Teilnehmers
 	 * @return void
 	 */
-        public function setStudienfach($studienfach) {
-            $this->studienfach = $studienfach;
-        }
+	public function setStudienfach($studienfach) {
+		$this->studienfach = $studienfach;
+	}
 
 	/**
 	 * Getter for bemerkung
 	 *
 	 * @return string Bemerkung des Teilnehmers
 	 */
-        public function getBemerkung() {
-            return $this->bemerkung;
-        }
+	public function getBemerkung() {
+		return $this->bemerkung;
+	}
 
 	/**
 	 * Setter for bemerkung
@@ -235,14 +237,14 @@ class Tx_Schulungen_Domain_Model_Teilnehmer extends Tx_Extbase_DomainObject_Abst
 	 * @param string $bemerkung Bemerkung des Teilnehmers
 	 * @return void
 	 */
-        public function setBemerkung($bemerkung) {
-            $this->bemerkung = $bemerkung;
-        }
-        
+	public function setBemerkung($bemerkung) {
+		$this->bemerkung = $bemerkung;
+	}
+
 	/**
 	 * Returns the termin
 	 *
-	 * @return Tx_Schulungen_Domain_Model_Termin $termin
+	 * @return \Subugoe\Schulungen\Domain\Model\Termin $termin
 	 */
 	public function getTermin() {
 		return $this->termin;
@@ -251,7 +253,7 @@ class Tx_Schulungen_Domain_Model_Teilnehmer extends Tx_Extbase_DomainObject_Abst
 	/**
 	 * Sets the termin
 	 *
-	 * @param Tx_Schulungen_Domain_Model_Termin $termin
+	 * @param \Subugoe\Schulungen\Domain\Model\Termin $termin
 	 * @return void
 	 */
 	public function setTermin($termin) {
@@ -259,5 +261,3 @@ class Tx_Schulungen_Domain_Model_Teilnehmer extends Tx_Extbase_DomainObject_Abst
 	}
 
 }
-
-?>

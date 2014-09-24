@@ -1,10 +1,11 @@
 <?php
+namespace Subugoe\Schulungen\Controller;
 
 /* * *************************************************************
  *  Copyright notice
  *
  *  (c) 2011 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>, Goettingen State Library
- *  	
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -23,6 +24,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 /**
  * Controller for the Schulung object
@@ -30,31 +33,31 @@
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Schulungen_Controller_SchulungController extends Tx_Extbase_MVC_Controller_ActionController {
+class SchulungController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
 	 * schulungRepository
 	 *
-	 * @var Tx_Schulungen_Domain_Repository_SchulungRepository
+	 * @var \Subugoe\Schulungen\Domain\Repository\SchulungRepository
 	 * @inject
 	 */
 	protected $schulungRepository;
 	/**
 	 * terminRepository
 	 *
-	 * @var Tx_Schulungen_Domain_Repository_TerminRepository
+	 * @var \Subugoe\Schulungen\Domain\Repository\TerminRepository
 	 * @inject
 	 */
 	protected $terminRepository;
 	/**
 	 * Teilnehmer
-	 * @var Tx_Schulungen_Domain_Repository_TeilnehmerRepository
+	 * @var \Subugoe\Schulungen\Domain\Repository\TeilnehmerRepository
 	 * @inject
 	 */
 	protected $teilnehmerRepository;
 	/**
 	 * Person
-	 * @var Tx_Schulungen_Domain_Repository_PersonRepository
+	 * @var \Subugoe\Schulungen\Domain\Repository\PersonRepository
 	 * @inject
 	 */
 	protected $personRepository;
@@ -74,8 +77,8 @@ class Tx_Schulungen_Controller_SchulungController extends Tx_Extbase_MVC_Control
 		$contact = $this->personRepository->findByUid($this->settings['contact']);
 
 		$values = array(
-			"schulungs" => $schulungSet,
-			"contact" => $contact
+				"schulungs" => $schulungSet,
+				"contact" => $contact
 		);
 
 		$this->view->assignMultiple($values);
@@ -90,24 +93,22 @@ class Tx_Schulungen_Controller_SchulungController extends Tx_Extbase_MVC_Control
 	 */
 	public function listSlimAction(&$tmp = NULL, &$obj = NULL) {
 
-		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
-		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
-		$templateRootPath = t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
+		$templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
 		$templatePathAndFilename = $templateRootPath . 'Schulung/ListSlim.html';
-
-		$view = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
+		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
+		$view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 		$view->setTemplatePathAndFilename($templatePathAndFilename);
 		$view->setFormat('html');
 
-		$this->schulungRepository = t3lib_div::makeInstance('Tx_Schulungen_Domain_Repository_SchulungRepository');
 		$schulungSet = array();
 		for ($i = 0; $i < 3; $i++) {
 			if ($this->schulungRepository->countByKategorie($i) > 0)
 				$schulungSet[$i] = $this->schulungRepository->findByKategorie($i);
 		}
 		$values = array(
-			"schulungs" => $schulungSet,
+				"schulungs" => $schulungSet,
 		);
 
 		$view->assignMultiple($values);
@@ -141,14 +142,14 @@ class Tx_Schulungen_Controller_SchulungController extends Tx_Extbase_MVC_Control
 	/**
 	 * Displays a single Schulung
 	 *
-	 * @param Tx_Schulungen_Domain_Model_Schulung $schulung the Schulung to display
+	 * @param \Subugoe\Schulungen\Domain\Model\Schulung $schulung the Schulung to display
 	 * @return string The rendered view
 	 */
-	public function showAction(Tx_Schulungen_Domain_Model_Schulung $schulung) {
+	public function showAction(\Subugoe\Schulungen\Domain\Model\Schulung $schulung) {
 
 		$termine = $this->terminRepository->errechneAnstehendeSchulungTermine($schulung);
 
-		$time = new DateTime();
+		$time = new \DateTime();
 		$time->setTimestamp(time());
 
 		$this->view->assign('time', $time);
@@ -162,21 +163,21 @@ class Tx_Schulungen_Controller_SchulungController extends Tx_Extbase_MVC_Control
 	/**
 	 * Creates a new Schulung and forwards to the list action.
 	 *
-	 * @param Tx_Schulungen_Domain_Model_Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
+	 * @param \Subugoe\Schulungen\Domain\Model\Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
 	 * @return string An HTML form for creating a new Schulung
 	 * @dontvalidate $newSchulung
 	 */
-	public function newAction(Tx_Schulungen_Domain_Model_Schulung $newSchulung = null) {
+	public function newAction(\Subugoe\Schulungen\Domain\Model\Schulung $newSchulung = null) {
 		$this->view->assign('newSchulung', $newSchulung);
 	}
 
 	/**
 	 * Creates a new Schulung and forwards to the list action.
 	 *
-	 * @param Tx_Schulungen_Domain_Model_Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
+	 * @param \Subugoe\Schulungen\Domain\Model\Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
 	 * @return void
 	 */
-	public function createAction(Tx_Schulungen_Domain_Model_Schulung $newSchulung) {
+	public function createAction(\Subugoe\Schulungen\Domain\Model\Schulung $newSchulung) {
 		$this->schulungRepository->add($newSchulung);
 		$this->flashMessageContainer->add('Your new Schulung was created.');
 		$this->redirect('list');
@@ -185,10 +186,10 @@ class Tx_Schulungen_Controller_SchulungController extends Tx_Extbase_MVC_Control
 	/**
 	 * Deletes an existing Schulung
 	 *
-	 * @param Tx_Schulungen_Domain_Model_Schulung $schulung the Schulung to be deleted
+	 * @param \Subugoe\Schulungen\Domain\Model\Schulung $schulung the Schulung to be deleted
 	 * @return void
 	 */
-	public function deleteAction(Tx_Schulungen_Domain_Model_Schulung $schulung) {
+	public function deleteAction(\Subugoe\Schulungen\Domain\Model\Schulung $schulung) {
 		$this->schulungRepository->remove($schulung);
 		$this->flashMessageContainer->add('Your Schulung was removed.');
 		$this->redirect('list');
@@ -200,7 +201,7 @@ class Tx_Schulungen_Controller_SchulungController extends Tx_Extbase_MVC_Control
 	 * @return string The rendered edit action
 	 * @param $schulung
 	 */
-	public function editAction(Tx_Schulungen_Domain_Model_Schulung $schulung) {
+	public function editAction(\Subugoe\Schulungen\Domain\Model\Schulung $schulung) {
 		$this->view->assign('schulung', $schulung);
 	}
 
@@ -210,7 +211,7 @@ class Tx_Schulungen_Controller_SchulungController extends Tx_Extbase_MVC_Control
 	 * @return string The rendered update action
 	 * @param $schulung
 	 */
-	public function updateAction(Tx_Schulungen_Domain_Model_Schulung $schulung) {
+	public function updateAction(\Subugoe\Schulungen\Domain\Model\Schulung $schulung) {
 		$this->schulungRepository->update($schulung);
 	}
 
@@ -227,5 +228,3 @@ class Tx_Schulungen_Controller_SchulungController extends Tx_Extbase_MVC_Control
 	}
 
 }
-
-?>

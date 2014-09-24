@@ -1,5 +1,5 @@
 <?php
-
+namespace Subugoe\Schulungen\Domain\Model;
 /* * *************************************************************
  *  Copyright notice
  *
@@ -30,7 +30,7 @@
  *
  * @author Dominic Simm <dominic.simm@sub.goettingen.de>, Goettingen State Library
  */
-class Tx_Schulungen_Domain_Model_Person extends Tx_Extbase_DomainObject_AbstractEntity {
+class Person extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * @var string
@@ -279,6 +279,5 @@ class Tx_Schulungen_Domain_Model_Person extends Tx_Extbase_DomainObject_Abstract
 	public function setCountry($country) {
 		$this->country = $country;
 	}
-
 
 }

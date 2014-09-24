@@ -1,5 +1,5 @@
 <?php
-
+namespace Subugoe\Schulungen\Utility;
 /* * *************************************************************
  *  Copyright notice
  *
@@ -26,20 +26,24 @@
 
 /**
  * Helper-Class for array sorting
- *
- * @copyright Copyright belongs to the respective authors
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Schulungen_Utility_Array {
+class ArrayUtility {
 
+	/**
+	 * @param $array
+	 * @return bool
+	 */
 	static public function sortByName($array) {
-		return usort($array, 'Tx_Schulungen_Utility_Array::usortByName');
+		return usort($array, 'ArrayUtility::usortByName');
 	}
 
+	/**
+	 * @param $a
+	 * @param $b
+	 * @return int
+	 */
 	static public function usortByName($a, $b) {
 		return strnatcasecmp($a->getName(), $b->getName());
 	}
 
 }
-
-?>

@@ -3,8 +3,8 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+	'Subugoe. ' . $_EXTKEY,
 	'Schulungen',
 	array(
 		'Schulung' => 'list, listSlim, listTermineUndTeilnehmer, show, new, create, edit, update, delete, export',
@@ -19,16 +19,16 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	)
 );
 
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+	'Subugoe. ' . $_EXTKEY,
 	'SchulungenSideMenu',
 	array(
 		'Schulung' => 'listSlim',
 	)
 );
 
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+	'Subugoe. ' . $_EXTKEY,
 	'Scheduler',
 	array(
 		'Benachrichtigung' => 'sendeBenachrichtigung',
@@ -36,16 +36,16 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	)
 );
 
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+	'Subugoe. ' . $_EXTKEY,
 	'Calendar',
 	array(
 		'Termin' => 'export'
 	)
 );
 
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+	'Subugoe. ' . $_EXTKEY,
 	'Csvexport',
 	array(
 		'Schulung' => 'export'
@@ -53,15 +53,14 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 );
 
 // Scheduler fuer die Erinnerungen konfigurieren
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Tx_Schulungen_Service_SendRemindersTask'] = array(
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Subugoe\\Schulungen\\Service\\SendRemindersTask'] = array(
 	'extension' => $_EXTKEY,
 	'title' => 'Erinnerungen versenden',
 	'description' => 'Vor einer Schulung Erinnerungen verschicken'
 );
 
 /* not correctly working solution for cli_mode (scheduler) */
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'Tx_Schulungen_Command_ReminderCommandController';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'][] = 'Subugoe\\Schulungen\\Command\\ReminderCommandController';
 
 // Set up Hooks
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/Classes/Controller/SchulungController.php:Tx_Schulungen_Controller_SchulungController->listSlimAction';
-?>
+$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['nkwsubmenu']['extendMoreOnThesePages'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/Classes/Controller/SchulungController.php:SchulungController->listSlimAction';

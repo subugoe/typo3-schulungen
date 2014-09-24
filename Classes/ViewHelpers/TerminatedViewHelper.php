@@ -1,4 +1,5 @@
 <?php
+namespace Subugoe\Schulungen\ViewHelpers;
 
 /* * *************************************************************
  *  Copyright notice
@@ -25,20 +26,18 @@
 
 /**
  * Klasse zur Berechnung der vergangenen Termine
- *
- * @author dsimm
  */
-class Tx_Schulungen_ViewHelpers_TerminatedViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class TerminatedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Berechnet, ob der übergebene Termin schon verstrichen ist
 	 *
-	 * @param DateTime $time Startzeitpunkt des Termin
+	 * @param \DateTime $time Startzeitpunkt des Termin
 	 * @return $result Ended bald: true/false
 	 */
 	public function render($time) {
 
-		$currentTime = new DateTime();
+		$currentTime = new \DateTime();
 		$currentTime->setTimestamp(time());
 
 		if ($currentTime < $time) {
@@ -49,5 +48,3 @@ class Tx_Schulungen_ViewHelpers_TerminatedViewHelper extends Tx_Fluid_Core_ViewH
 	}
 
 }
-
-?>

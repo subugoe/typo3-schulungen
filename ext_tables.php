@@ -4,19 +4,19 @@ if (!defined('TYPO3_MODE'))
 	die('Access denied.');
 
 
-Tx_Extbase_Utility_Extension::registerPlugin(
-		$_EXTKEY, 'Schulungen', 'Schulungen'
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+		'Subugoe.' . $_EXTKEY, 'Schulungen', 'Schulungen'
 );
 
-Tx_Extbase_Utility_Extension::registerPlugin(
-		$_EXTKEY, 'SchulungenSideMenu', 'Schulungen (Side-Menu)'
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+		'Subugoe.' . $_EXTKEY, 'SchulungenSideMenu', 'Schulungen (Side-Menu)'
 );
 
 /**
  * Registers a Backend Module
  */
-Tx_Extbase_Utility_Extension::registerModule(
-	$_EXTKEY,
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+		'Subugoe.' . $_EXTKEY,
 	'web', // Make module a submodule of 'web'
 	'schulungsverwaltung', // Submodule key
 	'',
@@ -32,10 +32,10 @@ Tx_Extbase_Utility_Extension::registerModule(
 	)
 );
 
-t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Schulungen');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Schulungen');
 
-t3lib_extMgm::addLLrefForTCAdescr('tx_schulungen_domain_model_schulung', 'EXT:schulungen/Resources/Private/Language/locallang_csh_tx_schulungen_domain_model_schulung.xml');
-t3lib_extMgm::allowTableOnStandardPages('tx_schulungen_domain_model_schulung');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_schulungen_domain_model_schulung', 'EXT:schulungen/Resources/Private/Language/locallang_csh_tx_schulungen_domain_model_schulung.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_schulungen_domain_model_schulung');
 $TCA['tx_schulungen_domain_model_schulung'] = array(
 	'ctrl' => array(
 		'title' => 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_schulung',
@@ -52,13 +52,13 @@ $TCA['tx_schulungen_domain_model_schulung'] = array(
 		'enablecolumns' => array(
 			'disabled' => 'hidden'
 		),
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Schulung.php',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Schulung.php',
 		'searchFields' => 'titel',
-		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_schulungen_domain_model_schulung.gif'
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_schulungen_domain_model_schulung.gif'
 	)
 );
 
-t3lib_extMgm::addLLrefForTCAdescr('tx_schulungen_domain_model_termin', 'EXT:schulungen/Resources/Private/Language/locallang_csh_tx_schulungen_domain_model_termin.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_schulungen_domain_model_termin', 'EXT:schulungen/Resources/Private/Language/locallang_csh_tx_schulungen_domain_model_termin.xml');
 $TCA['tx_schulungen_domain_model_termin'] = array(
 	'ctrl' => array(
 		'title' => 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_termin',
@@ -81,7 +81,7 @@ $TCA['tx_schulungen_domain_model_termin'] = array(
 	)
 );
 
-t3lib_extMgm::addLLrefForTCAdescr('tx_schulungen_domain_model_teilnehmer', 'EXT:schulungen/Resources/Private/Language/locallang_csh_tx_schulungen_domain_model_teilnehmer.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_schulungen_domain_model_teilnehmer', 'EXT:schulungen/Resources/Private/Language/locallang_csh_tx_schulungen_domain_model_teilnehmer.xml');
 $TCA['tx_schulungen_domain_model_teilnehmer'] = array(
 	'ctrl' => array(
 		'title' => 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_teilnehmer',
@@ -98,12 +98,10 @@ $TCA['tx_schulungen_domain_model_teilnehmer'] = array(
 		'enablecolumns' => array(
 			'disabled' => 'hidden'
 		),
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Teilnehmer.php',
-		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_schulungen_domain_model_tn.gif',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Teilnehmer.php',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_schulungen_domain_model_tn.gif',
 		'default_sortby' => 'ORDER BY termin, nachname DESC'
 	)
 );
 
-Tx_Schulungen_Utility_HelperUtility::flexFormAutoLoader();
-
-?>
+\Subugoe\Schulungen\Utility\HelperUtility::flexFormAutoLoader();

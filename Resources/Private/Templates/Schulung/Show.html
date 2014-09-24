@@ -1,8 +1,8 @@
+{namespace schulungen=Subugoe\Schulungen\ViewHelpers}
 <f:layout name="default" />
 
 <f:section name="main">
 	<link href="{f:uri.resource(path:'css/schulungen_mod.css')}" rel="stylesheet" />
-	{namespace schulungen=Tx_Schulungen_ViewHelpers}
 
 	<f:flashMessages />
 	<f:render partial="Schulung/properties" arguments="{schulung:schulung}" />

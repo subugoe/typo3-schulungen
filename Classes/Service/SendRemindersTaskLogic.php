@@ -1,5 +1,5 @@
 <?php
-
+namespace Subugoe\Schulungen\Service;
 /* * *************************************************************
  *  Copyright notice
  *
@@ -22,17 +22,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
-
-require_once(t3lib_extMgm::extPath('schulungen') . '/Classes/Utility/Uri.php');
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Reminder an die Teilnehmer versenden
- *
- * @author Dominic Simm <dominic.simm@sub.uni-goettingen.de>
- * @package Schulungen
- * @subpackage Service
  */
-class Tx_Schulungen_Service_SendRemindersTaskLogic extends Tx_Extbase_Core_Bootstrap {
+class SendRemindersTaskLogic extends \TYPO3\CMS\Extbase\Core\Bootstrap {
 
 	public function execute(&$pObj) {
 
@@ -46,16 +41,14 @@ class Tx_Schulungen_Service_SendRemindersTaskLogic extends Tx_Extbase_Core_Boots
 		$this->initRepositories();
 
 		$success = true;
-		$this->benachrichtigung = t3lib_div::makeInstance('tx_schulungen_controller_benachrichtigungcontroller');
+		$this->benachrichtigung = GeneralUtility::makeInstance('tx_schulungen_controller_benachrichtigungcontroller');
 		$this->benachrichtigung->config['mail'] = $this->mailConfig;
 		$success = $this->benachrichtigung->sendeBenachrichtigungAction();
 		if (!$success) {
-			t3lib_div::devLog('SendReminder-Task: Problem during execution. Stopping.', 'schulungen', 3);
+			GeneralUtility::devLog('SendReminder-Task: Problem during execution. Stopping.', 'schulungen', 3);
 		} else {
-			t3lib_div::devLog('SendReminder-Task: Successfully executed.', 'schulungen', -1);
+			GeneralUtility::devLog('SendReminder-Task: Successfully executed.', 'schulungen', -1);
 		}
-
-		// $this->tearDownFramework();
 
 		return $success;
 	}
@@ -77,11 +70,9 @@ class Tx_Schulungen_Service_SendRemindersTaskLogic extends Tx_Extbase_Core_Boots
 	}
 
 	protected function initRepositories() {
-		$this->schulungRepository = $this->objectManager->get('tx_schulungen_domain_repository_schulungrepository');
-		$this->teilnehmerRepository = $this->objectManager->get('tx_schulungen_domain_repository_teilnehmerrepository');
-		$this->terminRepository = $this->objectManager->get('tx_schulungen_domain_repository_terminrepository');
+		$this->schulungRepository = $this->objectManager->get('Subugoe\\Schulungen\\Domain\\Repository\\SchulungRepository');
+		$this->teilnehmerRepository = $this->objectManager->get('Subugoe\\Schulungen\\Domain\\Repository\\TeilnehmerTepository');
+		$this->terminRepository = $this->objectManager->get('Subugoe\\Schulungen\\Domain\\Repository\\TerminRepository');
 	}
 
 }
-
-?>

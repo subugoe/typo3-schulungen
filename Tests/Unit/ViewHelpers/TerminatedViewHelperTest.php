@@ -1,4 +1,6 @@
 <?php
+namespace Subugoe\Schulungen\Texts\ViewHelpers;
+
 /* * *************************************************************
  *  Copyright notice
  *
@@ -24,13 +26,12 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-/**
- * Description 
- */
-class Tx_Schulungen_Tests_ViewHelpers_TerminatedViewHelperTest extends Tx_Fluid_ViewHelpers_ViewHelperBaseTestcase {
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHelperBaseTestcase;
+
+class TerminatedViewHelperTest extends ViewHelperBaseTestcase {
 
 	/**
-	 * @var Tx_Schulungen_ViewHelpers_TerminatedViewHelper
+	 * @var \Subugoe\Schulungen\ViewHelpers\TerminatedViewHelper
 	 */
 	protected $fixture;
 
@@ -38,14 +39,14 @@ class Tx_Schulungen_Tests_ViewHelpers_TerminatedViewHelperTest extends Tx_Fluid_
 	 * @return void
 	 */
 	public function setUp() {
-		$this->fixture = new Tx_Schulungen_ViewHelpers_TerminatedViewHelper();
+		$this->fixture = $this->getAccessibleMock('Subugoe\\Schulungen\\ViewHelpers\\TerminatedViewHelper', array());
 	}
 
 	/**
 	 * @test
 	 */
 	public function currentTimeIsNotLowerThanProvidedTime() {
-		$actual = $this->fixture->__call('render', new DateTime());
+		$actual = $this->fixture->render(new \DateTime());
 		$expected = FALSE;
 		$this->assertSame($expected, $actual);
 	}

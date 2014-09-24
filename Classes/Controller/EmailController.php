@@ -1,5 +1,5 @@
 <?php
-
+namespace Subugoe\Schulungen\Controller;
 /* * *************************************************************
  *  Copyright notice
  *
@@ -22,13 +22,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 /**
  * Zentraler Controller fuer das Versenden von E-Mails
  * Funktioniert mit unterschiedlichen Methoden im Extbase Kontext und im Scheduler
- * @author ingop
  */
-class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller_AbstractController {
+class EmailController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
 	 * Methode zum Versenden von E-Mails
@@ -41,13 +42,13 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 	 * @return boolean
 	 */
 	public function sendeMail($recipient, $sender, $senderName, $subject, $templateName, array $variables = array()) {
-		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
-		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
+		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
-		$templateRootPath = t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
+		$templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
 
 		$templatePathAndFilename = $templateRootPath . 'Email/' . $templateName . '.html';
-		$emailView = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
+		$emailView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\StandaloneView');
 		$emailView->setTemplatePathAndFilename($templatePathAndFilename);
 
 		$emailView->setFormat('html');
@@ -58,7 +59,8 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 		$return = false;
 
 		// Wir nutzen den Swiftmailer
-		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+		/** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
+		$mail = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 
 		$mail->setFrom($sender);
 
@@ -91,16 +93,16 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 	 * @return boolean
 	 */
 	public function sendeTransactionMail($sender, $senderName, $subject, $templateName, array $variables = array()) {
-		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
-		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
-		$templateRootPath = t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
+		$templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
 		if (strlen($templateName) == 0) {
 			$templatePathAndFilename = $templateRootPath . 'Email/TransactionMail.html';
 		} else {
 			$templatePathAndFilename = $templateRootPath . 'Email/' . $templateName . '.html';
 		}
-		$emailView = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
+		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $emailView */
+		$emailView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 		$emailView->setTemplatePathAndFilename($templatePathAndFilename);
 
 		$emailView->setFormat('html');
@@ -111,7 +113,8 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 		$return = false;
 
 		// Wir nutzen den Swiftmailer
-		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+		/** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
+		$mail = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 
 		$mail->setFrom($sender);
 
@@ -143,8 +146,8 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 
 		$return = false;
 
-		// Wir nutzen den Swiftmailer
-		$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+		/** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
+		$mail = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
 
 		$mail->setFrom($sender);
 
@@ -161,5 +164,3 @@ class Tx_Schulungen_Controller_EmailController extends Tx_Extbase_MVC_Controller
 	}
 
 }
-
-?>

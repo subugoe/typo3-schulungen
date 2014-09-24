@@ -1,4 +1,5 @@
 <?php
+namespace Subugoe\Schulungen\Domain\Model;
 
 /* * *************************************************************
  *  Copyright notice
@@ -23,19 +24,17 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Termine
- *
- * @copyright Copyright belongs to the respective authors
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_AbstractEntity {
+class Termin extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * schulung
 	 *
-	 * @var Tx_Schulungen_Domain_Model_Schulung $schulung
+	 * @var \Subugoe\Schulungen\Domain\Model\Schulung $schulung
 	 */
 	protected $schulung;
 	/**
@@ -53,13 +52,13 @@ class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_Abstract
 	/**
 	 * Startdatum und Zeit
 	 *
-	 * @var DateTime $startzeit
+	 * @var \DateTime $startzeit
 	 */
 	protected $startzeit;
 	/**
 	 * Enddatum
 	 *
-	 * @var DateTime $ende
+	 * @var \DateTime $ende
 	 */
 	protected $ende;
 	/**
@@ -78,7 +77,7 @@ class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_Abstract
 	protected $erinnerungenVerschickt;
 
 	/**
-	 * Initializes all Tx_Extbase_Persistence_ObjectStorage properties.
+	 * Initializes all Persistence\ObjectStorage properties.
 	 *
 	 * @return void
 	 */
@@ -105,7 +104,7 @@ class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_Abstract
 		if ($this->schulung) {
 			return $this->schulung;
 		} else {
-			throw new Exception('Termin has no Schulung.');
+			throw new \Exception('Termin has no Schulung.');
 		}
 	}
 
@@ -125,9 +124,7 @@ class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_Abstract
 	 * @return int
 	 */
 	public function getAnzahlTeilnehmer() {
-
-		$teilnehmer = t3lib_div::makeInstance('Tx_Schulungen_Domain_Repository_TeilnehmerRepository');
-
+		$teilnehmer = GeneralUtility::makeInstance('Subugoe\\Schulungen\\Domain\\Repository\\TeilnehmerRepository');
 		return $teilnehmer->countByTermin($this->uid);
 	}
 
@@ -148,14 +145,15 @@ class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_Abstract
 	 * @return array
 	 */
 	public function getTeilnehmer() {
-		$teilnehmer = t3lib_div::makeInstance('Tx_Schulungen_Domain_Repository_TeilnehmerRepository');
+		/** @var \Subugoe\Schulungen\Domain\Repository\TeilnehmerRepository $teilnehmer */
+		$teilnehmer = GeneralUtility::makeInstance('Subugoe\\Schulungen\\Domain\\Repository\\TeilnehmerRepository');
 		return $teilnehmer->findByTermin($this->getUid());
 	}
 
 	/**
 	 * Setter of Teilnehmer
 	 *
-	 * @param array Teilnehmer
+	 * @param array $teilnehmer Teilnehmer
 	 * @return void
 	 */
 	public function setTeilnehmer($teilnehmer) {
@@ -165,7 +163,7 @@ class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_Abstract
 	/**
 	 * Returns the startzeit
 	 *
-	 * @return DateTime
+	 * @return \DateTime
 	 */
 	public function getStartzeit() {
 		return $this->startzeit;
@@ -174,7 +172,7 @@ class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_Abstract
 	/**
 	 * Sets the startzeit
 	 *
-	 * @param DateTime $startzeit
+	 * @param \DateTime $startzeit
 	 * @return void
 	 */
 	public function setStartzeit($startzeit) {
@@ -184,7 +182,7 @@ class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_Abstract
 	/**
 	 * Returns the ende
 	 *
-	 * @return DateTime
+	 * @return \DateTime
 	 */
 	public function getEnde() {
 		return $this->ende;
@@ -193,7 +191,7 @@ class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_Abstract
 	/**
 	 * Sets the ende
 	 *
-	 * @param DateTime $ende
+	 * @param \DateTime $ende
 	 * @return void
 	 */
 	public function setEnde($ende) {
@@ -248,5 +246,3 @@ class Tx_Schulungen_Domain_Model_Termin extends Tx_Extbase_DomainObject_Abstract
 	}
 
 }
-
-?>

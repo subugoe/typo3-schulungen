@@ -1,5 +1,5 @@
 <?php
-
+namespace Subugoe\Schulungen\Command;
 /* * *************************************************************
  *  Copyright notice
  *
@@ -25,16 +25,13 @@
 
 /**
  * Reminder an die Teilnehmer versenden
- *
- * @author Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
- * @package Schulungen
- * @subpackage Service
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A dummy Command Controller with a noop command which simply echoes the argument
  */
-class Tx_Schulungen_Command_ReminderCommandController extends Tx_Extbase_MVC_Controller_CommandController {
+class ReminderCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
  
 	/**
 	* Reminder command
@@ -44,9 +41,9 @@ class Tx_Schulungen_Command_ReminderCommandController extends Tx_Extbase_MVC_Con
 	* @return void
 	*/
 	public function remindCommand() {
-		/** @var Tx_Extbase_Configuration_ConfigurationManager $configurationManager */
-		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
-		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		/** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager $configurationManager */
+		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
+		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		$configuration = array(
 			'settings' => array(
 				'persistence' => array(
@@ -58,18 +55,16 @@ class Tx_Schulungen_Command_ReminderCommandController extends Tx_Extbase_MVC_Con
 				)
 			)
 		);
-		
-		$benachrichtigung = t3lib_div::makeInstance('tx_schulungen_controller_benachrichtigungcontroller');
+
+		$benachrichtigung = $this->objectManager->get('Subugoe\\Schulungen\\Controller\\BenachrichtigungsController');
 		$benachrichtigung->config = $configuration['settings'];
 
 		$success = $benachrichtigung->sendeBenachrichtigungAction();
 		if (!$success) {
-			t3lib_div::devLog('SendReminder Scheduler Task: Problem during execution. Stopping.' , 'schulungen', 3);
+			GeneralUtility::devLog('SendReminder Scheduler Task: Problem during execution. Stopping.' , 'schulungen', 3);
 		}
 
 		return $success;
 	}
    
 }
-
-?>

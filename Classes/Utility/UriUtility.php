@@ -1,4 +1,5 @@
 <?php
+namespace Subugoe\Schulungen\Utility;
 
 /* * *************************************************************
 * Copyright notice
@@ -22,25 +23,23 @@
 *
 * This copyright notice MUST APPEAR in all copies of the script!
 * ************************************************************* */
-
-require_once(PATH_t3lib . 'class.t3lib_extmgm.php');
-require_once(PATH_t3lib . 'class.t3lib_befunc.php');
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Service\ExtensionService;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
 /**
  * Toolbox for independet URI generation
  *
  * @abstract
  * @static
- * @package Schulungen
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-abstract class Tx_Schulungen_Utility_Uri {
+abstract class UriUtility {
 
 	protected static $configuration = null;
 
 	/**
 	 * UriBuilder
-	 * @var Tx_Extbase_MVC_Web_Routing_UriBuilder
+	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
 	 */
 	protected static $uriBuilder = null;
 
@@ -48,7 +47,7 @@ abstract class Tx_Schulungen_Utility_Uri {
 	 * Build an uriBuilder that can be used from any context (backend, frontend, TCA) to generate frontend URI
 	 * @param string $extensionName
 	 * @param string $pluginName
-	 * @return Tx_Extbase_MVC_Web_Routing_UriBuilder
+	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
 	 */
 	protected static function buildUriBuilder($extensionName, $pluginName) {
 
@@ -70,13 +69,14 @@ abstract class Tx_Schulungen_Utility_Uri {
 		}
 
 		// If extbase is not boostrapped yet, we must do it before building uriBuilder (when used from TCA)
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		if (!(isset($GLOBALS['dispatcher']) && $GLOBALS['dispatcher'] instanceof Tx_Extbase_Core_Bootstrap)) {
-			$extbaseBootstrap = $objectManager->get('Tx_Extbase_Core_Bootstrap');
+		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+		$objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		if (!(isset($GLOBALS['dispatcher']) && $GLOBALS['dispatcher'] instanceof \TYPO3\CMS\Extbase\Core\Bootstrap)) {
+			$extbaseBootstrap = $objectManager->get('TYPO3\\CMS\\Extbase\\Core\\Bootstrap');
 			$extbaseBootstrap->initialize(array('extensionName' => $extensionName, 'pluginName' => $pluginName));
 		}
 
-		return $objectManager->get('Tx_Extbase_MVC_Web_Routing_UriBuilder');
+		return $objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\Web\\Routing\UriBuilder');
 	}
 
 
@@ -98,16 +98,12 @@ abstract class Tx_Schulungen_Utility_Uri {
 		$controllerArguments['action'] = $actionName;
 		$controllerArguments['controller'] = $controllerName;
 
-		// Use latest classes available from TYPO3 4.6+
-		if (class_exists('Tx_Extbase_Service_ExtensionService')) {
-			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-			$extensionService = $objectManager->get('Tx_Extbase_Service_ExtensionService');
+		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+		$objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		/** @var  \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService */
+		$extensionService = $objectManager->get('TYPO3\\CMS\\Extbase\\Service\\ExtensionService');
 
-			$pluginNamespace = $extensionService->getPluginNamespace($extensionName, $pluginName);
-		} // Or fallback to retro compatibility with TYPO3 4.5
-		else {
-			$pluginNamespace = Tx_Extbase_Utility_Extension::getPluginNamespace($extensionName, $pluginName);
-		}
+		$pluginNamespace = $extensionService->getPluginNamespace($extensionName, $pluginName);
 
 		$arguments = array($pluginNamespace => $controllerArguments);
 
@@ -121,5 +117,3 @@ abstract class Tx_Schulungen_Utility_Uri {
 	}
 
 }
-
-?>

@@ -1,4 +1,5 @@
 <?php
+namespace Subugoe\Schulungen\Domain\Repository;
 /***************************************************************
 *  Copyright notice
 *
@@ -25,34 +26,23 @@
 
 
 /**
- * Repository for Tx_Schulungen_Domain_Model_Schulung
- *
- * @version $Id: SchulungRepository.php 1974 2012-11-15 09:27:31Z simm $
- * @copyright Copyright belongs to the respective authors
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
+ * Repository for Schulung
  */
 
- class Tx_Schulungen_Domain_Repository_SchulungRepository extends Tx_Extbase_Persistence_Repository {
+ class SchulungRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
 	protected $defaultPid = 1648;
 
 	 // Sortierung absteigend nach Terminbeginn
 	protected $defaultOrderings = array(
-//			'titel' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
-			'sort_index' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
-//				'schulungTermine' => Tx_Extbase_Persistence_QueryInterface::ORDER_DESCENDING
+			'sort_index' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
 	);
 
 	public function findTranslated() {
 		$query = $this->createQuery();
 		$query->statement('SELECT * FROM `tx_schulungen_domain_model_schulung` WHERE `sys_language_uid` = 1 AND `deleted` = 0 AND `pid` = '. $this->defaultPid);
-/*		$query->matching(
-			$query->equals('sys_language_uid', 1)
-		);
-*/		$query->setOrderings(array('titel' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING));
+		$query->setOrderings(array('titel' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
 		return $query->execute();
 	}
 
-		
 }
-?>

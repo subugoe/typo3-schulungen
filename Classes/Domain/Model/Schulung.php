@@ -1,4 +1,6 @@
 <?php
+namespace Subugoe\Schulungen\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -26,12 +28,9 @@
 
 /**
  * Schulungen der SUB Goettingen
- *
- * @copyright Copyright belongs to the respective authors
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 
-class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_AbstractEntity {
+class Schulung extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * Titel der Schulung
@@ -114,7 +113,7 @@ class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_Abstra
 	 * @var string $contact
 	 */
 	/**
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Schulungen_Domain_Model_Person> $contact
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Person> $contact
 	 */
 	protected $contact;
 
@@ -142,7 +141,7 @@ class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Termine der Schulung
 	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Schulungen_Domain_Model_Termin> $schulungTermine
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Termin> $schulungTermine
 	 */
 	protected $schulungTermine;
 
@@ -252,7 +251,7 @@ class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_Abstra
 	}
 
 	/**
-	 * Initializes all Tx_Extbase_Persistence_ObjectStorage properties.
+	 * Initializes all ObjectStorage properties.
 	 *
 	 * @return void
 	 */
@@ -262,34 +261,34 @@ class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_Abstra
 		 * It will be rewritten on each save in the kickstarter
 		 * You may modify the constructor of this class instead
 		 */
-		$this->schulungTermine = new Tx_Extbase_Persistence_ObjectStorage();
-		$this->contact = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->schulungTermine = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->contact = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**
 	 * Adds a Termin
 	 *
-	 * @param Tx_Schulungen_Domain_Model_Termin $schulungTermine
+	 * @param \Subugoe\Schulungen\Domain\Model\Termin $schulungTermine
 	 * @return void
 	 */
-	public function addSchulungTermine(Tx_Schulungen_Domain_Model_Termin $schulungTermine) {
+	public function addSchulungTermine(\Subugoe\Schulungen\Domain\Model\Termin $schulungTermine) {
 		$this->schulungTermine->attach($schulungTermine);
 	}
 
 	/**
 	 * Removes a Termin
 	 *
-	 * @param Tx_Schulungen_Domain_Model_Termin $schulungTermineToRemove The Termin to be removed
+	 * @param \Subugoe\Schulungen\Domain\Model\Termin $schulungTermineToRemove The Termin to be removed
 	 * @return void
 	 */
-	public function removeSchulungTermine(Tx_Schulungen_Domain_Model_Termin $schulungTermineToRemove) {
+	public function removeSchulungTermine(\Subugoe\Schulungen\Domain\Model\Termin $schulungTermineToRemove) {
 		$this->schulungTermine->detach($schulungTermineToRemove);
 	}
 
 	/**
 	 * Returns the schulungTermine
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Schulungen_Domain_Model_Termin> $schulungTermine
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Termin> $schulungTermine
 	 */
 	public function getSchulungTermine() {
 		return $this->schulungTermine;
@@ -298,7 +297,7 @@ class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Sets the schulungTermine
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage <Tx_Schulungen_Domain_Model_Termin> $schulungTermine
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Termin> $schulungTermine
 	 * @return void
 	 */
 	public function setSchulungTermine($schulungTermine) {
@@ -308,7 +307,7 @@ class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Returns the $contact
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Schulungen_Domain_Model_Person> $contact
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Person> $contact
 	 */
 	public function getContact() {
 		return $this->contact;
@@ -317,7 +316,7 @@ class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Sets the schulungTermine
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage <Tx_Schulungen_Domain_Model_Person> $contact
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Person> $contact
 	 * @return void
 	 */
 	public function setContact($contact) {
@@ -336,7 +335,7 @@ class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Setter for voraussetzungen
 	 *
-	 * @param string voraussetzungen
+	 * @param string $voraussetzungen voraussetzungen
 	 * @return void
 	 */
 	public function setVoraussetzungen($voraussetzungen) {
@@ -355,7 +354,7 @@ class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Setter for treffpunkt
 	 *
-	 * @param string treffpunkt
+	 * @param string $treffpunkt treffpunkt
 	 * @return void
 	 */
 	public function setTreffpunkt($treffpunkt) {
@@ -374,7 +373,7 @@ class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Setter for dauer
 	 *
-	 * @param string dauer
+	 * @param string $dauer dauer
 	 * @return void
 	 */
 	public function setDauer($dauer) {
@@ -393,7 +392,7 @@ class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Setter for veranstalter
 	 *
-	 * @param string veranstalter
+	 * @param string $veranstalter veranstalter
 	 * @return void
 	 */
 	public function setVeranstalter($veranstalter) {
@@ -412,7 +411,7 @@ class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Setter for untertitel
 	 *
-	 * @param string untertitel
+	 * @param string $untertitel untertitel
 	 * @return void
 	 */
 	public function setUntertitel($untertitel) {
@@ -431,7 +430,7 @@ class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Setter for kategorie
 	 *
-	 * @param string kategorie
+	 * @param string $kategorie kategorie
 	 * @return void
 	 */
 	public function setKategorie($kategorie) {
@@ -450,7 +449,7 @@ class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Setter for termineVersteckt
 	 *
-	 * @param string termineVersteckt
+	 * @param string $termineVersteckt termineVersteckt
 	 * @return void
 	 */
 	public function setTermineVersteckt($termineVersteckt) {
@@ -469,7 +468,7 @@ class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * Setter for anmeldungDeaktiviert
 	 *
-	 * @param int anmeldungDeaktiviert
+	 * @param int $anmeldungDeaktiviert anmeldungDeaktiviert
 	 * @return void
 	 */
 	public function setAnmeldungDeaktiviert($anmeldungDeaktiviert) {
@@ -478,5 +477,3 @@ class Tx_Schulungen_Domain_Model_Schulung extends Tx_Extbase_DomainObject_Abstra
 
 
 }
-
-?>

@@ -1,4 +1,6 @@
 <?php
+namespace Subugoe\Schulungen\Domain\Repository;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -25,15 +27,9 @@
 
 
 /**
- * Repository for Tx_Schulungen_Domain_Model_Person
- *
- * @version $Id: PersonRepository.php 1797 2012-03-28 15:25:15Z simm $
- * @copyright Copyright belongs to the respective authors
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
+ * Repository for Person
  */
 
-class Tx_Schulungen_Domain_Repository_PersonRepository extends Tx_Extbase_Persistence_Repository {
+class PersonRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
-		
 }
-?>

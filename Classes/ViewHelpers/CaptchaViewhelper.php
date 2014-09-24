@@ -1,5 +1,5 @@
 <?php
-
+namespace Subugoe\Schulungen\ViewHelpers;
 /* * *************************************************************
  *  Copyright notice
  *
@@ -25,10 +25,8 @@
 
 /**
  * ReCAPTCHA-ViewHelper-Klasse zur Abwehr von Spam
- *
- * @author dsimm
  */
-class Tx_Schulungen_Viewhelpers_CaptchaViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class CaptchaViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Erzeugt ein ReCAPTCHA
@@ -38,13 +36,11 @@ class Tx_Schulungen_Viewhelpers_CaptchaViewHelper extends Tx_Fluid_Core_ViewHelp
 	 */
 	public function render() {
 
-		require_once(t3lib_extMgm::extPath('jm_recaptcha') . "class.tx_jmrecaptcha.php");
-		$recaptcha = new tx_jmrecaptcha();
+		require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('jm_recaptcha') . "class.tx_jmrecaptcha.php");
+		$recaptcha = new \tx_jmrecaptcha();
 		$content = $recaptcha->getReCaptcha();
 		return $content;
 
 	}
 
 }
-
-?>

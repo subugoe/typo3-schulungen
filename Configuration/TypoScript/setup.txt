@@ -14,7 +14,7 @@ plugin.tx_schulungen {
 		enableAutomaticCacheClearing = 1
 		storagePid = {$plugin.tx_schulungen.persistence.storagePid}
 		classes {
-			Tx_Schulungen_Domain_Model_Person {
+			Subugoe\Schulungen\Domain\Model\Person {
 				mapping {
 					tableName = tt_address
 					recordType = Tx_Schulungen_Domain_Model_Person
@@ -35,7 +35,7 @@ plugin.tx_schulungen {
 					}
 				}
 			}
-			Tx_Schulungen_Domain_Model_Group {
+			Subugoe\Schulungen\Domain\Model\Group {
 				mapping {
 					tableName = tt_address_group
 					recordType = Tx_Schulungen_Domain_Model_Group
@@ -69,9 +69,9 @@ module.tx_schulungen {
 }
 
 plugin.tx_jmrecaptcha {
-    public_key = {$plugin.tx_jmrecaptcha.public_key}
-    private_key = {$plugin.tx_jmrecaptcha.private_key}
-    theme = {$plugin.tx_jmrecaptcha.theme}
+	public_key = {$plugin.tx_jmrecaptcha.public_key}
+	private_key = {$plugin.tx_jmrecaptcha.private_key}
+	theme = {$plugin.tx_jmrecaptcha.theme}
 }
 
 
