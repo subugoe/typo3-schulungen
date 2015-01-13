@@ -1,4 +1,4 @@
-<f:be.container loadExtJs="true" pageTitle="Schulungen" enableExtJsDebug="true" addJsFile="{f:uri.resource(path:'Js/schulungenBackend.js')}" addCssFile="{f:uri.resource(path:'css/backend.css')}">
+<f:be.container loadExtJs="false" pageTitle="Schulungen" enableExtJsDebug="false" addJsFile="{f:uri.resource(path:'Js/schulungenBackend.js')}" addCssFile="{f:uri.resource(path:'css/backend.css')}">
 
 	<f:base />
 	<div id="typo3-docheader">
@@ -9,7 +9,7 @@
 		</div>
 	</div>
 
-	<f:renderFlashMessages style="padding: 12px; border:1px solid #ffcc00; background-color: lightyellow" />
+	<f:flashMessages renderMode="div" style="padding: 12px; border:1px solid #ffcc00; background-color: lightyellow" />
 
 	<div class="tx-schulungen-mod">
 		<div id="typo3-inner-docbody">

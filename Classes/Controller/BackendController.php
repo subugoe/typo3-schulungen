@@ -1,5 +1,5 @@
 <?php
-namespace Subugoe\Standorte\Controller;
+namespace Subugoe\Schulungen\Controller;
 /* * *************************************************************
  *  Copyright notice
  *
@@ -80,7 +80,7 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 					if ($schulung->getTitel() == $termin->getSchulung()->getTitel()) {
 						$schulungTermine->attach($termin);
 					}
-				} catch (Exception $e) {
+				} catch (\Exception $e) {
 					GeneralUtility::devlog($e->getMessage(), "Schulungen", 3, array($termin));
 				}
 
