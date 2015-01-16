@@ -22,7 +22,7 @@ Tx_Extbase_Utility_Extension::registerModule(
 	'',
 	 // Position
 	array(
-		'Backend' => 'index,detail,cancel,uncancel,export',
+		'Backend' => 'index,detail,cancel,uncancel,export,exporttermin',
 		'Teilnehmer' => 'deregister,edit,list,updateBackend,deleteBackend'
 	),
 	array(

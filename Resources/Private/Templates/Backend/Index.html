@@ -51,6 +51,8 @@
 									<f:then>
 									  <tr class="Over {f:if(condition: Iterator.isEven, then: 'Even')} schulung_{schulungIterator.index}" onload="javascript:splitter('{schulungIterator.index}');">
 										  <td>
+                                                                                          <f:link.action controller="Backend" action="exporttermin" arguments="{termin:termin}" format="csv" pageType="1321464620"><span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-export-csv" alt="Details" title="Liste exportieren"></span></f:link.action>
+                                                                                          
 											  <f:link.action action="detail" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-open" alt="Details" title="Detailansicht"></span></f:link.action>
 											  <!--<f:be.buttons.icon uri="{f:uri.action(action:'detail',arguments:'{termin:termin}')}" icon="zoom" title="Detailansicht" />-->
 											  <f:if condition="{termin.abgesagt}">
@@ -96,7 +98,9 @@
 										  {f:if(condition: '{schulungen:endSoon(time:termin.startzeit)}', then: 'Soon')}
 										  ">
 										  <td>
-											  <f:link.action action="detail" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-open" alt="Details" title="Detailansicht"></span></f:link.action>
+											  <f:link.action controller="Backend" action="exporttermin" arguments="{termin:termin}" format="csv" pageType="1321464620"><span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-export-csv" alt="Details" title="Liste exportieren"></span></f:link.action>
+                                                                                      
+                                                                                          <f:link.action action="detail" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-open" alt="Details" title="Detailansicht"></span></f:link.action>
 											  <!--<f:be.buttons.icon uri="{f:uri.action(action:'detail',arguments:'{termin:termin}')}" icon="zoom" title="Detailansicht" />-->
 											  <f:if condition="{termin.abgesagt}">
 												  <f:then>
