@@ -231,7 +231,18 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 		$schulungs = $this->schulungRepository->findAll();
 		$this->view->assign('fluidVarsObject', $schulungs);
 	}
-
+    
+    public function injectSchulungRepository(Tx_Schulungen_Domain_Repository_SchulungRepository $schulungRepository){
+        $this->schulungRepository = $schulungRepository;             
+    }
+    
+    public function injectTerminRepository(Tx_Schulungen_Domain_Repository_TerminRepository $terminRepository){
+        $this->terminRepository = $terminRepository;             
+    }
+    
+    public function injectTeilnehmerRepository(Tx_Schulungen_Domain_Repository_TeilnehmerRepository $teilnehmerRepository){
+        $this->teilnehmerRepository = $teilnehmerRepository;             
+    }
 }
 
 ?>
