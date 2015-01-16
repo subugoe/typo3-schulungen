@@ -231,7 +231,111 @@ class Tx_Schulungen_Controller_BackendController extends Tx_Extbase_MVC_Controll
 		$schulungs = $this->schulungRepository->findAll();
 		$this->view->assign('fluidVarsObject', $schulungs);
 	}
+    
+    /**
+     * export a Termin
+     * 
+     * @param Tx_Schulungen_Domain_Model_Termin $termin
+     */
+    public function exportterminAction(Tx_Schulungen_Domain_Model_Termin $termin) {
+        $teilnehmerListe = array();
+        
+        $temp = $termin->getTeilnehmer();
+        $startzeit = $termin->getStartzeit();
+        
+        $schulung = $termin->getSchulung();
+        
+        $schulungsTitel = $schulung->getTitel();
+        
+        
+        foreach($temp as $key => $row){
+            $teilnehmerListe['teilnehmer'][$key]['vorname'] = $row->getVorname();
+            $teilnehmerListe['teilnehmer'][$key]['name'] = $row->getNachname();
+            $teilnehmerListe['teilnehmer'][$key]['email'] = $row->getEmail();
+            $teilnehmerListe['teilnehmer'][$key]['studienfach'] = $row->getStudienfach();
+            $teilnehmerListe['teilnehmer'][$key]['bemerkung'] = $row->getBemerkung();
+        }
+        
+        $headers = array(
+            'Pragma' => 'public',
+            'Expires' => 0,
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Cache-Control' => 'public',
+            'Content-Description' => 'File Transfer',
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename=Export.csv',
+            //'Content-Transfer-Encoding' => 'ASCII'
+        );
+        
+        foreach ($headers as $header => $data){
+            $this->response->setHeader($header, $data);
+        }
+        
+        $this->response->sendHeaders();
 
+        $outstream = fopen("php://output", "w");
+        
+        //description
+        fputcsv($outstream, array($schulungsTitel.' am '.$startzeit->format('d.m.Y'), ), ';');
+        //headline
+        fputcsv($outstream, array('Teilnehmer (Name, Vorname)', 'E-Mail', 'Fachrichtung/Studiengang', 'Bemerkung'), ';');
+        
+        //data
+        foreach($teilnehmerListe['teilnehmer'] as $teilnehmer){
+            
+            fputcsv(
+                $outstream, 
+                array(
+                    $this->getEncodedString($teilnehmer['name']).', '.$this->getEncodedString($teilnehmer['vorname']),
+                    $this->getEncodedString($teilnehmer['email']),
+                    $this->getEncodedString($teilnehmer['studienfach']),
+                    str_replace(array('\r\n', '\r', '\n'), ' ', $this->getEncodedString($teilnehmer['bemerkung']))
+                ), 
+                ';' 
+            );
+        }
+
+        fclose($outstream);
+        
+        exit;
+	}
+    
+    /**
+     * encode string to easy import in Excel
+     * 
+     * @param type $string
+     * @return type
+     */
+    private function getEncodedString($string){
+        //return mb_convert_encoding ( $string , 'ASCII' , mb_internal_encoding($string) );
+        
+        //für direkte Öffnen in Excel, ohne Dialog
+        return mb_convert_encoding ( $string , 'ISO-8859-1', 'UTF-8' );
+    }
+    
+    /**
+     * 
+     * @param Tx_Schulungen_Domain_Repository_SchulungRepository $schulungRepository
+     */
+    public function injectSchulungRepository(Tx_Schulungen_Domain_Repository_SchulungRepository $schulungRepository){
+        $this->schulungRepository = $schulungRepository;             
+    }
+    
+    /**
+     * 
+     * @param Tx_Schulungen_Domain_Repository_TerminRepository $terminRepository
+     */
+    public function injectTerminRepository(Tx_Schulungen_Domain_Repository_TerminRepository $terminRepository){
+        $this->terminRepository = $terminRepository;             
+    }
+    
+    /**
+     * 
+     * @param Tx_Schulungen_Domain_Repository_TeilnehmerRepository $teilnehmerRepository
+     */
+    public function injectTeilnehmerRepository(Tx_Schulungen_Domain_Repository_TeilnehmerRepository $teilnehmerRepository){
+        $this->teilnehmerRepository = $teilnehmerRepository;             
+    }
 }
 
 ?>

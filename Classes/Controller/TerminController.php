@@ -119,5 +119,13 @@
 		$termin = $this->terminRepository->findByUid($parameter['uid']);
  		$this->view->assign('termin', $termin);
 	}
+    
+    /**
+     * 
+     * @param Tx_Schulungen_Domain_Repository_TerminRepository $terminRepository
+     */
+    public function injectTerminRepository(Tx_Schulungen_Domain_Repository_TerminRepository $terminRepository){
+        $this->terminRepository = $terminRepository;             
+    }
 }
 ?>

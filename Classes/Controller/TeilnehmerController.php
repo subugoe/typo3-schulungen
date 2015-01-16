@@ -317,7 +317,22 @@ class Tx_Schulungen_Controller_TeilnehmerController extends Tx_Extbase_MVC_Contr
 		$this->flashMessageContainer->add('Your Teilnehmer was removed.');
 		$this->redirect('detail', 'Backend', 'schulungen', array("termin" => $teilnehmer->getTermin()));
 	}
-
+    
+    /**
+     * 
+     * @param Tx_Schulungen_Domain_Repository_TerminRepository $terminRepository
+     */
+    public function injectTerminRepository(Tx_Schulungen_Domain_Repository_TerminRepository $terminRepository){
+        $this->terminRepository = $terminRepository;             
+    }
+    
+    /**
+     * 
+     * @param Tx_Schulungen_Domain_Repository_TeilnehmerRepository $teilnehmerRepository
+     */
+    public function injectTeilnehmerRepository(Tx_Schulungen_Domain_Repository_TeilnehmerRepository $teilnehmerRepository){
+        $this->teilnehmerRepository = $teilnehmerRepository;             
+    }
 }
 
 ?>
