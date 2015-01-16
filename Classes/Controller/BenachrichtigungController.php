@@ -194,6 +194,22 @@ class Tx_Schulungen_Controller_BenachrichtigungController extends Tx_Extbase_MVC
 
 		return $result;
 	}
+    
+    /**
+     * 
+     * @param Tx_Schulungen_Domain_Repository_TerminRepository $terminRepository
+     */
+    public function injectTerminRepository(Tx_Schulungen_Domain_Repository_TerminRepository $terminRepository){
+        $this->terminRepository = $terminRepository;             
+    }
+    
+    /**
+     * 
+     * @param Tx_Schulungen_Domain_Repository_TeilnehmerRepository $teilnehmerRepository
+     */
+    public function injectTeilnehmerRepository(Tx_Schulungen_Domain_Repository_TeilnehmerRepository $teilnehmerRepository){
+        $this->teilnehmerRepository = $teilnehmerRepository;             
+    }
 
 }
 
