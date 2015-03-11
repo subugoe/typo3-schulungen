@@ -1,5 +1,5 @@
 <?php
-namespace Subugoe\Controller;
+namespace Subugoe\Schulungen\Controller;
 /* * *************************************************************
  *  Copyright notice
  *
