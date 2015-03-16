@@ -91,7 +91,6 @@ abstract class UriUtility {
 	 */
 	public static function buildFrontendUri($actionName, array $controllerArguments, $controllerName, $extensionName = 'Schulungen', $pluginName = 'Schulungen') {
 
-
 		if (!self::$uriBuilder) {
 			self::$uriBuilder = self::buildUriBuilder($extensionName, $pluginName);
 		}

@@ -1,12 +1,8 @@
 <?php
-namespace Subugoe\Schulungen\Domain\Validator;
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+namespace Subugoe\Schulungen\Validation\Validator;
 
 class EmptyValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+
 	public function isValid($elem) {
 		if (empty($elem) || $elem === "") {
 			return TRUE; // validates if TRUE

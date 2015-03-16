@@ -71,7 +71,7 @@ class SendRemindersTaskLogic extends \TYPO3\CMS\Extbase\Core\Bootstrap {
 
 	protected function initRepositories() {
 		$this->schulungRepository = $this->objectManager->get('Subugoe\\Schulungen\\Domain\\Repository\\SchulungRepository');
-		$this->teilnehmerRepository = $this->objectManager->get('Subugoe\\Schulungen\\Domain\\Repository\\TeilnehmerTepository');
+		$this->teilnehmerRepository = $this->objectManager->get('Subugoe\\Schulungen\\Domain\\Repository\\TeilnehmerRepository');
 		$this->terminRepository = $this->objectManager->get('Subugoe\\Schulungen\\Domain\\Repository\\TerminRepository');
 	}
 

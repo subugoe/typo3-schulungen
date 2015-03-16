@@ -29,7 +29,6 @@ namespace Subugoe\Schulungen\Domain\Model;
 /**
  * Schulungen der SUB Goettingen
  */
-
 class Schulung extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
@@ -109,10 +108,6 @@ class Schulung extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * tt_address-Kontakt einer Person
-	 *
-	 * @var string $contact
-	 */
-	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Person> $contact
 	 */
 	protected $contact;

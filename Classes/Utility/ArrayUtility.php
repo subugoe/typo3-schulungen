@@ -4,7 +4,7 @@ namespace Subugoe\Schulungen\Utility;
  *  Copyright notice
  *
  *  (c) 2011 Dominic Simm <dominic.simm@sub.uni-goettingen.de>, Goettingen State Library
- *  	
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

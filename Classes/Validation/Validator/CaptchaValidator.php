@@ -1,9 +1,5 @@
 <?php
-namespace Subugoe\Schulungen\Domain\Validator;
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+namespace Subugoe\Schulungen\Validation\Validator;
 
 class CaptchaValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 	public function isValid($elem) {
