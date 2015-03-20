@@ -1,5 +1,6 @@
 <?php
 namespace Subugoe\Schulungen\Controller;
+
 /* * *************************************************************
  *  Copyright notice
  *
@@ -23,8 +24,9 @@ namespace Subugoe\Schulungen\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
-use SJBR\StaticInfoTables\Utility\LocalizationUtility;
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Controller for the Teilnehmer object
@@ -93,6 +95,7 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	public function newAction(\Subugoe\Schulungen\Domain\Model\Teilnehmer $newTeilnehmer = NULL, \Subugoe\Schulungen\Domain\Model\Termin $termin = NULL) {
 
 		$termin = intval($this->request->getArgument('termin'));
+		/** @var \Subugoe\Schulungen\Domain\Model\Termin $terminObj */
 		$terminObj = $this->terminRepository->findByUid($termin);
 		$schulung = $terminObj->getSchulung();
 		$schulungsTitel = $schulung->getTitel();
@@ -119,22 +122,27 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		$status = 'fail';
 		$time = new \DateTime('now');
 		$termin = intval($this->request->getArgument('termin'));
+		/** @var \Subugoe\Schulungen\Domain\Model\Termin $termin */
 		$termin = $this->terminRepository->findByUid($termin);
 		$schulung = $termin->getSchulung();
 
 		$newTeilnehmer->setTermin($termin);
 		// secret-identifier: timestamp,lastname,email,prename
 		$identifier = md5($time->getTimestamp() . $newTeilnehmer->getNachname() .
-			$newTeilnehmer->getEmail() . $newTeilnehmer->getVorname());
+				$newTeilnehmer->getEmail() . $newTeilnehmer->getVorname());
 		$newTeilnehmer->setSecret($identifier);
 
 		if ($termin->getAnzahlTeilnehmer() < $schulung->getTeilnehmerMax()) {
 
 			if (count($this->teilnehmerRepository->teilnehmerAngemeldet($newTeilnehmer, $termin)) == 0) {
 
-				$this->teilnehmerRepository->add($newTeilnehmer);
-
-				if (count($this->teilnehmerRepository->getAddedObjects()) === 1) {
+				try {
+					$this->teilnehmerRepository->add($newTeilnehmer);
+					$error = FALSE;
+				} catch (\TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException $e) {
+					$error = TRUE;
+				}
+				if ($error === FALSE) {
 					//mail versenden
 					$this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 					$this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_teilnehmer_create.bestaetigung.text', 'schulungen'));
@@ -179,18 +187,18 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		}
 
 		$variables = array(
-			'nachname' => $teilnehmer->getNachname(),
-			'vorname' => $teilnehmer->getVorname(),
-			'email' => $teilnehmer->getEmail(),
-			'studienfach' => $teilnehmer->getStudienfach(),
-			'bemerkung' => $teilnehmer->getBemerkung(),
-			'schulungsTitel' => $teilnehmer->getTermin()->getSchulung()->getTitel(),
-			'startZeit' => $teilnehmer->getTermin()->getStartzeit(),
-			'ende' => $teilnehmer->getTermin()->getEnde(),
-			'timestamp' => $time,
-			'identifier' => array($teilnehmer->getSecret()),
-			'mailcopy' => $mailcopy,
-			'copy' => true,
+				'nachname' => $teilnehmer->getNachname(),
+				'vorname' => $teilnehmer->getVorname(),
+				'email' => $teilnehmer->getEmail(),
+				'studienfach' => $teilnehmer->getStudienfach(),
+				'bemerkung' => $teilnehmer->getBemerkung(),
+				'schulungsTitel' => $teilnehmer->getTermin()->getSchulung()->getTitel(),
+				'startZeit' => $teilnehmer->getTermin()->getStartzeit(),
+				'ende' => $teilnehmer->getTermin()->getEnde(),
+				'timestamp' => $time,
+				'identifier' => array($teilnehmer->getSecret()),
+				'mailcopy' => $mailcopy,
+				'copy' => true,
 		);
 
 		$templateName = LocalizationUtility::translate('tx_schulungen_email_bestaetigung_template', 'schulungen');
@@ -237,7 +245,7 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	/**
 	 * De-Registration of a Teilnehmer by Mail-Notification
 	 *
-	 * @param $identifier the Teilnehmer to be de-registered
+	 * @param $identifier int Teilnehmer to be de-registered
 	 * @return void
 	 */
 	public function deregisterAction($identifier) {
@@ -269,19 +277,19 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 				$subject = LocalizationUtility::translate('tx_schulungen_domain_model_teilnehmer.deregister', 'schulungen') . " (" . $title[0] . " - " . $teilnehmer->getTermin()->getStartzeit()->format('d.m.Y H:i') . ")";
 				$templateName = LocalizationUtility::translate('tx_schulungen_email_deregistration_template', 'schulungen');
 				$result = $this->emailController->sendeTransactionMail($sender, $senderName, $subject, $templateName,
-					array(
-						'teilnehmer' => $teilnehmer,
-						'schulung' => $schulung->getTitel(),
-						'termin' => $termin->getStartzeit(),
-						'ende' => $termin->getEnde()
-					)
+						array(
+								'teilnehmer' => $teilnehmer,
+								'schulung' => $schulung->getTitel(),
+								'termin' => $termin->getStartzeit(),
+								'ende' => $termin->getEnde()
+						)
 				);
 				GeneralUtility::devlog("De-Registration: TransactionMail sent?", "Schulungen", 1, array($result));
 
 				$this->view->assign('status', 'success');
 			} else {
 				$flashMsg = LocalizationUtility::translate('tx_schulungen_domain_model_teilnehmer.deregister.fail.flash', 'schulungen');
-								$this->flashMessageContainer->add(str_replace('###TEILNEHMER###', $teilnehmer->getVorname() . ' ' . $teilnehmer->getNachname() . ' (' . $teilnehmer->getEmail() . ')', $flashMsg));
+				$this->flashMessageContainer->add(str_replace('###TEILNEHMER###', $teilnehmer->getVorname() . ' ' . $teilnehmer->getNachname() . ' (' . $teilnehmer->getEmail() . ')', $flashMsg));
 				$this->addFlashMessage(str_replace('###TEILNEHMER###', $teilnehmer->getVorname() . ' ' . $teilnehmer->getNachname() . ' (' . $teilnehmer->getEmail() . ')', $flashMsg));
 				$this->view->assign('status', 'fail');
 			}

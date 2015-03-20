@@ -1,5 +1,6 @@
 <?php
 namespace Subugoe\Schulungen\Controller;
+
 /* * *************************************************************
  *  Copyright notice
  *
@@ -48,7 +49,7 @@ class EmailController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		$templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
 
 		$templatePathAndFilename = $templateRootPath . 'Email/' . $templateName . '.html';
-		$emailView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\StandaloneView');
+		$emailView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 		$emailView->setTemplatePathAndFilename($templatePathAndFilename);
 
 		$emailView->setFormat('html');

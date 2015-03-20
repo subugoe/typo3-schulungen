@@ -98,7 +98,7 @@ class Termin extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * getSchulung
 	 *
-	 * @return void
+	 * @return \Subugoe\Schulungen\Domain\Model\Schulung
 	 */
 	public function getSchulung() {
 		if ($this->schulung) {
