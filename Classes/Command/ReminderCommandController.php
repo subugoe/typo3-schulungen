@@ -38,11 +38,11 @@ class ReminderCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
 	*
 	* Sends an email to each participant of the next 'Schulung'
 	*
-	* @return void
+	* @return bool
 	*/
 	public function remindCommand() {
 		/** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager $configurationManager */
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
 		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		$configuration = array(
 			'settings' => array(
@@ -56,7 +56,8 @@ class ReminderCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
 			)
 		);
 
-		$benachrichtigung = $this->objectManager->get('Subugoe\\Schulungen\\Controller\\BenachrichtigungsController');
+		/** @var \Subugoe\Schulungen\Controller\BenachrichtigungController $benachrichtigung */
+		$benachrichtigung = $this->objectManager->get(\Subugoe\Schulungen\Controller\BenachrichtigungController::class);
 		$benachrichtigung->config = $configuration['settings'];
 
 		$success = $benachrichtigung->sendeBenachrichtigungAction();
