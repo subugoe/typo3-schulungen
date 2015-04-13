@@ -76,7 +76,8 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 		$schulungs = $this->schulungRepository->findByPid('1648');
 		$termine = $this->terminRepository->findAll();
 		foreach ($schulungs as $schulung) {
-			$schulungTermine = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+			/** @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage $schulungTermine */
+			$schulungTermine = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
 			foreach ($termine as $termin) {
 				try {
 					if ($schulung->getTitel() == $termin->getSchulung()->getTitel()) {
@@ -172,7 +173,7 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 			$this->terminRepository->update($termin);
 
 			/** @var \Subugoe\Schulungen\Controller\BenachrichtigungController benachrichtigung */
-			$this->benachrichtigung = $this->objectManager->get('Subugoe\\Schulungen\\Controller\\BenachrichtigungController');
+			$this->benachrichtigung = $this->objectManager->get(\Subugoe\Schulungen\Controller\BenachrichtigungController::class);
 			$teilnehmer = $termin->getTeilnehmer();
 			$result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
 
@@ -197,13 +198,13 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 			$this->terminRepository->update($termin);
 
 			/** @var \Subugoe\Schulungen\Controller\BenachrichtigungController benachrichtigung */
-			$this->benachrichtigung = $this->objectManager-get('Subugoe\\Schulungen\\Controller\\BenachrichtigungController');
+			$this->benachrichtigung = $this->objectManager->get(\Subugoe\Schulungen\Controller\BenachrichtigungController::class);
 			$teilnehmer = $termin->getTeilnehmer();
 			$result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
 
-			$this->addFlashMessage(LocalizationUtility::translate('\Subugoe\Schulungen\controller\backend\uncancel.success', 'schulungen'));
+			$this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_backend_uncancel.success', 'schulungen'));
 		} else {
-			$this->addFlashMessage(LocalizationUtility::translate('\Subugoe\Schulungen\controller\backend\timeout', 'schulungen'));
+			$this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_backend_timeout', 'schulungen'));
 		}
 
 		$this->redirect('index');

@@ -98,7 +98,7 @@ class SchulungController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		$templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
 		$templatePathAndFilename = $templateRootPath . 'Schulung/ListSlim.html';
 		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
-		$view = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+		$view = $this->objectManager->get(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 		$view->setTemplatePathAndFilename($templatePathAndFilename);
 		$view->setFormat('html');
 
