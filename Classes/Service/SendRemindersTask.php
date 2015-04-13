@@ -42,12 +42,11 @@ class SendRemindersTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 		// Current running Scheduler
 		/** @var \Subugoe\Schulungen\Service\SendRemindersTaskLogic $reminder */
-		$reminder = GeneralUtility::makeInstance('Subugoe\\Schulungen\\Service\\SendRemindersTaskLogic');
+		$reminder = GeneralUtility::makeInstance(\Subugoe\Schulungen\Service\SendRemindersTaskLogic::class);
 		$reminder->execute($this);
 		return TRUE;
 
 	}
-
 
 	/**
 	 * Suche aller anstehenden Schulungen
@@ -59,27 +58,29 @@ class SendRemindersTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 				'*', //WHAT
 				'tx_schulungen_domain_model_termin', //FROM
 				'WHERE erinnerungenverschickt = 0 AND abgesagt = 0 AND  TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) >=0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) <2', //WHERE
-				'', '', //ORDER BY
+				'',
+				'', //ORDER BY
 				'' //LIMIT
 		);
 		while ($termin = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$this->terminModel = GeneralUtility::makeInstance('Subugoe\\Schulungen\\Domain\\Model\\Termin');
+			$this->terminModel = GeneralUtility::makeInstance(\Subugoe\Schulungen\Domain\Model\Termin::class);
 			$this->getTeilnehmer($termin['uid']);
 		}
 
-		return true;
+		return TRUE;
 	}
 
 	/**
 	 * Auswahl der Teilnehmer pro Schulung
-	 * @param type $schulungstermin
+	 * @param $schulungstermin
 	 */
 	private function getTeilnehmer($schulungstermin) {
 		$teilnehmerquery = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'*', //WHAT
 				'tx_schulungen_domain_model_teilnehmer', //FROM
 				'WHERE termin = ' . $schulungstermin, //WHERE
-				'', '', //ORDER BY
+				'',
+				'', //ORDER BY
 				'' //LIMIT
 		);
 		while ($teilnehmer = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($teilnehmerquery)) {
@@ -89,10 +90,15 @@ class SendRemindersTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
 	/**
 	 * Senden der E-Mail
-	 * @param type $teilnehmer
+	 * @param $teilnehmer
 	 * @return boolean
 	 */
 	private function sendeErinnerungsMail($teilnehmer) {
-		return $this->mail->sendeSchedulerMail($teilnehmer, 'info@sub.uni-goettingen.de', 'Schulungserinnerung', 'Erinnerung an Ihre Veranstaltung');
+		return $this->mail->sendeSchedulerMail(
+				$teilnehmer,
+				'info@sub.uni-goettingen.de',
+				'Schulungserinnerung',
+				'Erinnerung an Ihre Veranstaltung'
+		);
 	}
 }

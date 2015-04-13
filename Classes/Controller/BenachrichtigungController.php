@@ -1,5 +1,6 @@
 <?php
 namespace Subugoe\Schulungen\Controller;
+
 /* * *************************************************************
  *  Copyright notice
  *
@@ -42,12 +43,27 @@ class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 	 * @inject
 	 */
 	protected $teilnehmerRepository;
-	/* 
+
+	/*
 	 * 0 = normale Erinnerung
 	 * 1 = zu wenig Teilnehmer
 	 * 2 = Termin wurde gecanceled
 	 */
-	private $mailType = array('Reminder', 'ReminderParticipation', 'ReminderCancelation');
+	protected $mailType = [
+			'Reminder',
+			'ReminderParticipation',
+			'ReminderCancelation'
+	];
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+	 */
+	protected $objectManager;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+	 */
+	protected $persistenceManager;
 
 	/**
 	 * Initializes the current action
@@ -55,17 +71,24 @@ class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 	 * @return void
 	 */
 	protected function initializeAction() {
-		$configurationManager = $this->configurationManager;
+
+		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager objectManager */
+		$this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
+
 		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$this->settings = $extbaseFrameworkConfiguration;
 
-		$this->persistenceManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence_Manager');
-		$this->terminRepository = $this->objectManager->get('Subugoe\\Schulungen\\Domain\\Repository\\TerminRepository');
-		$this->teilnehmerRepository = $this->objectManager->get('Subugoe\\Schulungen\\Domain\\Repository\\TeilnehmerRepository');
+		$this->persistenceManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
+		$this->terminRepository = $this->objectManager->get(\Subugoe\Schulungen\Domain\Repository\TerminRepository::class);
+		$this->teilnehmerRepository = $this->objectManager->get(\Subugoe\Schulungen\Domain\Repository\TeilnehmerRepository::class);
 	}
 
 	/**
 	 * Action für den Scheduler: Berechnung der anstehenden Termine plus Mailversand an betroffene Teilnehmer
+	 *
+	 * @return bool
 	 */
 	public function sendeBenachrichtigungAction() {
 
@@ -76,12 +99,19 @@ class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 			if ($erinnerungsTermin->getErinnerungenVerschickt() == FALSE) {
 				$result = $this->verschickeMailAnTeilnehmer($erinnerungsTermin->getTeilnehmer(), $erinnerungsTermin, TRUE);
 			} else {
-				GeneralUtility::devLog('Reminder mails already sent.', 'schulungen', 0);
+				GeneralUtility::devLog(
+						'Reminder mails already sent.',
+						'schulungen',
+						0
+				);
 			}
 		}
 
 		if (count($anstehendeTermine) === 0) {
-			GeneralUtility::devLog('No Schulungen the next two days.', 'schulungen', 0);
+			GeneralUtility::devLog(
+					'No seminars for the next two days.',
+					'schulungen',
+					0);
 		}
 
 		return TRUE;
@@ -103,8 +133,13 @@ class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 	 *
 	 * Wegen Problemen mit der Darstellung der flashMessages (BE-Aufruf)
 	 * lassen sich diese über das $silent-Flag abschalten
+	 *
+	 * @param $teilnehmer
+	 * @param \Subugoe\Schulungen\Domain\Model\Termin $termin
+	 * @param bool $silent
+	 * @return bool
 	 */
-	private function verschickeMailAnTeilnehmer($teilnehmer, &$termin, $silent = FALSE) {
+	protected function verschickeMailAnTeilnehmer($teilnehmer, &$termin, $silent = FALSE) {
 
 		$fail = FALSE;
 		$mailType = 0;
@@ -130,10 +165,18 @@ class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 
 			if ($result) {
 				if (!$silent) $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.success', 'schulungen') . $person->getEmail());
-				GeneralUtility::devLog('Reminder mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' successfully sent.', 'schulungen', -1);
+				GeneralUtility::devLog(
+						'Reminder mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' successfully sent.',
+						'schulungen',
+						-1
+				);
 			} else {
 				if (!$silent) $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.fail', 'schulungen'));
-				GeneralUtility::devLog('Reminder mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' failed to send!', 'schulungen', 3);
+				GeneralUtility::devLog(
+						'Reminder mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' failed to send!',
+						'schulungen',
+						3
+				);
 				$fail = TRUE;
 			}
 		}
@@ -143,21 +186,29 @@ class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 			$termin->setErinnerungenVerschickt(TRUE);
 
 			/* Transaktionsmail an Admin/Redakteur */
-			$mail = $this->objectManager->get('Subugoe\\Schulungen\\Controller\\EmailController');
+			$mail = $this->objectManager->get(\Subugoe\Schulungen\Controller\EmailController::class);
 			$result = $mail->sendeTransactionMail($this->settings['mail']['fromMail'], $this->settings['mail']['fromName'], LocalizationUtility::translate('tx_schulungen_email_versand.transaction_title', 'schulungen'), '',
-				array("teilnehmer" => $teilnehmer,
-					"action" => LocalizationUtility::translate('tx_schulungen_email_versand.mail_type.' . $mailType, 'schulungen'),
-					"schulung" => $schulung->getTitel(),
-					"termin" => $termin->getStartzeit(),
-					"ende" => $termin->getEnde()
-				)
+					array('teilnehmer' => $teilnehmer,
+							'action' => LocalizationUtility::translate('tx_schulungen_email_versand.mail_type.' . $mailType, 'schulungen'),
+							'schulung' => $schulung->getTitel(),
+							'termin' => $termin->getStartzeit(),
+							'ende' => $termin->getEnde()
+					)
 			);
 			if ($result) {
 				if (!$silent) $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.success', 'schulungen') . $person->getEmail());
-				GeneralUtility::devLog('Transaction mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') successfully sent!', 'schulungen', -1);
+				GeneralUtility::devLog(
+						'Transaction mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') successfully sent!',
+						'schulungen',
+						-1
+				);
 			} else {
 				if (!$silent) $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.fail', 'schulungen'));
-				GeneralUtility::devLog('Transaction mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') failed to send!', 'schulungen', 3);
+				GeneralUtility::devLog(
+						'Transaction mail ("' . substr($schulung->getTitel(), 0, 20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') failed to send!',
+						'schulungen',
+						3
+				);
 			}
 		}
 		$this->persistenceManager->persistAll();
@@ -165,11 +216,12 @@ class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 		return !$fail; // returns TRUE, wenn alle Nachrichten erfolgreich versendet wurden
 	}
 
-	private function sendeMail(\Subugoe\Schulungen\Domain\Model\Teilnehmer $tn, $type, $cc) {
+	protected function sendeMail(\Subugoe\Schulungen\Domain\Model\Teilnehmer $tn, $type, $cc) {
 
 		$termin = $tn->getTermin();
 		$schulung = $termin->getSchulung();
-		$mail = $this->objectManager->get('Subugoe\\Schulungen\\Controller\\EmailController');
+		/** @var \Subugoe\Schulungen\Controller\EmailController $mail */
+		$mail = $this->objectManager->get(\Subugoe\Schulungen\Controller\EmailController::class);
 
 		$mailcopy = array();
 		$contacts = $schulung->getContact();
@@ -177,20 +229,25 @@ class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 			array_push($mailcopy, $contact->getEmail());
 		}
 
-		$result = $mail->sendeMail($tn->getEmail(), $this->settings['mail']['fromMail'], $this->settings['mail']['fromName'], LocalizationUtility::translate('tx_schulungen_email_versand.reminder_title', 'schulungen'), $this->mailType[$type],
-			array(
-				"vorname" => $tn->getVorname(),
-				"nachname" => $tn->getNachname(),
-				"studienfach" => $tn->getStudienfach(),
-				"bemerkung" => $tn->getBemerkung(),
-				"start" => $termin->getStartzeit(),
-				"ende" => $termin->getEnde(),
-				"schulung" => $schulung->getTitel(),
-				"identifier" => $tn->getSecret(),
-				"contact" => $mailcopy[0],
-				"mailcopy" => $mailcopy,
-				"copy" => $cc
-			)
+		$result = $mail->sendeMail(
+				$tn->getEmail(),
+				$this->settings['mail']['fromMail'],
+				$this->settings['mail']['fromName'],
+				LocalizationUtility::translate('tx_schulungen_email_versand.reminder_title', 'schulungen'),
+				$this->mailType[$type],
+				[
+						'vorname' => $tn->getVorname(),
+						'nachname' => $tn->getNachname(),
+						'studienfach' => $tn->getStudienfach(),
+						'bemerkung' => $tn->getBemerkung(),
+						'start' => $termin->getStartzeit(),
+						'ende' => $termin->getEnde(),
+						'schulung' => $schulung->getTitel(),
+						'identifier' => $tn->getSecret(),
+						'contact' => $mailcopy[0],
+						'mailcopy' => $mailcopy,
+						'copy' => $cc
+				]
 		);
 
 		return $result;

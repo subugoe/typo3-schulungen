@@ -43,13 +43,13 @@ class EmailController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 * @return boolean
 	 */
 	public function sendeMail($recipient, $sender, $senderName, $subject, $templateName, array $variables = array()) {
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
 		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
 		$templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
 
 		$templatePathAndFilename = $templateRootPath . 'Email/' . $templateName . '.html';
-		$emailView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+		$emailView = $this->objectManager->get(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 		$emailView->setTemplatePathAndFilename($templatePathAndFilename);
 
 		$emailView->setFormat('html');
@@ -61,7 +61,7 @@ class EmailController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 		// Wir nutzen den Swiftmailer
 		/** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
-		$mail = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+		$mail = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
 
 		$mail->setFrom($sender);
 
@@ -94,7 +94,7 @@ class EmailController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 * @return boolean
 	 */
 	public function sendeTransactionMail($sender, $senderName, $subject, $templateName, array $variables = array()) {
-		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
 		$templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
 		if (strlen($templateName) == 0) {
@@ -103,7 +103,7 @@ class EmailController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 			$templatePathAndFilename = $templateRootPath . 'Email/' . $templateName . '.html';
 		}
 		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $emailView */
-		$emailView = $this->objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+		$emailView = $this->objectManager->get(\TYPO3\CMS\Fluid\View\StandaloneView::class);
 		$emailView->setTemplatePathAndFilename($templatePathAndFilename);
 
 		$emailView->setFormat('html');
@@ -115,7 +115,7 @@ class EmailController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 		// Wir nutzen den Swiftmailer
 		/** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
-		$mail = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+		$mail = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
 
 		$mail->setFrom($sender);
 
@@ -148,7 +148,7 @@ class EmailController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		$return = false;
 
 		/** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
-		$mail = $this->objectManager->get('TYPO3\\CMS\\Core\\Mail\\MailMessage');
+		$mail = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
 
 		$mail->setFrom($sender);
 

@@ -41,13 +41,21 @@ class SendRemindersTaskLogic extends \TYPO3\CMS\Extbase\Core\Bootstrap {
 		$this->initRepositories();
 
 		$success = true;
-		$this->benachrichtigung = GeneralUtility::makeInstance('tx_schulungen_controller_benachrichtigungcontroller');
+		$this->benachrichtigung = GeneralUtility::makeInstance(\Subugoe\Schulungen\Controller\BenachrichtigungController::class);
 		$this->benachrichtigung->config['mail'] = $this->mailConfig;
 		$success = $this->benachrichtigung->sendeBenachrichtigungAction();
 		if (!$success) {
-			GeneralUtility::devLog('SendReminder-Task: Problem during execution. Stopping.', 'schulungen', 3);
+			GeneralUtility::devLog(
+					'SendReminder-Task: Problem during execution. Stopping.',
+					'schulungen',
+					3
+			);
 		} else {
-			GeneralUtility::devLog('SendReminder-Task: Successfully executed.', 'schulungen', -1);
+			GeneralUtility::devLog(
+					'SendReminder-Task: Successfully executed.',
+					'schulungen',
+					-1
+			);
 		}
 
 		return $success;
@@ -70,9 +78,9 @@ class SendRemindersTaskLogic extends \TYPO3\CMS\Extbase\Core\Bootstrap {
 	}
 
 	protected function initRepositories() {
-		$this->schulungRepository = $this->objectManager->get('Subugoe\\Schulungen\\Domain\\Repository\\SchulungRepository');
-		$this->teilnehmerRepository = $this->objectManager->get('Subugoe\\Schulungen\\Domain\\Repository\\TeilnehmerRepository');
-		$this->terminRepository = $this->objectManager->get('Subugoe\\Schulungen\\Domain\\Repository\\TerminRepository');
+		$this->schulungRepository = $this->objectManager->get(\Subugoe\Schulungen\Domain\Repository\SchulungRepository::class);
+		$this->teilnehmerRepository = $this->objectManager->get(\Subugoe\Schulungen\Domain\Repository\TeilnehmerRepository::class);
+		$this->terminRepository = $this->objectManager->get(\Subugoe\Schulungen\Domain\Repository\TerminRepository::class);
 	}
 
 }
