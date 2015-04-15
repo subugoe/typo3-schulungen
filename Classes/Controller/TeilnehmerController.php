@@ -26,6 +26,7 @@ namespace Subugoe\Schulungen\Controller;
  * ************************************************************* */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -245,13 +246,14 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	/**
 	 * De-Registration of a Teilnehmer by Mail-Notification
 	 *
-	 * @param $identifier int Teilnehmer to be de-registered
+	 * @param array $identifier Teilnehmer to be de-registered
+	 * @ignorevalidation $identifier
 	 * @return void
 	 */
 	public function deregisterAction($identifier) {
 		$time_format = LocalizationUtility::translate('tx_schulungen_format.date', 'schulungen');
 		$now = new \DateTime("now");
-		GeneralUtility::devlog("De-Registration: Passed value " . $identifier, "Schulungen", 1, $identifier);
+		GeneralUtility::devlog("De-Registration: Passed value " . $identifier[0], "Schulungen", 1, $identifier);
 		if (count($teilnehmer = $this->teilnehmerRepository->findOneBySecret($identifier[0])) > 0) {
 			$schulung = $teilnehmer->getTermin()->getSchulung();
 
@@ -289,7 +291,7 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 				$this->view->assign('status', 'success');
 			} else {
 				$flashMsg = LocalizationUtility::translate('tx_schulungen_domain_model_teilnehmer.deregister.fail.flash', 'schulungen');
-				$this->flashMessageContainer->add(str_replace('###TEILNEHMER###', $teilnehmer->getVorname() . ' ' . $teilnehmer->getNachname() . ' (' . $teilnehmer->getEmail() . ')', $flashMsg));
+				$this->addFlashMessage(str_replace('###TEILNEHMER###', $teilnehmer->getVorname() . ' ' . $teilnehmer->getNachname() . ' (' . $teilnehmer->getEmail() . ')', $flashMsg));
 				$this->addFlashMessage(str_replace('###TEILNEHMER###', $teilnehmer->getVorname() . ' ' . $teilnehmer->getNachname() . ' (' . $teilnehmer->getEmail() . ')', $flashMsg));
 				$this->view->assign('status', 'fail');
 			}

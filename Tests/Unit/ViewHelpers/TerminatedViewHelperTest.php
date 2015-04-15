@@ -6,7 +6,7 @@ namespace Subugoe\Schulungen\Texts\ViewHelpers;
  *
  *  (c) 2013 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
  *      Goettingen State Library
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -39,7 +39,7 @@ class TerminatedViewHelperTest extends ViewHelperBaseTestcase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->fixture = $this->getAccessibleMock('Subugoe\\Schulungen\\ViewHelpers\\TerminatedViewHelper', array());
+		$this->fixture = $this->getAccessibleMock(\Subugoe\Schulungen\ViewHelpers\TerminatedViewHelper::class, []);
 	}
 
 	/**
@@ -51,4 +51,4 @@ class TerminatedViewHelperTest extends ViewHelperBaseTestcase {
 		$this->assertSame($expected, $actual);
 	}
 
-} 
+}
