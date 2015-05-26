@@ -23,17 +23,18 @@ namespace Subugoe\Schulungen\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Klasse zur Berechnung der vergangenen Termine
+ * Calculating already passed events
  */
-class TerminatedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class TerminatedViewHelper extends AbstractViewHelper {
 
 	/**
-	 * Berechnet, ob der übergebene Termin schon verstrichen ist
+	 * Calculates if a date is already passed
 	 *
-	 * @param \DateTime $time Startzeitpunkt des Termin
-	 * @return $result Ended bald: true/false
+	 * @param \DateTime $time Starting time of the event
+	 * @return bool $result ending soon?
 	 */
 	public function render($time) {
 
@@ -41,9 +42,9 @@ class TerminatedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractView
 		$currentTime->setTimestamp(time());
 
 		if ($currentTime < $time) {
-			return $result = false;
+			return $result = FALSE;
 		} else {
-			return $result = true;
+			return $result = TRUE;
 		}
 	}
 

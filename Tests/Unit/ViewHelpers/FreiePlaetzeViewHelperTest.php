@@ -1,10 +1,10 @@
 <?php
-namespace Subugoe\Schulungen\Texts\ViewHelpers;
+namespace Subugoe\Schulungen\Tests\Unit\ViewHelpers;
 
 /* * *************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
+ *  (c) 2015 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
  *      Goettingen State Library
  *
  *  All rights reserved
@@ -25,44 +25,43 @@ namespace Subugoe\Schulungen\Texts\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
-
-use Subugoe\Schulungen\ViewHelpers\TerminatedViewHelper;
+use Subugoe\Schulungen\ViewHelpers\FreiePlaetzeViewHelper;
 use TYPO3\CMS\Core\Tests\BaseTestCase;
 
-class TerminatedViewHelperTest extends BaseTestCase {
+/**
+ * Testing spare seats viewhelper
+ */
+class FreiePlaetzeViewHelperTest extends BaseTestCase {
 
 	/**
-	 * @var TerminatedViewHelper
+	 * @var FreiePlaetzeViewHelper
 	 */
 	protected $fixture;
 
-	/**
-	 * @return void
-	 */
-	public function setUp() {
-		$this->fixture = $this->getMock(TerminatedViewHelper::class, ['dummy']);
+	public function setUp () {
+		$this->fixture = $this->getMock(FreiePlaetzeViewHelper::class, ['dummy']);
 	}
 
 	/**
+	 * @return array
+	 */
+	public function spareParticipantsProvider() {
+		return [
+			[20, 5, 15],
+			[5, 20, 0],
+			[0, 0, 0]
+		];
+	}
+
+	/**
+	 * @dataProvider spareParticipantsProvider
+	 *
 	 * @test
+	 * @param $maxPlaetze
+	 * @param $belegtePlaetze
+	 * @param $expected
 	 */
-	public function currentTimeIsNotLowerThanProvidedTime() {
-		$actual = new \DateTime('now');
-		$actual->add(\DateInterval::createFromDateString('9 days'));
-
-		$expected = FALSE;
-		$this->assertSame($expected, $this->fixture->render($actual));
+	public function numberOfLeftPlacesIsCorrectlyCalculated($maxPlaetze, $belegtePlaetze, $expected) {
+		$this->assertSame($expected, $this->fixture->render($maxPlaetze, $belegtePlaetze));
 	}
-
-	/**
-	 * @test
-	 */
-	public function passedTimeIsLowerThanCurrentTime() {
-		$actual = new \DateTime('now');
-		$actual->sub(\DateInterval::createFromDateString('9 days'));
-
-		$expected = TRUE;
-		$this->assertSame($expected, $this->fixture->render($actual));
-	}
-
 }

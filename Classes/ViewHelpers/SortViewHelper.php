@@ -25,11 +25,14 @@ namespace Subugoe\Schulungen\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
- * Helper-Class for automatical flexform inclusion
+ * Sort ViewHelper
  */
-class SortViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
+class SortViewHelper extends AbstractTagBasedViewHelper {
 
 	private $orderBy;
 	private $order;
@@ -37,19 +40,18 @@ class SortViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
 	/**
 	 * Sorts the given elements
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects
+	 * @param ObjectStorage $objects
 	 * @param string $orderBy
-	 * @param string $order
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage sorted Objects
-	 * @api
+	 * @param string $order ASCor DESC
+	 * @return ObjectStorage sorted Objects
 	 */
-	public function render(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objects, $orderBy = NULL, $order = NULL) {
+	public function render(ObjectStorage $objects, $orderBy = NULL, $order = NULL) {
 
 		$this->orderBy = $orderBy;
 		$this->order = $order;
 
-		$sort_objects = $this->sortObjectStorage($objects);
-		return $sort_objects;
+		$sortObjects = $this->sortObjectStorage($objects);
+		return $sortObjects;
 	}
 
 	/**
@@ -58,18 +60,18 @@ class SortViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
 	 */
 	protected function sortObjectStorage($storage) {
 
-		$sorted_array = array();
+		$sortedArray = [];
 		foreach ($storage as $item) {
-			$sorted_array[] = $item;
+			$sortedArray[] = $item;
 		}
 
-		usort($sorted_array, array($this, compare));
-		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-		$objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		usort($sortedArray, [$this, 'compare']);
+		/** @var ObjectManager $objectManager */
+		$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
 
-		/** @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage $sorted_storage */
-		$sorted_storage = $objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
-		foreach ($sorted_array as $item) {
+		/** @var ObjectStorage $sorted_storage */
+		$sorted_storage = $objectManager->get(ObjectStorage::class);
+		foreach ($sortedArray as $item) {
 			$sorted_storage->attach($item);
 		}
 
@@ -86,8 +88,9 @@ class SortViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedVi
 		if ($this->getSortValue($object1) == $this->getSortValue($object2)) {
 			return 0;
 		}
-		if ($this->order === 'ASC')
+		if ($this->order === 'ASC') {
 			return ($this->getSortValue($object1) < $this->getSortValue($object2)) ? -1 : 1;
+		}
 
 		return ($this->getSortValue($object1) > $this->getSortValue($object2)) ? -1 : 1;
 	}

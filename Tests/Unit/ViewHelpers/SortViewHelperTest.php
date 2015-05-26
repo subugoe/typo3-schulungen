@@ -1,10 +1,10 @@
 <?php
-namespace Subugoe\Schulungen\Texts\ViewHelpers;
+namespace Subugoe\Schulungen\Tests\Unit\ViewHelpers;
 
 /* * *************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
+ *  (c) 2015 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
  *      Goettingen State Library
  *
  *  All rights reserved
@@ -25,44 +25,42 @@ namespace Subugoe\Schulungen\Texts\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
-
-use Subugoe\Schulungen\ViewHelpers\TerminatedViewHelper;
+use Subugoe\Schulungen\ViewHelpers\SortViewHelper;
 use TYPO3\CMS\Core\Tests\BaseTestCase;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
-class TerminatedViewHelperTest extends BaseTestCase {
+/**
+ * Testing sort viewhelper
+ */
+class SortViewHelperTest extends BaseTestCase {
 
 	/**
-	 * @var TerminatedViewHelper
+	 * @var SortViewHelper
 	 */
 	protected $fixture;
 
 	/**
-	 * @return void
+	 * @var ObjectStorage
 	 */
-	public function setUp() {
-		$this->fixture = $this->getMock(TerminatedViewHelper::class, ['dummy']);
+	protected $objectStorage;
+
+	public function setUp () {
+		$this->fixture = $this->getMock(SortViewHelper::class, ['dummy']);
+		$this->objectStorage = $this->getMock(ObjectStorage::class, ['dummy']);
 	}
 
 	/**
 	 * @test
 	 */
-	public function currentTimeIsNotLowerThanProvidedTime() {
-		$actual = new \DateTime('now');
-		$actual->add(\DateInterval::createFromDateString('9 days'));
+	public function ObjectsAreSortedCorrectly() {
+		$objects = $this->objectStorage;
+		$objects->attach(new \stdClass());
+		$orderBy = NULL;
+		$order = NULL;
+		$expected = NULL;
 
-		$expected = FALSE;
-		$this->assertSame($expected, $this->fixture->render($actual));
+		$this->markTestIncomplete();
+		$this->assertSame($expected, $this->fixture->render($objects, $orderBy, $order));
+
 	}
-
-	/**
-	 * @test
-	 */
-	public function passedTimeIsLowerThanCurrentTime() {
-		$actual = new \DateTime('now');
-		$actual->sub(\DateInterval::createFromDateString('9 days'));
-
-		$expected = TRUE;
-		$this->assertSame($expected, $this->fixture->render($actual));
-	}
-
 }

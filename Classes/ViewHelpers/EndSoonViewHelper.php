@@ -23,19 +23,20 @@ namespace Subugoe\Schulungen\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Klasse zur Berechnung der nächsten Termine
+ * Calculates the next dates
  *
  * @author dsimm
  */
-class EndSoonViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class EndSoonViewHelper extends AbstractViewHelper {
 
 	/**
-	 * Berechnet, ob der übergebene Termin in den nächsten 2 Tage stattfindet
+	 * Calculating if the date will be in the next two days
 	 *
-	 * @param \DateTime $time Startzeitpunkt des Termin
-	 * @return $result Ended bald: true/false
+	 * @param \DateTime $time startingtime of the date
+	 * @return bool $result
 	 */
 	public function render($time) {
 

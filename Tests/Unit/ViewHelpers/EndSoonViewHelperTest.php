@@ -4,7 +4,7 @@ namespace Subugoe\Schulungen\Texts\ViewHelpers;
 /* * *************************************************************
  *  Copyright notice
  *
- *  (c) 2013 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
+ *  (c) 2015 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
  *      Goettingen State Library
  *
  *  All rights reserved
@@ -26,13 +26,13 @@ namespace Subugoe\Schulungen\Texts\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use Subugoe\Schulungen\ViewHelpers\TerminatedViewHelper;
+use Subugoe\Schulungen\ViewHelpers\EndSoonViewHelper;
 use TYPO3\CMS\Core\Tests\BaseTestCase;
 
-class TerminatedViewHelperTest extends BaseTestCase {
+class EndSoonViewHelperTest extends BaseTestCase {
 
 	/**
-	 * @var TerminatedViewHelper
+	 * @var EndSoonViewHelper
 	 */
 	protected $fixture;
 
@@ -40,29 +40,41 @@ class TerminatedViewHelperTest extends BaseTestCase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->fixture = $this->getMock(TerminatedViewHelper::class, ['dummy']);
+		$this->fixture = $this->getMock(EndSoonViewHelper::class, ['dummy']);
+	}
+
+	public function nextTwoDaysProvider() {
+		return [
+			[
+				function() {
+					$date = new \DateTime();
+					return $date;
+				},
+				FALSE
+			],
+			[
+				function() {
+					$date = new \DateTime();
+					return $date->add(\DateInterval::createFromDateString('2 days'));
+				},
+				TRUE
+			],
+			[
+				function() {
+					$date = new \DateTime();
+					return $date->sub(\DateInterval::createFromDateString('2 days'));
+				},
+				FALSE
+			]
+		];
 	}
 
 	/**
+	 * @dataProvider nextTwoDaysProvider
 	 * @test
 	 */
-	public function currentTimeIsNotLowerThanProvidedTime() {
-		$actual = new \DateTime('now');
-		$actual->add(\DateInterval::createFromDateString('9 days'));
-
-		$expected = FALSE;
-		$this->assertSame($expected, $this->fixture->render($actual));
-	}
-
-	/**
-	 * @test
-	 */
-	public function passedTimeIsLowerThanCurrentTime() {
-		$actual = new \DateTime('now');
-		$actual->sub(\DateInterval::createFromDateString('9 days'));
-
-		$expected = TRUE;
-		$this->assertSame($expected, $this->fixture->render($actual));
+	public function dateIsInTheNextTwoDays($time, $expected) {
+		$this->assertSame($expected, $this->fixture->render($time()));
 	}
 
 }

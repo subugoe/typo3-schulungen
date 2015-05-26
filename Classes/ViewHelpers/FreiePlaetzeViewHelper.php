@@ -23,25 +23,23 @@ namespace Subugoe\Schulungen\ViewHelpers;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Klasse zur Berechnung der noch zur Verfuegung stehenden freien Plaetze pro Termin
+ * Calculating number of left participants
  */
-class FreiePlaetzeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class FreiePlaetzeViewHelper extends AbstractViewHelper {
 
 	/**
-	 * Berechnet die Anzahl der freien Plaetze
-	 *
-	 * @param int $maxPlaetze Die maximale Anzahl der Plaetze
+	 * @param int $maxPlaetze Maximum number of participants
 	 * @param int $belegtePlaetze Bereits belegte Plaetze
-	 * @return $freiePlaetze Anzahl der noch freien Plaetze
+	 * @return int $freiePlaetze Anzahl der noch freien Plaetze
 	 */
 	public function render($maxPlaetze, $belegtePlaetze) {
 
-		$belegtPlaetze = 0;
+		$freiePlaetze = 0;
 
-		if ($belegtPlaetze < $maxPlaetze) {
-
+		if ($belegtePlaetze < $maxPlaetze) {
 			$freiePlaetze = (intval($maxPlaetze) - intval($belegtePlaetze));
 		}
 
