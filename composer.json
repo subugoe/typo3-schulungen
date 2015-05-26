@@ -1,0 +1,15 @@
+{
+    "name": "subugoe/schulungen",
+    "description": "Seminars module",
+    "type": "typo3-cms-extension",
+    "require-dev": {
+        "phpunit/phpunit": "~4.6"
+    },
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Ingo Pfennigstorf",
+            "email": "i.pfennigstorf@gmail.com"
+        }
+    ]
+}

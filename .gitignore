@@ -7,3 +7,5 @@ build/coverage
 build/logs
 build/pdepend
 
+
+/vendor/
