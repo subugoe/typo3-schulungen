@@ -23,14 +23,22 @@ namespace Subugoe\Schulungen\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use Subugoe\Schulungen\Domain\Model\Teilnehmer;
+use Subugoe\Schulungen\Domain\Model\Termin;
+use Subugoe\Schulungen\Domain\Repository\TerminRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Zentraler Controller fuer das Versenden von Benachrichtigungen
  * Funktioniert mit unterschiedlichen Methoden im Extbase Kontext und im Scheduler
  */
-class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class BenachrichtigungController extends ActionController {
 
 	/**
 	 * @var \Subugoe\Schulungen\Domain\Repository\TerminRepository
@@ -56,12 +64,12 @@ class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 	];
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+	 * @var ObjectManager
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+	 * @var PersistenceManager
 	 */
 	protected $persistenceManager;
 
@@ -72,17 +80,17 @@ class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 	 */
 	protected function initializeAction() {
 
-		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager objectManager */
-		$this->objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+		/** @var ObjectManager objectManager */
+		$this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
 
-		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
+		$configurationManager = $this->objectManager->get(ConfigurationManager::class);
 
-		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$this->settings = $extbaseFrameworkConfiguration;
 
-		$this->persistenceManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
-		$this->terminRepository = $this->objectManager->get(\Subugoe\Schulungen\Domain\Repository\TerminRepository::class);
-		$this->teilnehmerRepository = $this->objectManager->get(\Subugoe\Schulungen\Domain\Repository\TeilnehmerRepository::class);
+		$this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
+		$this->terminRepository = $this->objectManager->get(TerminRepository::class);
+		$this->teilnehmerRepository = $this->objectManager->get(Teilnehmer::class);
 	}
 
 	/**
@@ -95,9 +103,10 @@ class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 		$this->initializeAction();
 		$anstehendeTermine = $this->terminRepository->errechneAnstehendeTermine();
 
+		/** @var Termin $erinnerungsTermin */
 		foreach ($anstehendeTermine as $erinnerungsTermin) {
 			if ($erinnerungsTermin->getErinnerungenVerschickt() == FALSE) {
-				$result = $this->verschickeMailAnTeilnehmer($erinnerungsTermin->getTeilnehmer(), $erinnerungsTermin, TRUE);
+				$this->verschickeMailAnTeilnehmer($erinnerungsTermin->getTeilnehmer(), $erinnerungsTermin, TRUE);
 			} else {
 				GeneralUtility::devLog(
 						'Reminder mails already sent.',
@@ -119,6 +128,9 @@ class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 
 	/**
 	 * Action für das Backend: Einfacher Mailversand bei Ab/-Zusage von Schulungsterminen
+	 * @param Teilnehmer $teilnehmer
+	 * @param Termin $termin
+	 * @param mixed $obj
 	 */
 	public function sendeBenachrichtigungSofortAction($teilnehmer, $termin, &$obj) {
 		$this->initializeAction();
@@ -134,8 +146,8 @@ class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 	 * Wegen Problemen mit der Darstellung der flashMessages (BE-Aufruf)
 	 * lassen sich diese über das $silent-Flag abschalten
 	 *
-	 * @param $teilnehmer
-	 * @param \Subugoe\Schulungen\Domain\Model\Termin $termin
+	 * @param mixed $teilnehmer
+	 * @param Termin $termin
 	 * @param bool $silent
 	 * @return bool
 	 */
@@ -144,6 +156,8 @@ class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 		$fail = FALSE;
 		$mailType = 0;
 		$schulung = $termin->getSchulung();
+
+		/** @var Teilnehmer $person */
 		foreach ($teilnehmer as $person) {
 			if (!$termin->isAbgesagt()) {
 				if ($termin->getAnzahlTeilnehmer() >= $schulung->getTeilnehmerMin()) {
@@ -186,14 +200,14 @@ class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 			$termin->setErinnerungenVerschickt(TRUE);
 
 			/* Transaktionsmail an Admin/Redakteur */
-			$mail = $this->objectManager->get(\Subugoe\Schulungen\Controller\EmailController::class);
+			$mail = $this->objectManager->get(EmailController::class);
 			$result = $mail->sendeTransactionMail($this->settings['mail']['fromMail'], $this->settings['mail']['fromName'], LocalizationUtility::translate('tx_schulungen_email_versand.transaction_title', 'schulungen'), '',
-					array('teilnehmer' => $teilnehmer,
+					['teilnehmer' => $teilnehmer,
 							'action' => LocalizationUtility::translate('tx_schulungen_email_versand.mail_type.' . $mailType, 'schulungen'),
 							'schulung' => $schulung->getTitel(),
 							'termin' => $termin->getStartzeit(),
 							'ende' => $termin->getEnde()
-					)
+					]
 			);
 			if ($result) {
 				if (!$silent) $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.success', 'schulungen') . $person->getEmail());
@@ -216,14 +230,21 @@ class BenachrichtigungController extends \TYPO3\CMS\Extbase\Mvc\Controller\Actio
 		return !$fail; // returns TRUE, wenn alle Nachrichten erfolgreich versendet wurden
 	}
 
-	protected function sendeMail(\Subugoe\Schulungen\Domain\Model\Teilnehmer $tn, $type, $cc) {
+	/**
+	 * @param Teilnehmer $tn
+	 * @param $type
+	 * @param $cc
+	 * @return bool
+	 * @throws \Exception
+	 */
+	protected function sendeMail(Teilnehmer $tn, $type, $cc) {
 
 		$termin = $tn->getTermin();
 		$schulung = $termin->getSchulung();
 		/** @var \Subugoe\Schulungen\Controller\EmailController $mail */
 		$mail = $this->objectManager->get(\Subugoe\Schulungen\Controller\EmailController::class);
 
-		$mailcopy = array();
+		$mailcopy = [];
 		$contacts = $schulung->getContact();
 		foreach ($contacts as $contact) {
 			array_push($mailcopy, $contact->getEmail());

@@ -5,7 +5,7 @@ namespace Subugoe\Schulungen\Domain\Model;
  *
  *  (c) 2012 Dominic Simm <dominic.simm@sub.goettingen.de>
  *      Goettingen State Library
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,13 +24,14 @@ namespace Subugoe\Schulungen\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * Model for Persons as mapped by tt_address table
  *
  * @author Dominic Simm <dominic.simm@sub.goettingen.de>, Goettingen State Library
  */
-class Person extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Person extends AbstractEntity {
 
 	/**
 	 * @var string

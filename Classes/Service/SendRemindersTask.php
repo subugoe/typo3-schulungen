@@ -24,15 +24,36 @@ namespace Subugoe\Schulungen\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use Subugoe\Schulungen\Controller\EmailController;
+use Subugoe\Schulungen\Domain\Model\Termin;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
  * Reminder an die Teilnehmer versenden
  */
-class SendRemindersTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
+class SendRemindersTask extends AbstractTask {
 
+	/**
+	 * @var EmailController
+	 */
 	private $mail;
+
+	/**
+	 * @var Termin
+	 */
 	private $terminModel;
+
+	/**
+	 * @var DatabaseConnection
+	 */
+	protected $db;
+
+	public function __construct() {
+		parent::__construct();
+		$this->db = $GLOBALS['TYPO3_DB'];
+	}
 
 	/**
 	 * Method executed from the Scheduler.
@@ -41,8 +62,8 @@ class SendRemindersTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	public function execute() {
 
 		// Current running Scheduler
-		/** @var \Subugoe\Schulungen\Service\SendRemindersTaskLogic $reminder */
-		$reminder = GeneralUtility::makeInstance(\Subugoe\Schulungen\Service\SendRemindersTaskLogic::class);
+		/** @var SendRemindersTaskLogic $reminder */
+		$reminder = GeneralUtility::makeInstance(SendRemindersTaskLogic::class);
 		$reminder->execute($this);
 		return TRUE;
 
@@ -54,7 +75,7 @@ class SendRemindersTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 */
 	public function getTermine() {
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$res = $this->db->exec_SELECTquery(
 				'*', //WHAT
 				'tx_schulungen_domain_model_termin', //FROM
 				'WHERE erinnerungenverschickt = 0 AND abgesagt = 0 AND  TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) >=0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) <2', //WHERE
@@ -62,8 +83,8 @@ class SendRemindersTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 				'', //ORDER BY
 				'' //LIMIT
 		);
-		while ($termin = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$this->terminModel = GeneralUtility::makeInstance(\Subugoe\Schulungen\Domain\Model\Termin::class);
+		while ($termin = $this->db->sql_fetch_assoc($res)) {
+			$this->terminModel = GeneralUtility::makeInstance(Termin::class);
 			$this->getTeilnehmer($termin['uid']);
 		}
 
@@ -75,7 +96,7 @@ class SendRemindersTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 	 * @param $schulungstermin
 	 */
 	private function getTeilnehmer($schulungstermin) {
-		$teilnehmerquery = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$teilnehmerquery = $this->db->exec_SELECTquery(
 				'*', //WHAT
 				'tx_schulungen_domain_model_teilnehmer', //FROM
 				'WHERE termin = ' . $schulungstermin, //WHERE
@@ -83,7 +104,7 @@ class SendRemindersTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 				'', //ORDER BY
 				'' //LIMIT
 		);
-		while ($teilnehmer = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($teilnehmerquery)) {
+		while ($teilnehmer = $this->db->sql_fetch_assoc($teilnehmerquery)) {
 			$this->sendeErinnerungsMail($teilnehmer['email']);
 		}
 	}

@@ -22,12 +22,22 @@ namespace Subugoe\Schulungen\Service;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use Subugoe\Schulungen\Controller\BenachrichtigungController;
+use Subugoe\Schulungen\Domain\Repository\SchulungRepository;
+use Subugoe\Schulungen\Domain\Repository\TeilnehmerRepository;
+use Subugoe\Schulungen\Domain\Repository\TerminRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Core\Bootstrap;
 
 /**
- * Reminder an die Teilnehmer versenden
+ * Send reminders to participants
  */
-class SendRemindersTaskLogic extends \TYPO3\CMS\Extbase\Core\Bootstrap {
+class SendRemindersTaskLogic extends Bootstrap {
+
+	/**
+	 * @var BenachrichtigungController
+	 */
+	protected $benachrichtigung;
 
 	public function execute(&$pObj) {
 
@@ -41,7 +51,7 @@ class SendRemindersTaskLogic extends \TYPO3\CMS\Extbase\Core\Bootstrap {
 		$this->initRepositories();
 
 		$success = true;
-		$this->benachrichtigung = GeneralUtility::makeInstance(\Subugoe\Schulungen\Controller\BenachrichtigungController::class);
+		$this->benachrichtigung = GeneralUtility::makeInstance(BenachrichtigungController::class);
 		$this->benachrichtigung->config['mail'] = $this->mailConfig;
 		$success = $this->benachrichtigung->sendeBenachrichtigungAction();
 		if (!$success) {
@@ -62,25 +72,26 @@ class SendRemindersTaskLogic extends \TYPO3\CMS\Extbase\Core\Bootstrap {
 	}
 
 	protected function setupFramework() {
-
-		$configuration = array(
+		$configuration = [
 			'extensionName' => 'schulungen',
 			'pluginName' => 'Scheduler',
 			'settings' => '< plugin.tx_schulungen',
 			'controller' => 'Benachrichtigung',
-			'switchableControllerActions' => array(
-				'Benachrichtigung' => array('actions' => 'sendeBenachrichtigung'),
-				'Termin' => array('actions' => 'update')
-			),
-		);
+			'switchableControllerActions' => [
+				'Benachrichtigung' => ['actions' => 'sendeBenachrichtigung'],
+				'Termin' => ['actions' => 'update']
+			],
+		];
 		$this->initialize($configuration);
-
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function initRepositories() {
-		$this->schulungRepository = $this->objectManager->get(\Subugoe\Schulungen\Domain\Repository\SchulungRepository::class);
-		$this->teilnehmerRepository = $this->objectManager->get(\Subugoe\Schulungen\Domain\Repository\TeilnehmerRepository::class);
-		$this->terminRepository = $this->objectManager->get(\Subugoe\Schulungen\Domain\Repository\TerminRepository::class);
+		$this->schulungRepository = $this->objectManager->get(SchulungRepository::class);
+		$this->teilnehmerRepository = $this->objectManager->get(TeilnehmerRepository::class);
+		$this->terminRepository = $this->objectManager->get(TerminRepository::class);
 	}
 
 }

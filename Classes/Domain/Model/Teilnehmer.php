@@ -24,11 +24,12 @@ namespace Subugoe\Schulungen\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * Teilnehmer an Schulungen
  */
-class Teilnehmer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Teilnehmer extends AbstractEntity {
 
 	/**
 	 * Vorname des Teilnehmers
@@ -111,8 +112,8 @@ class Teilnehmer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Setter for Zusatz
 	 *
-	 * @param string $Zusatz
-	 * @return void
+	 * @param $zusatz
+	 * @internal param string $Zusatz
 	 */
 	public function setZusatz($zusatz) {
 		$this->zusatz = $zusatz;

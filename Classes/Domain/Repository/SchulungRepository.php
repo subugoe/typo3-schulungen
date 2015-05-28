@@ -34,14 +34,14 @@ namespace Subugoe\Schulungen\Domain\Repository;
 	protected $defaultPid = 1648;
 
 	 // Sortierung absteigend nach Terminbeginn
-	protected $defaultOrderings = array(
+	protected $defaultOrderings = [
 			'sort_index' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
-	);
+	];
 
 	public function findTranslated() {
 		$query = $this->createQuery();
 		$query->statement('SELECT * FROM `tx_schulungen_domain_model_schulung` WHERE `sys_language_uid` = 1 AND `deleted` = 0 AND `pid` = '. $this->defaultPid);
-		$query->setOrderings(array('titel' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
+		$query->setOrderings(['titel' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING]);
 		return $query->execute();
 	}
 

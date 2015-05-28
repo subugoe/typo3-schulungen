@@ -25,11 +25,12 @@ namespace Subugoe\Schulungen\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * Termine
  */
-class Termin extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Termin extends AbstractEntity {
 
 	/**
 	 * schulung
@@ -88,7 +89,6 @@ class Termin extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * The constructor of this Termin
 	 *
-	 * @return void
 	 */
 	public function __construct() {
 		//Do not remove the next line: It would break the functionality
@@ -97,8 +97,8 @@ class Termin extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * getSchulung
-	 *
-	 * @return \Subugoe\Schulungen\Domain\Model\Schulung
+	 * @return Schulung
+	 * @throws \Exception
 	 */
 	public function getSchulung() {
 		if ($this->schulung) {

@@ -24,18 +24,20 @@ namespace Subugoe\Schulungen\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use Subugoe\Schulungen\Domain\Model\Schulung;
 
 /**
- * Repository for Termin
+ * Event Repository
  */
 class TerminRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
 	protected $defaultPid = 1648;
 
 	// Sortierung absteigend nach Terminbeginn
-	protected $defaultOrderings = array(
-			'startzeit' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
-	);
+	protected $defaultOrderings = [
+			'startzeit' => QueryInterface::ORDER_DESCENDING
+	];
 
 	public function errechneAnstehendeTermine() {
 		$query = $this->createQuery();
@@ -46,11 +48,11 @@ class TerminRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 						$query->lessThan('startzeit', time() + (2 * 60 * 60 * 24)) // < overnext day
 				)
 		);
-		$query->setOrderings(array('startzeit' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
+		$query->setOrderings(['startzeit' => QueryInterface::ORDER_ASCENDING]);
 		return $query->execute();
 	}
 
-	public function errechneAnstehendeSchulungTermine(\Subugoe\Schulungen\Domain\Model\Schulung $schulung) {
+	public function errechneAnstehendeSchulungTermine(Schulung $schulung) {
 		$query = $this->createQuery();
 		$query->matching(
 				$query->logicalAnd(
@@ -58,7 +60,7 @@ class TerminRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 						$query->greaterThan('startzeit', time())
 				)
 		);
-		$query->setOrderings(array('startzeit' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
+		$query->setOrderings(['startzeit' => QueryInterface::ORDER_ASCENDING]);
 		return $query->execute();
 	}
 

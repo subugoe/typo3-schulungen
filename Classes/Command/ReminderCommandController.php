@@ -26,13 +26,16 @@ namespace Subugoe\Schulungen\Command;
 /**
  * Reminder an die Teilnehmer versenden
  */
+use Subugoe\Schulungen\Controller\BenachrichtigungController;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 /**
  * A dummy Command Controller with a noop command which simply echoes the argument
  */
 class ReminderCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
- 
+
 	/**
 	* Reminder command
 	*
@@ -41,23 +44,23 @@ class ReminderCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
 	* @return bool
 	*/
 	public function remindCommand() {
-		/** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager $configurationManager */
-		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
-		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-		$configuration = array(
-			'settings' => array(
-				'persistence' => array(
+		/** @var ConfigurationManager $configurationManager */
+		$configurationManager = $this->objectManager->get(ConfigurationManager::class);
+		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$configuration = [
+			'settings' => [
+				'persistence' => [
 					'storagePid' => 1648
-				),
-				'mail' => array(
+				],
+				'mail' => [
 					'fromMail' => $extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['mail.']['fromMail'],
 					'fromName' => $extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['mail.']['fromName']
-				)
-			)
-		);
+				]
+			]
+		];
 
-		/** @var \Subugoe\Schulungen\Controller\BenachrichtigungController $benachrichtigung */
-		$benachrichtigung = $this->objectManager->get(\Subugoe\Schulungen\Controller\BenachrichtigungController::class);
+		/** @var BenachrichtigungController $benachrichtigung */
+		$benachrichtigung = $this->objectManager->get(BenachrichtigungController::class);
 		$benachrichtigung->config = $configuration['settings'];
 
 		$success = $benachrichtigung->sendeBenachrichtigungAction();
@@ -67,5 +70,5 @@ class ReminderCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
 
 		return $success;
 	}
-   
+
 }

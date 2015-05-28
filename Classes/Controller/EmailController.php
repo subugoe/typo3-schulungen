@@ -23,14 +23,18 @@ namespace Subugoe\Schulungen\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extensionmanager\Controller\ActionController;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Zentraler Controller fuer das Versenden von E-Mails
  * Funktioniert mit unterschiedlichen Methoden im Extbase Kontext und im Scheduler
  */
-class EmailController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class EmailController extends ActionController {
 
 	/**
 	 * Methode zum Versenden von E-Mails
@@ -42,14 +46,14 @@ class EmailController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 * @param array $variables
 	 * @return boolean
 	 */
-	public function sendeMail($recipient, $sender, $senderName, $subject, $templateName, array $variables = array()) {
-		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
+	public function sendeMail($recipient, $sender, $senderName, $subject, $templateName, array $variables = []) {
+		$configurationManager = $this->objectManager->get(ConfigurationManager::class);
 		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
 		$templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
 
 		$templatePathAndFilename = $templateRootPath . 'Email/' . $templateName . '.html';
-		$emailView = $this->objectManager->get(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+		$emailView = $this->objectManager->get(StandaloneView::class);
 		$emailView->setTemplatePathAndFilename($templatePathAndFilename);
 
 		$emailView->setFormat('html');
@@ -60,8 +64,8 @@ class EmailController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		$return = false;
 
 		// Wir nutzen den Swiftmailer
-		/** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
-		$mail = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
+		/** @var MailMessage $mail */
+		$mail = $this->objectManager->get(MailMessage::class);
 
 		$mail->setFrom($sender);
 
@@ -93,7 +97,7 @@ class EmailController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 * @param array $variables
 	 * @return boolean
 	 */
-	public function sendeTransactionMail($sender, $senderName, $subject, $templateName, array $variables = array()) {
+	public function sendeTransactionMail($sender, $senderName, $subject, $templateName, array $variables = []) {
 		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
 		$templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
@@ -103,7 +107,7 @@ class EmailController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 			$templatePathAndFilename = $templateRootPath . 'Email/' . $templateName . '.html';
 		}
 		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $emailView */
-		$emailView = $this->objectManager->get(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+		$emailView = $this->objectManager->get(StandaloneView::class);
 		$emailView->setTemplatePathAndFilename($templatePathAndFilename);
 
 		$emailView->setFormat('html');
@@ -114,8 +118,8 @@ class EmailController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		$return = false;
 
 		// Wir nutzen den Swiftmailer
-		/** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
-		$mail = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
+		/** @var MailMessage $mail */
+		$mail = $this->objectManager->get(MailMessage::class);
 
 		$mail->setFrom($sender);
 
@@ -147,8 +151,8 @@ class EmailController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 		$return = false;
 
-		/** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
-		$mail = $this->objectManager->get(\TYPO3\CMS\Core\Mail\MailMessage::class);
+		/** @var MailMessage $mail */
+		$mail = $this->objectManager->get(MailMessage::class);
 
 		$mail->setFrom($sender);
 

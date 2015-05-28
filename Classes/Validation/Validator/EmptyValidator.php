@@ -1,7 +1,9 @@
 <?php
 namespace Subugoe\Schulungen\Validation\Validator;
 
-class EmptyValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
+
+class EmptyValidator extends AbstractValidator {
 
 	public function isValid($elem) {
 		if (empty($elem) || $elem === "") {

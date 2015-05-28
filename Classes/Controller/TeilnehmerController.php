@@ -25,15 +25,19 @@ namespace Subugoe\Schulungen\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use Subugoe\Schulungen\Domain\Model\Schulung;
+use Subugoe\Schulungen\Domain\Model\Teilnehmer;
+use Subugoe\Schulungen\Domain\Model\Termin;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Controller for the Teilnehmer object
  *
  */
-class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class TeilnehmerController extends ActionController {
 
 	/**
 	 * @var \Subugoe\Schulungen\Domain\Repository\TeilnehmerRepository
@@ -62,11 +66,11 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	/**
 	 * Displays all Teilnehmers
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Schulung $schulung
+	 * @param Schulung $schulung
 	 * @param string $status
 	 * @return string The rendered list view
 	 */
-	public function listAction(\Subugoe\Schulungen\Domain\Model\Schulung $schulung, $status) {
+	public function listAction(Schulung $schulung, $status) {
 		$teilnehmers = $this->teilnehmerRepository->findAll();
 		$this->view->assign('teilnehmers', $teilnehmers);
 
@@ -78,10 +82,10 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	/**
 	 * Displays a single Teilnehmer
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer the Teilnehmer to display
+	 * @param Teilnehmer $teilnehmer the Teilnehmer to display
 	 * @return string The rendered view
 	 */
-	public function showAction(\Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer) {
+	public function showAction(Teilnehmer $teilnehmer) {
 		$this->view->assign('teilnehmer', $teilnehmer);
 	}
 
@@ -89,14 +93,14 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * Creates a new Teilnehmer and forwards to the list action.
 	 *
 	 * @param \Subugoe\Schulungen\Domain\Model\Teilnehmer $newTeilnehmer a fresh Teilnehmer object which has not yet been added to the repository
-	 * @param \Subugoe\Schulungen\Domain\Model\Termin $termin
+	 * @param Termin $termin
 	 * @return string An HTML form for creating a new Teilnehmer
 	 * @dontvalidate $newTeilnehmer
 	 */
-	public function newAction(\Subugoe\Schulungen\Domain\Model\Teilnehmer $newTeilnehmer = NULL, \Subugoe\Schulungen\Domain\Model\Termin $termin = NULL) {
+	public function newAction(\Subugoe\Schulungen\Domain\Model\Teilnehmer $newTeilnehmer = NULL, Termin $termin = NULL) {
 
 		$termin = intval($this->request->getArgument('termin'));
-		/** @var \Subugoe\Schulungen\Domain\Model\Termin $terminObj */
+		/** @var Termin $terminObj */
 		$terminObj = $this->terminRepository->findByUid($termin);
 		$schulung = $terminObj->getSchulung();
 		$schulungsTitel = $schulung->getTitel();
@@ -108,7 +112,7 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		$this->view->assign('contacts', $contacts);
 
 		if ($terminObj->getAnzahlTeilnehmer() >= $terminObj->getSchulung()->getTeilnehmerMax()) {
-			$this->redirect('show', 'Schulung', Null, array('schulung' => $schulung));
+			$this->redirect('show', 'Schulung', Null, ['schulung' => $schulung]);
 		}
 
 	}
@@ -119,11 +123,11 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 * @param \Subugoe\Schulungen\Domain\Model\Teilnehmer $newTeilnehmer a fresh Teilnehmer object which has not yet been added to the repository
 	 * @return void
 	 */
-	public function createAction(\Subugoe\Schulungen\Domain\Model\Teilnehmer $newTeilnehmer) {
+	public function createAction(Teilnehmer $newTeilnehmer) {
 		$status = 'fail';
 		$time = new \DateTime('now');
 		$termin = intval($this->request->getArgument('termin'));
-		/** @var \Subugoe\Schulungen\Domain\Model\Termin $termin */
+		/** @var Termin $termin */
 		$termin = $this->terminRepository->findByUid($termin);
 		$schulung = $termin->getSchulung();
 
@@ -140,7 +144,7 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 				try {
 					$this->teilnehmerRepository->add($newTeilnehmer);
 					$error = FALSE;
-				} catch (\TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException $e) {
+				} catch (IllegalObjectTypeException $e) {
 					$error = TRUE;
 				}
 				if ($error === FALSE) {
@@ -149,7 +153,7 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 					$this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_teilnehmer_create.bestaetigung.text', 'schulungen'));
 
 					if ($sender = $this->sendeBestaetigungsMail($newTeilnehmer)) {
-						$this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_teilnehmer_create.bestaetigung.email', 'schulungen', array($newTeilnehmer->getEmail())));
+						$this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_teilnehmer_create.bestaetigung.email', 'schulungen', [$newTeilnehmer->getEmail()]));
 						$status = 'success';
 					} else {
 						$this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.fail', 'schulungen'));
@@ -167,27 +171,27 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 		}
 
 		//an die list-action weiterleiten
-		$this->redirect('list', 'Teilnehmer', Null, array("schulung" => $schulung, "status" => $status));
+		$this->redirect('list', 'Teilnehmer', Null, ["schulung" => $schulung, "status" => $status]);
 	}
 
 	/**
 	 * Mailsendemethode
 	 * @todo Termin usw in Mail mit angeben. View?
-	 * @param \Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer
+	 * @param Teilnehmer $teilnehmer
 	 * @return boolean
 	 */
-	private function sendeBestaetigungsMail(\Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer) {
+	private function sendeBestaetigungsMail(Teilnehmer $teilnehmer) {
 		$time = new \DateTime('now');
 		$recipient = $teilnehmer->getEmail();
 		$sender = $this->settings['mail']['fromMail'];
 		$senderName = $this->settings['mail']['fromName'];
-		$mailcopy = array();
+		$mailcopy = [];
 		$contacts = $teilnehmer->getTermin()->getSchulung()->getContact();
 		foreach ($contacts as $contact) {
 			array_push($mailcopy, $contact->getEmail());
 		}
 
-		$variables = array(
+		$variables = [
 				'nachname' => $teilnehmer->getNachname(),
 				'vorname' => $teilnehmer->getVorname(),
 				'email' => $teilnehmer->getEmail(),
@@ -197,10 +201,10 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 				'startZeit' => $teilnehmer->getTermin()->getStartzeit(),
 				'ende' => $teilnehmer->getTermin()->getEnde(),
 				'timestamp' => $time,
-				'identifier' => array($teilnehmer->getSecret()),
+				'identifier' => [$teilnehmer->getSecret()],
 				'mailcopy' => $mailcopy,
 				'copy' => true,
-		);
+		];
 
 		$templateName = LocalizationUtility::translate('tx_schulungen_email_bestaetigung_template', 'schulungen');
 
@@ -214,19 +218,19 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	/**
 	 * Updates an existing Teilnehmer and forwards to the index action afterwards.
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer the Teilnehmer to display
+	 * @param Teilnehmer $teilnehmer the Teilnehmer to display
 	 * @return string A form to edit a Teilnehmer
 	 */
-	public function editAction(\Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer) {
+	public function editAction(Teilnehmer $teilnehmer) {
 		$this->view->assign('teilnehmer', $teilnehmer);
 	}
 
 	/**
 	 * Updates an existing Teilnehmer and forwards to the list action afterwards.
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer the Teilnehmer to display
+	 * @param Teilnehmer $teilnehmer the Teilnehmer to display
 	 */
-	public function updateAction(\Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer) {
+	public function updateAction(Teilnehmer $teilnehmer) {
 		$this->teilnehmerRepository->update($teilnehmer);
 		$this->addFlashMessage('Your Teilnehmer was updated.');
 		$this->redirect('list');
@@ -235,12 +239,12 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	/**
 	 * Updates an existing Teilnehmer and forwards to the list action afterwards.
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer the Teilnehmer to display
+	 * @param Teilnehmer $teilnehmer the Teilnehmer to display
 	 */
-	public function updateBackendAction(\Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer) {
+	public function updateBackendAction(Teilnehmer $teilnehmer) {
 		$this->teilnehmerRepository->update($teilnehmer);
 		$this->addFlashMessage('Your Teilnehmer was updated.');
-		$this->redirect('detail', 'Backend', 'schulungen', array("termin" => $teilnehmer->getTermin()));
+		$this->redirect('detail', 'Backend', 'schulungen', ["termin" => $teilnehmer->getTermin()]);
 	}
 
 	/**
@@ -252,7 +256,7 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	 */
 	public function deregisterAction($identifier) {
 		$time_format = LocalizationUtility::translate('tx_schulungen_format.date', 'schulungen');
-		$now = new \DateTime("now");
+		$now = new \DateTime();
 		GeneralUtility::devlog("De-Registration: Passed value " . $identifier[0], "Schulungen", 1, $identifier);
 		if (count($teilnehmer = $this->teilnehmerRepository->findOneBySecret($identifier[0])) > 0) {
 			$schulung = $teilnehmer->getTermin()->getSchulung();
@@ -279,14 +283,14 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 				$subject = LocalizationUtility::translate('tx_schulungen_domain_model_teilnehmer.deregister', 'schulungen') . " (" . $title[0] . " - " . $teilnehmer->getTermin()->getStartzeit()->format('d.m.Y H:i') . ")";
 				$templateName = LocalizationUtility::translate('tx_schulungen_email_deregistration_template', 'schulungen');
 				$result = $this->emailController->sendeTransactionMail($sender, $senderName, $subject, $templateName,
-						array(
+						[
 								'teilnehmer' => $teilnehmer,
 								'schulung' => $schulung->getTitel(),
 								'termin' => $termin->getStartzeit(),
 								'ende' => $termin->getEnde()
-						)
+						]
 				);
-				GeneralUtility::devlog("De-Registration: TransactionMail sent?", "Schulungen", 1, array($result));
+				GeneralUtility::devlog("De-Registration: TransactionMail sent?", "Schulungen", 1, [$result]);
 
 				$this->view->assign('status', 'success');
 			} else {
@@ -303,26 +307,26 @@ class TeilnehmerController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 	/**
 	 * Deletes an existing Teilnehmer
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer the Teilnehmer to be deleted
+	 * @param Teilnehmer $teilnehmer the Teilnehmer to be deleted
 	 * @return void
 	 */
-	public function deleteAction(\Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer) {
+	public function deleteAction(Teilnehmer $teilnehmer) {
 		$this->teilnehmerRepository->remove($teilnehmer);
 		$this->addFlashMessage('Your Teilnehmer was removed.');
 		$this->redirect('list');
-		$this->redirect('detail', 'Backend', 'schulungen', array("termin" => $teilnehmer->getTermin()));
+		$this->redirect('detail', 'Backend', 'schulungen', ["termin" => $teilnehmer->getTermin()]);
 	}
 
 	/**
 	 * Deletes an existing Teilnehmer
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer the Teilnehmer to be deleted
+	 * @param Teilnehmer $teilnehmer the Teilnehmer to be deleted
 	 * @return void
 	 */
-	public function deleteBackendAction(\Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer) {
+	public function deleteBackendAction(Teilnehmer $teilnehmer) {
 		$this->teilnehmerRepository->remove($teilnehmer);
 		$this->addFlashMessage('Your Teilnehmer was removed.');
-		$this->redirect('detail', 'Backend', 'schulungen', array("termin" => $teilnehmer->getTermin()));
+		$this->redirect('detail', 'Backend', 'schulungen', ["termin" => $teilnehmer->getTermin()]);
 	}
 
 }

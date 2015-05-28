@@ -32,9 +32,9 @@ namespace Subugoe\Schulungen\Domain\Repository;
 class TeilnehmerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
 	// Sortierung absteigend nach Terminbeginn
-	protected $defaultOrderings = array(
+	protected $defaultOrderings = [
 			'nachname' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
-	);
+	];
 
 	public function teilnehmerAngemeldet(\Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer, \Subugoe\Schulungen\Domain\Model\Termin $termin) {
 		$query = $this->createQuery();
@@ -46,7 +46,7 @@ class TeilnehmerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 						$query->equals('nachname', $teilnehmer->getNachname())
 				)
 		);
-		$query->setOrderings(array('nachname' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
+		$query->setOrderings(['nachname' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING]);
 		return $query->execute();
 	}
 }

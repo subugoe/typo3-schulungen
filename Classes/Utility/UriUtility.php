@@ -23,9 +23,10 @@ namespace Subugoe\Schulungen\Utility;
 *
 * This copyright notice MUST APPEAR in all copies of the script!
 * ************************************************************* */
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
-use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Toolbox for independet URI generation
@@ -52,12 +53,13 @@ abstract class UriUtility {
 	protected static function buildUriBuilder($extensionName, $pluginName) {
 
 		// If we are in Backend we need to simulate minimal TSFE
-		if (!isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof tslib_fe)) {
+		if (!isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
 			if (!is_object($GLOBALS['TT'])) {
-				$GLOBALS['TT'] = new t3lib_timeTrack;
+				$GLOBALS['TT'] = new TimeTracker();
 				$GLOBALS['TT']->start();
 			}
-			$TSFEclassName = @t3lib_div::makeInstance('tslib_fe');
+			$TSFEclassName = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
+			/** @var TypoScriptFrontendController $GLOBALS['TSFE'] */
 			$GLOBALS['TSFE'] = new $TSFEclassName($GLOBALS['TYPO3_CONF_VARS'], 0, '0', 1, '', '', '', '');
 			$GLOBALS['TSFE']->initFEuser();
 			$GLOBALS['TSFE']->fetch_the_id();
@@ -70,13 +72,18 @@ abstract class UriUtility {
 
 		// If extbase is not boostrapped yet, we must do it before building uriBuilder (when used from TCA)
 		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-		$objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		if (!(isset($GLOBALS['dispatcher']) && $GLOBALS['dispatcher'] instanceof \TYPO3\CMS\Extbase\Core\Bootstrap)) {
-			$extbaseBootstrap = $objectManager->get('TYPO3\\CMS\\Extbase\\Core\\Bootstrap');
-			$extbaseBootstrap->initialize(array('extensionName' => $extensionName, 'pluginName' => $pluginName));
+			$extbaseBootstrap = $objectManager->get(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
+			$extbaseBootstrap->initialize(
+				[
+					'extensionName' => $extensionName,
+					'pluginName' => $pluginName
+				]
+			);
 		}
 
-		return $objectManager->get('TYPO3\\CMS\\Extbase\\Mvc\Web\\Routing\UriBuilder');
+		return $objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
 	}
 
 
@@ -98,13 +105,13 @@ abstract class UriUtility {
 		$controllerArguments['controller'] = $controllerName;
 
 		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-		$objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 		/** @var  \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService */
-		$extensionService = $objectManager->get('TYPO3\\CMS\\Extbase\\Service\\ExtensionService');
+		$extensionService = $objectManager->get(ExtensionService::class);
 
 		$pluginNamespace = $extensionService->getPluginNamespace($extensionName, $pluginName);
 
-		$arguments = array($pluginNamespace => $controllerArguments);
+		$arguments = [$pluginNamespace => $controllerArguments];
 
 		self::$uriBuilder
 				->reset()

@@ -24,8 +24,11 @@ namespace Subugoe\Schulungen\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use Subugoe\Schulungen\Domain\Model\Schulung;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Controller for the Schulung object
@@ -33,7 +36,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class SchulungController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class SchulungController extends ActionController {
 
 	/**
 	 * schulungRepository
@@ -69,17 +72,17 @@ class SchulungController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 */
 	public function listAction() {
 
-		$schulungSet = array();
+		$schulungSet = [];
 		for ($i = 0; $i < 3; $i++) {
 			if ($this->schulungRepository->countByKategorie($i) > 0)
 				$schulungSet[$i] = $this->schulungRepository->findByKategorie($i);
 		}
 		$contact = $this->personRepository->findByUid($this->settings['contact']);
 
-		$values = array(
+		$values = [
 				"schulungs" => $schulungSet,
 				"contact" => $contact
-		);
+		];
 
 		$this->view->assignMultiple($values);
 
@@ -97,19 +100,19 @@ class SchulungController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 
 		$templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
 		$templatePathAndFilename = $templateRootPath . 'Schulung/ListSlim.html';
-		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
-		$view = $this->objectManager->get(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+		/** @var StandaloneView $view */
+		$view = $this->objectManager->get(StandaloneView::class);
 		$view->setTemplatePathAndFilename($templatePathAndFilename);
 		$view->setFormat('html');
 
-		$schulungSet = array();
+		$schulungSet = [];
 		for ($i = 0; $i < 3; $i++) {
 			if ($this->schulungRepository->countByKategorie($i) > 0)
 				$schulungSet[$i] = $this->schulungRepository->findByKategorie($i);
 		}
-		$values = array(
+		$values = [
 				"schulungs" => $schulungSet,
-		);
+		];
 
 		$view->assignMultiple($values);
 
@@ -142,10 +145,10 @@ class SchulungController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	/**
 	 * Displays a single Schulung
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Schulung $schulung the Schulung to display
+	 * @param Schulung $schulung the Schulung to display
 	 * @return string The rendered view
 	 */
-	public function showAction(\Subugoe\Schulungen\Domain\Model\Schulung $schulung) {
+	public function showAction(Schulung $schulung) {
 
 		$termine = $this->terminRepository->errechneAnstehendeSchulungTermine($schulung);
 
@@ -163,35 +166,35 @@ class SchulungController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	/**
 	 * Creates a new Schulung and forwards to the list action.
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
+	 * @param Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
 	 * @return string An HTML form for creating a new Schulung
 	 * @dontvalidate $newSchulung
 	 */
-	public function newAction(\Subugoe\Schulungen\Domain\Model\Schulung $newSchulung = null) {
+	public function newAction(Schulung $newSchulung = null) {
 		$this->view->assign('newSchulung', $newSchulung);
 	}
 
 	/**
 	 * Creates a new Schulung and forwards to the list action.
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
+	 * @param Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
 	 * @return void
 	 */
-	public function createAction(\Subugoe\Schulungen\Domain\Model\Schulung $newSchulung) {
+	public function createAction(Schulung $newSchulung) {
 		$this->schulungRepository->add($newSchulung);
-		$this->flashMessageContainer->add('Your new Schulung was created.');
+		$this->addFlashMessage('Your new Schulung was created.');
 		$this->redirect('list');
 	}
 
 	/**
 	 * Deletes an existing Schulung
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Schulung $schulung the Schulung to be deleted
+	 * @param Schulung $schulung the Schulung to be deleted
 	 * @return void
 	 */
-	public function deleteAction(\Subugoe\Schulungen\Domain\Model\Schulung $schulung) {
+	public function deleteAction(Schulung $schulung) {
 		$this->schulungRepository->remove($schulung);
-		$this->flashMessageContainer->add('Your Schulung was removed.');
+		$this->addFlashMessage('Your Schulung was removed.');
 		$this->redirect('list');
 	}
 
@@ -201,7 +204,7 @@ class SchulungController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @return string The rendered edit action
 	 * @param $schulung
 	 */
-	public function editAction(\Subugoe\Schulungen\Domain\Model\Schulung $schulung) {
+	public function editAction(Schulung $schulung) {
 		$this->view->assign('schulung', $schulung);
 	}
 
@@ -211,7 +214,7 @@ class SchulungController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @return string The rendered update action
 	 * @param $schulung
 	 */
-	public function updateAction(\Subugoe\Schulungen\Domain\Model\Schulung $schulung) {
+	public function updateAction(Schulung $schulung) {
 		$this->schulungRepository->update($schulung);
 	}
 

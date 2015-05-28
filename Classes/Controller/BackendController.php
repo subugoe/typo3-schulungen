@@ -23,7 +23,12 @@ namespace Subugoe\Schulungen\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use Subugoe\Schulungen\Domain\Model\Schulung;
+use Subugoe\Schulungen\Domain\Model\Termin;
+use TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -53,14 +58,19 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	protected $teilnehmerRepository;
 
 	/**
+	 * @var \Subugoe\Schulungen\Controller\BenachrichtigungController
+	 */
+	protected $benachrichtigung;
+
+	/**
 	 * Initializes the current action
 	 *
 	 * @return void
 	 */
 	protected function initializeAction() {
-		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$this->settings = $extbaseFrameworkConfiguration;
-		$GLOBALS['TT'] = new \TYPO3\CMS\Core\TimeTracker\NullTimeTracker;
+		$GLOBALS['TT'] = new NullTimeTracker();
 
 	}
 
@@ -75,16 +85,17 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 		// => no data is displayed in Backend
 		$schulungs = $this->schulungRepository->findByPid('1648');
 		$termine = $this->terminRepository->findAll();
+		/** @var Schulung $schulung */
 		foreach ($schulungs as $schulung) {
-			/** @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage $schulungTermine */
-			$schulungTermine = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
+			/** @var ObjectStorage $schulungTermine */
+			$schulungTermine = GeneralUtility::makeInstance(ObjectStorage::class);
 			foreach ($termine as $termin) {
 				try {
 					if ($schulung->getTitel() == $termin->getSchulung()->getTitel()) {
 						$schulungTermine->attach($termin);
 					}
 				} catch (\Exception $e) {
-					GeneralUtility::devlog($e->getMessage(), "Schulungen", 3, array($termin));
+					GeneralUtility::devlog($e->getMessage(), "Schulungen", 3, [$termin]);
 				}
 
 			}
@@ -102,12 +113,12 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 			$script_to_lib = \tx_t3jquery::getJqJSBE(true);
 		}
 
-		$values = array(
+		$values = [
 			'schulungs' => $schulungs,
 			'termine' => $numberOfTermine,
 			'teilnehmer' => $numberOfTeilnehmer,
 			'jquery' => $script_to_lib
-		);
+		];
 
 		$this->view->assignMultiple($values);
 
@@ -116,31 +127,31 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	/**
 	 * Displays a single Termin with Details
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Termin $termin the Schulung to display
+	 * @param Termin $termin the Schulung to display
 	 * @return string The rendered view
 	 */
-	public function detailAction(\Subugoe\Schulungen\Domain\Model\Termin $termin) {
+	public function detailAction(Termin $termin) {
 		$this->view->assign('termin', $termin);
 	}
 
 	/**
 	 * Creates a new Schulung and forwards to the list action.
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
+	 * @param Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
 	 * @return string An HTML form for creating a new Schulung
 	 * @dontvalidate $newSchulung
 	 */
-	public function newAction(\Subugoe\Schulungen\Domain\Model\Schulung $newSchulung = null) {
+	public function newAction(Schulung $newSchulung = null) {
 		$this->view->assign('newSchulung', $newSchulung);
 	}
 
 	/**
 	 * Creates a new Schulung and forwards to the list action.
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
+	 * @param Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
 	 * @return void
 	 */
-	public function createAction(\Subugoe\Schulungen\Domain\Model\Schulung $newSchulung) {
+	public function createAction(Schulung $newSchulung) {
 		$this->schulungRepository->add($newSchulung);
 		$this->addFlashMessage('Your new Schulung was created.');
 		$this->redirect('list');
@@ -149,10 +160,10 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	/**
 	 * Deletes an existing Schulung
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Schulung $schulung the Schulung to be deleted
+	 * @param Schulung $schulung the Schulung to be deleted
 	 * @return void
 	 */
-	public function deleteAction(\Subugoe\Schulungen\Domain\Model\Schulung $schulung) {
+	public function deleteAction(Schulung $schulung) {
 		$this->schulungRepository->remove($schulung);
 		$this->addFlashMessage('Your Schulung was removed.');
 		$this->redirect('list');
@@ -161,9 +172,9 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	/**
 	 * Absagen eines Schulungstermins
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Termin $termin
+	 * @param Termin $termin
 	 */
-	public function cancelAction(\Subugoe\Schulungen\Domain\Model\Termin $termin) {
+	public function cancelAction(Termin $termin) {
 
 		$time = new \DateTime();
 		$time->setTimestamp(time());
@@ -172,23 +183,22 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 			$termin->setAbgesagt(true);
 			$this->terminRepository->update($termin);
 
-			/** @var \Subugoe\Schulungen\Controller\BenachrichtigungController benachrichtigung */
-			$this->benachrichtigung = $this->objectManager->get(\Subugoe\Schulungen\Controller\BenachrichtigungController::class);
+			$this->benachrichtigung = $this->objectManager->get(BenachrichtigungController::class);
 			$teilnehmer = $termin->getTeilnehmer();
 			$result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
 
-			$this->addFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_schulungen_controller_backend_cancel.success', 'schulungen'));
+			$this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_backend_cancel.success', 'schulungen'));
 		} else {
-			$this->addFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tx_schulungen_controller_backend_timeout', 'schulungen'));
+			$this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_backend_timeout', 'schulungen'));
 		}
 		$this->redirect('index');
 	}
 
 	/**
 	 * Wieder Zusagen eines Schulungstermins
-	 * @param \Subugoe\Schulungen\Domain\Model\Termin $termin
+	 * @param Termin $termin
 	 */
-	public function uncancelAction(\Subugoe\Schulungen\Domain\Model\Termin $termin) {
+	public function uncancelAction(Termin $termin) {
 
 		$time = new \DateTime();
 		$time->setTimestamp(time());
@@ -198,7 +208,7 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 			$this->terminRepository->update($termin);
 
 			/** @var \Subugoe\Schulungen\Controller\BenachrichtigungController benachrichtigung */
-			$this->benachrichtigung = $this->objectManager->get(\Subugoe\Schulungen\Controller\BenachrichtigungController::class);
+			$this->benachrichtigung = $this->objectManager->get(BenachrichtigungController::class);
 			$teilnehmer = $termin->getTeilnehmer();
 			$result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
 
@@ -217,7 +227,7 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	 * @return string The rendered update action
 	 * @param $schulung
 	 */
-	public function updateAction(\Subugoe\Schulungen\Domain\Model\Schulung $schulung) {
+	public function updateAction(Schulung $schulung) {
 		$this->schulungRepository->update($schulung);
 	}
 

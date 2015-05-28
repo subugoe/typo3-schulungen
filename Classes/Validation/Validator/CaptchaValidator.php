@@ -1,9 +1,12 @@
 <?php
 namespace Subugoe\Schulungen\Validation\Validator;
 
-class CaptchaValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
+
+class CaptchaValidator extends AbstractValidator {
 	public function isValid($elem) {
-		require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('jm_recaptcha') . "class.tx_jmrecaptcha.php");
+		require_once(ExtensionManagementUtility::extPath('jm_recaptcha') . "class.tx_jmrecaptcha.php");
 		$recaptcha = new \tx_jmrecaptcha();
 
 		$status = $recaptcha->validateReCaptcha();

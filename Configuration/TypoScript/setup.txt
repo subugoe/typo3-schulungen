@@ -5,12 +5,14 @@ plugin.tx_schulungen {
 			partialRootPath = {$plugin.tx_schulungen.view.partialRootPath}
 			layoutRootPath = {$plugin.tx_schulungen.view.layoutRootPath}
 		}
-		mail{
+
+		mail {
 			fromMail = {$plugin.tx_schulungen.mail.fromMail}
 			fromName = {$plugin.tx_schulungen.mail.fromName}
 		}
 	}
-	persistence{
+
+	persistence {
 		enableAutomaticCacheClearing = 1
 		storagePid = {$plugin.tx_schulungen.persistence.storagePid}
 		classes {
@@ -22,7 +24,7 @@ plugin.tx_schulungen {
 						first_name = firstName
 						last_name = lastName
 						title = title
-						email = email 
+						email = email
 						phone = phone
 						fax = fax
 						address = address
@@ -35,6 +37,7 @@ plugin.tx_schulungen {
 					}
 				}
 			}
+
 			Subugoe\Schulungen\Domain\Model\Group {
 				mapping {
 					tableName = tt_address_group
@@ -51,21 +54,22 @@ plugin.tx_schulungen {
 }
 
 module.tx_schulungen {
-	persistence{
+	persistence {
 		enableAutomaticCacheClearing = 1
 		storagePid = {$plugin.tx_schulungen.persistence.storagePid}
 		classes < plugin.tx_schulungen.persistence.classes
 	}
+
 	view {
 		templateRootPath = {$plugin.tx_schulungen.view.templateRootPath}
 		partialRootPath = {$plugin.tx_schulungen.view.partialRootPath}
 		layoutRootPath = {$plugin.tx_schulungen.view.layoutRootPath}
 	}
-	mail{
+
+	mail {
 		fromMail = {$plugin.tx_schulungen.mail.fromMail}
 		fromName = {$plugin.tx_schulungen.mail.fromName}
 	}
-
 }
 
 plugin.tx_jmrecaptcha {
@@ -73,7 +77,6 @@ plugin.tx_jmrecaptcha {
 	private_key = {$plugin.tx_jmrecaptcha.private_key}
 	theme = {$plugin.tx_jmrecaptcha.theme}
 }
-
 
 lib.tx_schulungen.pathSegmentTitle = TEXT
 lib.tx_schulungen.pathSegmentTitle {
@@ -90,6 +93,7 @@ lib.tx_schulungen_teilnehmer.pathSegmentTitle {
 		wrap3 = {|}
 		insertData = 1
 	}
+
 	stdWrap.strftime = %A, %d. %B %Y - %H:%M Uhr
 }
 
@@ -108,7 +112,7 @@ ics {
 
 		xhtml_cleaning = 0
 		admPanel = 0
-    }
+	}
 }
 
 csv = PAGE
@@ -126,5 +130,5 @@ csv {
 
 		xhtml_cleaning = 0
 		admPanel = 0
-    }
+	}
 }

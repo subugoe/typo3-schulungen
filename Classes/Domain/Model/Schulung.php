@@ -24,12 +24,13 @@ namespace Subugoe\Schulungen\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 
 /**
  * Schulungen der SUB Goettingen
  */
-class Schulung extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Schulung extends AbstractEntity {
 
 	/**
 	 * Titel der Schulung
@@ -238,7 +239,6 @@ class Schulung extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * The constructor of this Schulung
 	 *
-	 * @return void
 	 */
 	public function __construct() {
 		//Do not remove the next line: It would break the functionality

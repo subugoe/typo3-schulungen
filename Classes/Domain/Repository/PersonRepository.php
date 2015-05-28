@@ -24,12 +24,13 @@ namespace Subugoe\Schulungen\Domain\Repository;
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 
 /**
  * Repository for Person
  */
 
-class PersonRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class PersonRepository extends Repository {
 
 }

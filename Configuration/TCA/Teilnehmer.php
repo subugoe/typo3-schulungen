@@ -4,128 +4,128 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 
-$TCA['tx_schulungen_domain_model_teilnehmer'] = array(
+$TCA['tx_schulungen_domain_model_teilnehmer'] = [
 		'ctrl' => $TCA['tx_schulungen_domain_model_teilnehmer']['ctrl'],
-		'interface' => array(
+		'interface' => [
 				'showRecordFieldList' => 'vorname,nachname,email,studienfach,bemerkung,termin',
-		),
-		'types' => array(
-				'1' => array('showitem' => 'vorname,nachname,email,studienfach,bemerkung,termin'),
-		),
-		'palettes' => array(
-				'1' => array('showitem' => ''),
-		),
-		'columns' => array(
-				'sys_language_uid' => array(
+		],
+		'types' => [
+				'1' => ['showitem' => 'vorname,nachname,email,studienfach,bemerkung,termin'],
+		],
+		'palettes' => [
+				'1' => ['showitem' => ''],
+		],
+		'columns' => [
+				'sys_language_uid' => [
 						'exclude' => 1,
 						'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
-						'config' => array(
+						'config' => [
 								'type' => 'select',
 								'foreign_table' => 'sys_language',
 								'foreign_table_where' => 'ORDER BY sys_language.title',
-								'items' => array(
-										array('LLL:EXT:lang/locallang_general.php:LGL.allLanguages', -1),
-										array('LLL:EXT:lang/locallang_general.php:LGL.default_value', 0)
-								),
-						)
-				),
-				'l18n_parent' => array(
+								'items' => [
+										['LLL:EXT:lang/locallang_general.php:LGL.allLanguages', -1],
+										['LLL:EXT:lang/locallang_general.php:LGL.default_value', 0]
+								],
+						]
+				],
+				'l18n_parent' => [
 						'displayCond' => 'FIELD:sys_language_uid:>:0',
 						'exclude' => 1,
 						'label' => 'LLL:EXT:lang/locallang_general.php:LGL.l18n_parent',
-						'config' => array(
+						'config' => [
 								'type' => 'select',
-								'items' => array(
-										array('', 0),
-								),
+								'items' => [
+										['', 0],
+								],
 								'foreign_table' => 'tx_schulungen_domain_model_teilnehmer',
 								'foreign_table_where' => 'AND tx_schulungen_domain_model_teilnehmer.uid=###REC_FIELD_l18n_parent### AND tx_schulungen_domain_model_teilnehmer.sys_language_uid IN (-1,0)',
-						)
-				),
-				'l18n_diffsource' => array(
-						'config' => array(
+						]
+				],
+				'l18n_diffsource' => [
+						'config' => [
 								'type' => 'passthrough',
-						)
-				),
-				't3ver_label' => array(
+						]
+				],
+				't3ver_label' => [
 						'displayCond' => 'FIELD:t3ver_label:REQ:true',
 						'label' => 'LLL:EXT:lang/locallang_general.php:LGL.versionLabel',
-						'config' => array(
+						'config' => [
 								'type' => 'none',
 								'cols' => 27,
-						)
-				),
-				'hidden' => array(
+						]
+				],
+				'hidden' => [
 						'exclude' => 1,
 						'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
-						'config' => array(
+						'config' => [
 								'type' => 'check',
-						)
-				),
-				'vorname' => array(
+						]
+				],
+				'vorname' => [
 						'exclude' => 0,
 						'label' => 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_teilnehmer.vorname',
-						'config' => array(
+						'config' => [
 								'type' => 'input',
 								'size' => 30,
 								'eval' => 'trim,required'
-						),
-				),
-				'nachname' => array(
+						],
+				],
+				'nachname' => [
 						'exclude' => 0,
 						'label' => 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_teilnehmer.nachname',
-						'config' => array(
+						'config' => [
 								'type' => 'input',
 								'size' => 30,
 								'eval' => 'trim,required'
-						),
-				),
-				'email' => array(
+						],
+				],
+				'email' => [
 						'exclude' => 0,
 						'label' => 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_teilnehmer.email',
-						'config' => array(
+						'config' => [
 								'type' => 'input',
 								'size' => 30,
 								'eval' => 'trim,required'
-						),
-				),
-				'studienfach' => array(
+						],
+				],
+				'studienfach' => [
 						'exclude' => 0,
 						'label' => 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_teilnehmer.studienfach',
-						'config' => array(
+						'config' => [
 								'type' => 'input',
 								'size' => 30,
 								'eval' => 'trim'
-						),
-				),
-				'bemerkung' => array(
+						],
+				],
+				'bemerkung' => [
 						'exclude' => 0,
 						'label' => 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_teilnehmer.bemerkung',
-						'config' => array(
+						'config' => [
 								'type' => 'text',
 								'cols' => 50,
 								'rows' => 5,
 								'eval' => 'trim',
-						),
-				),
-				'termin' => array(
+						],
+				],
+				'termin' => [
 						'exclude' => 0,
 						'label' => 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_teilnehmer.teilnehmer_termin',
-						'config' => array(
+						'config' => [
 								'type' => 'select',
 								'foreign_table' => 'tx_schulungen_domain_model_termin',
 								'size' => 1,
 								'maxitems' => 1,
-						),
-				),
-				'secret' => array(
+						],
+				],
+				'secret' => [
 						'exclude' => 0,
 						'label' => 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_teilnehmer.secret',
-						'config' => array(
+						'config' => [
 								'type' => 'none',
 								'eval' => 'trim'
-						),
-				),
+						],
+				],
 
-		),
-);
+		],
+];

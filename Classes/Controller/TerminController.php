@@ -23,7 +23,9 @@ namespace Subugoe\Schulungen\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Subugoe\Schulungen\Domain\Model\Termin;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 
 /**
@@ -32,7 +34,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @copyright Copyright belongs to the respective authors
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class TerminController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class TerminController extends ActionController {
 
 	/**
 	 * terminRepository
@@ -45,10 +47,10 @@ class TerminController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	/**
 	 * Displays a single Termin
 	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Termin $termin the Termin to display
+	 * @param Termin $termin the Termin to display
 	 * @return string The rendered view
 	 */
-	public function showAction(\Subugoe\Schulungen\Domain\Model\Termin $termin) {
+	public function showAction(Termin $termin) {
 		$this->view->assign('termin', $termin);
 	}
 
