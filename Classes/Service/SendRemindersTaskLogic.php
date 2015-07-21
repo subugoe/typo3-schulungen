@@ -1,5 +1,6 @@
 <?php
 namespace Subugoe\Schulungen\Service;
+
 /* * *************************************************************
  *  Copyright notice
  *
@@ -32,66 +33,70 @@ use TYPO3\CMS\Extbase\Core\Bootstrap;
 /**
  * Send reminders to participants
  */
-class SendRemindersTaskLogic extends Bootstrap {
+class SendRemindersTaskLogic extends Bootstrap
+{
 
-	/**
-	 * @var BenachrichtigungController
-	 */
-	protected $benachrichtigung;
+    /**
+     * @var BenachrichtigungController
+     */
+    protected $benachrichtigung;
 
-	public function execute(&$pObj) {
+    public function execute(&$pObj)
+    {
 
-		// set parent task object
-		$this->pObj = $pObj;
+        // set parent task object
+        $this->pObj = $pObj;
 
-		// set this sucker up!
-		$this->setupFramework();
+        // set this sucker up!
+        $this->setupFramework();
 
-		// initalization
-		$this->initRepositories();
+        // initalization
+        $this->initRepositories();
 
-		$success = true;
-		$this->benachrichtigung = GeneralUtility::makeInstance(BenachrichtigungController::class);
-		$this->benachrichtigung->config['mail'] = $this->mailConfig;
-		$success = $this->benachrichtigung->sendeBenachrichtigungAction();
-		if (!$success) {
-			GeneralUtility::devLog(
-					'SendReminder-Task: Problem during execution. Stopping.',
-					'schulungen',
-					3
-			);
-		} else {
-			GeneralUtility::devLog(
-					'SendReminder-Task: Successfully executed.',
-					'schulungen',
-					-1
-			);
-		}
+        $success = true;
+        $this->benachrichtigung = GeneralUtility::makeInstance(BenachrichtigungController::class);
+        $this->benachrichtigung->config['mail'] = $this->mailConfig;
+        $success = $this->benachrichtigung->sendeBenachrichtigungAction();
+        if (!$success) {
+            GeneralUtility::devLog(
+                'SendReminder-Task: Problem during execution. Stopping.',
+                'schulungen',
+                3
+            );
+        } else {
+            GeneralUtility::devLog(
+                'SendReminder-Task: Successfully executed.',
+                'schulungen',
+                -1
+            );
+        }
 
-		return $success;
-	}
+        return $success;
+    }
 
-	protected function setupFramework() {
-		$configuration = [
-			'extensionName' => 'schulungen',
-			'pluginName' => 'Scheduler',
-			'settings' => '< plugin.tx_schulungen',
-			'controller' => 'Benachrichtigung',
-			'switchableControllerActions' => [
-				'Benachrichtigung' => ['actions' => 'sendeBenachrichtigung'],
-				'Termin' => ['actions' => 'update']
-			],
-		];
-		$this->initialize($configuration);
-	}
+    protected function setupFramework()
+    {
+        $configuration = [
+            'extensionName' => 'schulungen',
+            'pluginName' => 'Scheduler',
+            'settings' => '< plugin.tx_schulungen',
+            'controller' => 'Benachrichtigung',
+            'switchableControllerActions' => [
+                'Benachrichtigung' => ['actions' => 'sendeBenachrichtigung'],
+                'Termin' => ['actions' => 'update']
+            ],
+        ];
+        $this->initialize($configuration);
+    }
 
-	/**
-	 * @return void
-	 */
-	protected function initRepositories() {
-		$this->schulungRepository = $this->objectManager->get(SchulungRepository::class);
-		$this->teilnehmerRepository = $this->objectManager->get(TeilnehmerRepository::class);
-		$this->terminRepository = $this->objectManager->get(TerminRepository::class);
-	}
+    /**
+     * @return void
+     */
+    protected function initRepositories()
+    {
+        $this->schulungRepository = $this->objectManager->get(SchulungRepository::class);
+        $this->teilnehmerRepository = $this->objectManager->get(TeilnehmerRepository::class);
+        $this->terminRepository = $this->objectManager->get(TerminRepository::class);
+    }
 
 }

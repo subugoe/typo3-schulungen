@@ -1,6 +1,7 @@
 <?php
 namespace Subugoe\Schulungen\Command;
-/* * *************************************************************
+
+/** *************************************************************
  *  Copyright notice
  *
  *  (c) 2010-2011 Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>
@@ -34,41 +35,43 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 /**
  * A dummy Command Controller with a noop command which simply echoes the argument
  */
-class ReminderCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController {
+class ReminderCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController
+{
 
-	/**
-	* Reminder command
-	*
-	* Sends an email to each participant of the next 'Schulung'
-	*
-	* @return bool
-	*/
-	public function remindCommand() {
-		/** @var ConfigurationManager $configurationManager */
-		$configurationManager = $this->objectManager->get(ConfigurationManager::class);
-		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-		$configuration = [
-			'settings' => [
-				'persistence' => [
-					'storagePid' => 1648
-				],
-				'mail' => [
-					'fromMail' => $extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['mail.']['fromMail'],
-					'fromName' => $extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['mail.']['fromName']
-				]
-			]
-		];
+    /**
+     * Reminder command
+     *
+     * Sends an email to each participant of the next 'Schulung'
+     *
+     * @return bool
+     */
+    public function remindCommand()
+    {
+        /** @var ConfigurationManager $configurationManager */
+        $configurationManager = $this->objectManager->get(ConfigurationManager::class);
+        $extbaseFrameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        $configuration = [
+            'settings' => [
+                'persistence' => [
+                    'storagePid' => 1648
+                ],
+                'mail' => [
+                    'fromMail' => $extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['mail.']['fromMail'],
+                    'fromName' => $extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['mail.']['fromName']
+                ]
+            ]
+        ];
 
-		/** @var BenachrichtigungController $benachrichtigung */
-		$benachrichtigung = $this->objectManager->get(BenachrichtigungController::class);
-		$benachrichtigung->config = $configuration['settings'];
+        /** @var BenachrichtigungController $benachrichtigung */
+        $benachrichtigung = $this->objectManager->get(BenachrichtigungController::class);
+        $benachrichtigung->config = $configuration['settings'];
 
-		$success = $benachrichtigung->sendeBenachrichtigungAction();
-		if (!$success) {
-			GeneralUtility::devLog('SendReminder Scheduler Task: Problem during execution. Stopping.' , 'schulungen', 3);
-		}
+        $success = $benachrichtigung->sendeBenachrichtigungAction();
+        if (!$success) {
+            GeneralUtility::devLog('SendReminder Scheduler Task: Problem during execution. Stopping.', 'schulungen', 3);
+        }
 
-		return $success;
-	}
+        return $success;
+    }
 
 }

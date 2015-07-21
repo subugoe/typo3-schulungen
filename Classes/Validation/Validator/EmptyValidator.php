@@ -3,14 +3,16 @@ namespace Subugoe\Schulungen\Validation\Validator;
 
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
-class EmptyValidator extends AbstractValidator {
+class EmptyValidator extends AbstractValidator
+{
 
-	public function isValid($elem) {
-		if (empty($elem) || $elem === "") {
-			return TRUE; // validates if TRUE
-		} else {
-			$this->addError('ErrorString', 1338992386);
-			return FALSE; // no Validation
-		}
-	}
+    public function isValid($elem)
+    {
+        if (empty($elem) || $elem === "") {
+            return true; // validates if TRUE
+        } else {
+            $this->addError('ErrorString', 1338992386);
+            return false; // no Validation
+        }
+    }
 }

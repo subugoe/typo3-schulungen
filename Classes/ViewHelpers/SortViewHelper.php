@@ -25,100 +25,109 @@ namespace Subugoe\Schulungen\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Sort ViewHelper
  */
-class SortViewHelper extends AbstractTagBasedViewHelper {
+class SortViewHelper extends AbstractTagBasedViewHelper
+{
 
-	private $orderBy;
-	private $order;
+    private $orderBy;
+    private $order;
 
-	/**
-	 * Sorts the given elements
-	 *
-	 * @param ObjectStorage $objects
-	 * @param string $orderBy
-	 * @param string $order ASCor DESC
-	 * @return ObjectStorage sorted Objects
-	 */
-	public function render(ObjectStorage $objects, $orderBy = NULL, $order = NULL) {
+    /**
+     * Sorts the given elements
+     *
+     * @param ObjectStorage $objects
+     * @param string $orderBy
+     * @param string $order ASCor DESC
+     * @return ObjectStorage sorted Objects
+     */
+    public function render(ObjectStorage $objects, $orderBy = null, $order = null)
+    {
 
-		$this->orderBy = $orderBy;
-		$this->order = $order;
+        $this->orderBy = $orderBy;
+        $this->order = $order;
 
-		$sortObjects = $this->sortObjectStorage($objects);
-		return $sortObjects;
-	}
+        $sortObjects = $this->sortObjectStorage($objects);
+        return $sortObjects;
+    }
 
-	/**
-	 * @param $storage
-	 * @return object
-	 */
-	protected function sortObjectStorage($storage) {
+    /**
+     * @param $storage
+     * @return object
+     */
+    protected function sortObjectStorage($storage)
+    {
 
-		$sortedArray = [];
-		foreach ($storage as $item) {
-			$sortedArray[] = $item;
-		}
+        $sortedArray = [];
+        foreach ($storage as $item) {
+            $sortedArray[] = $item;
+        }
 
-		usort($sortedArray, [$this, 'compare']);
-		/** @var ObjectManager $objectManager */
-		$objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        usort($sortedArray, [$this, 'compare']);
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
 
-		/** @var ObjectStorage $sorted_storage */
-		$sorted_storage = $objectManager->get(ObjectStorage::class);
-		foreach ($sortedArray as $item) {
-			$sorted_storage->attach($item);
-		}
+        /** @var ObjectStorage $sorted_storage */
+        $sorted_storage = $objectManager->get(ObjectStorage::class);
+        foreach ($sortedArray as $item) {
+            $sorted_storage->attach($item);
+        }
 
-		return $sorted_storage;
-	}
+        return $sorted_storage;
+    }
 
-	/**
-	 * @param $object1
-	 * @param $object2
-	 * @return int
-	 */
-	protected function compare($object1, $object2) {
+    /**
+     * @param $object1
+     * @param $object2
+     * @return int
+     */
+    protected function compare($object1, $object2)
+    {
 
-		if ($this->getSortValue($object1) == $this->getSortValue($object2)) {
-			return 0;
-		}
-		if ($this->order === 'ASC') {
-			return ($this->getSortValue($object1) < $this->getSortValue($object2)) ? -1 : 1;
-		}
+        if ($this->getSortValue($object1) == $this->getSortValue($object2)) {
+            return 0;
+        }
+        if ($this->order === 'ASC') {
+            return ($this->getSortValue($object1) < $this->getSortValue($object2)) ? -1 : 1;
+        }
 
-		return ($this->getSortValue($object1) > $this->getSortValue($object2)) ? -1 : 1;
-	}
+        return ($this->getSortValue($object1) > $this->getSortValue($object2)) ? -1 : 1;
+    }
 
-	/**
-	 * @param $object
-	 * @return mixed
-	 */
-	protected function getSortValue($object) {
+    /**
+     * @param $object
+     * @return mixed
+     */
+    protected function getSortValue($object)
+    {
 
-		if ($this->orderBy) {
-			$getter = 'get' . ucfirst($this->orderBy);
-		} else {
-			$getter = "getUid";
-		}
+        if ($this->orderBy) {
+            $getter = 'get' . ucfirst($this->orderBy);
+        } else {
+            $getter = "getUid";
+        }
 
-		if (method_exists($object, $getter)) {
-			$value = $object->$getter();
-		} else if (is_object($object)) {
-			$value = $object->$field;
-		} else if (is_array($object)) {
-			$value = $object[$field];
-		}
+        if (method_exists($object, $getter)) {
+            $value = $object->$getter();
+        } else {
+            if (is_object($object)) {
+                $value = $object->$field;
+            } else {
+                if (is_array($object)) {
+                    $value = $object[$field];
+                }
+            }
+        }
 
-		if ($value instanceof \DateTime) {
-			$value = $value->getTimestamp();
-		}
+        if ($value instanceof \DateTime) {
+            $value = $value->getTimestamp();
+        }
 
-		return $value;
-	}
+        return $value;
+    }
 }

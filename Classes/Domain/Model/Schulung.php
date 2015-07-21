@@ -30,445 +30,480 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 /**
  * Schulungen der SUB Goettingen
  */
-class Schulung extends AbstractEntity {
+class Schulung extends AbstractEntity
+{
 
-	/**
-	 * Titel der Schulung
-	 *
-	 * @var string $titel
-	 * @validate NotEmpty
-	 */
-	protected $titel;
+    /**
+     * Titel der Schulung
+     *
+     * @var string $titel
+     * @validate NotEmpty
+     */
+    protected $titel;
 
-	/**
-	 * Beschreibung der Schulung
-	 *
-	 * @var string $beschreibung
-	 * @validate NotEmpty
-	 */
-	protected $beschreibung;
+    /**
+     * Beschreibung der Schulung
+     *
+     * @var string $beschreibung
+     * @validate NotEmpty
+     */
+    protected $beschreibung;
 
-	/**
-	 * Mindestteilnehmerzahl
-	 *
-	 * @var int $teilnehmerMin
-	 */
-	protected $teilnehmerMin;
+    /**
+     * Mindestteilnehmerzahl
+     *
+     * @var int $teilnehmerMin
+     */
+    protected $teilnehmerMin;
 
-	/**
-	 * Maximale Teilnehmerzahl
-	 *
-	 * @var int $teilnehmerMax
-	 */
-	protected $teilnehmerMax;
+    /**
+     * Maximale Teilnehmerzahl
+     *
+     * @var int $teilnehmerMax
+     */
+    protected $teilnehmerMax;
 
-	/**
-	 * Voraussetzungen für die Schulung
-	 *
-	 * @var string $voraussetzungen
-	 */
-	protected $voraussetzungen;
+    /**
+     * Voraussetzungen für die Schulung
+     *
+     * @var string $voraussetzungen
+     */
+    protected $voraussetzungen;
 
-	/**
-	 * Treffpunkt
-	 *
-	 * @var string $treffpunkt
-	 */
-	protected $treffpunkt;
+    /**
+     * Treffpunkt
+     *
+     * @var string $treffpunkt
+     */
+    protected $treffpunkt;
 
-	/**
-	 * Dauer der Schulung
-	 *
-	 * @var string $dauer
-	 */
-	protected $dauer;
+    /**
+     * Dauer der Schulung
+     *
+     * @var string $dauer
+     */
+    protected $dauer;
 
-	/**
-	 * Veranstalter der Schulung
-	 *
-	 * @var int $veranstalter
-	 */
-	protected $veranstalter;
+    /**
+     * Veranstalter der Schulung
+     *
+     * @var int $veranstalter
+     */
+    protected $veranstalter;
 
-	/**
-	 * Untertitel
-	 *
-	 * @var string $untertitel
-	 */
-	protected $untertitel;
+    /**
+     * Untertitel
+     *
+     * @var string $untertitel
+     */
+    protected $untertitel;
 
-	/**
-	 * E-Mail Adresse einer Person
-	 *
-	 * @var string $mailKopie
-	 */
-	/**
-	 * @var string $mailKopie
-	 */
-	protected $mailKopie;
+    /**
+     * E-Mail Adresse einer Person
+     *
+     * @var string $mailKopie
+     */
+    /**
+     * @var string $mailKopie
+     */
+    protected $mailKopie;
 
-	/**
-	 * tt_address-Kontakt einer Person
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Person> $contact
-	 */
-	protected $contact;
+    /**
+     * tt_address-Kontakt einer Person
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Person> $contact
+     */
+    protected $contact;
 
-	/**
-	 * Kategorie der Schulung
-	 *
-	 * @var string $kategorie
-	 */
-	protected $kategorie;
+    /**
+     * Kategorie der Schulung
+     *
+     * @var string $kategorie
+     */
+    protected $kategorie;
 
-	/**
-	 * Flag, ob Schulungstermine angezeigt werden sollen
-	 *
-	 * @var boolean $termineVersteckt
-	 */
-	protected $termineVersteckt;
+    /**
+     * Flag, ob Schulungstermine angezeigt werden sollen
+     *
+     * @var boolean $termineVersteckt
+     */
+    protected $termineVersteckt;
 
-	/**
-	 * Flag, ob Anmeldung zu Schulungsterminen deaktiviert werden soll
-	 *
-	 * @var boolean $anmeldungDeaktiviert
-	 */
-	protected $anmeldungDeaktiviert;
+    /**
+     * Flag, ob Anmeldung zu Schulungsterminen deaktiviert werden soll
+     *
+     * @var boolean $anmeldungDeaktiviert
+     */
+    protected $anmeldungDeaktiviert;
 
-	/**
-	 * Termine der Schulung
-	 *
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Termin> $schulungTermine
-	 */
-	protected $schulungTermine;
+    /**
+     * Termine der Schulung
+     *
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Termin> $schulungTermine
+     */
+    protected $schulungTermine;
 
-	/**
-	 * Setter for titel
-	 *
-	 * @param string $titel Titel der Schulung
-	 * @return void
-	 */
-	public function setTitel($titel) {
-		$this->titel = $titel;
-	}
+    /**
+     * The constructor of this Schulung
+     *
+     */
+    public function __construct()
+    {
+        //Do not remove the next line: It would break the functionality
+        $this->initStorageObjects();
+    }
 
-	/**
-	 * Getter for titel
-	 *
-	 * @return string Titel der Schulung
-	 */
-	public function getTitel() {
-		return $this->titel;
-	}
+    /**
+     * Initializes all ObjectStorage properties.
+     *
+     * @return void
+     */
+    protected function initStorageObjects()
+    {
+        /**
+         * Do not modify this method!
+         * It will be rewritten on each save in the kickstarter
+         * You may modify the constructor of this class instead
+         */
+        $this->schulungTermine = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->contact = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+    }
 
-	/**
-	 * Setter for beschreibung
-	 *
-	 * @param string $beschreibung Beschreibung der Schulung
-	 * @return void
-	 */
-	public function setBeschreibung($beschreibung) {
-		$this->beschreibung = $beschreibung;
-	}
+    /**
+     * Getter for titel
+     *
+     * @return string Titel der Schulung
+     */
+    public function getTitel()
+    {
+        return $this->titel;
+    }
 
-	/**
-	 * Getter for beschreibung
-	 *
-	 * @return string Beschreibung der Schulung
-	 */
-	public function getBeschreibung() {
-		return $this->beschreibung;
-	}
+    /**
+     * Setter for titel
+     *
+     * @param string $titel Titel der Schulung
+     * @return void
+     */
+    public function setTitel($titel)
+    {
+        $this->titel = $titel;
+    }
 
-	/**
-	 * Setter for teilnehmerMin
-	 *
-	 * @param int $teilnehmerMin Mindestteilnehmerzahl
-	 * @return void
-	 */
-	public function setTeilnehmerMin($teilnehmerMin) {
-		$this->teilnehmerMin = $teilnehmerMin;
-	}
+    /**
+     * Getter for beschreibung
+     *
+     * @return string Beschreibung der Schulung
+     */
+    public function getBeschreibung()
+    {
+        return $this->beschreibung;
+    }
 
-	/**
-	 * Getter for teilnehmerMin
-	 *
-	 * @return int Mindestteilnehmerzahl
-	 */
-	public function getTeilnehmerMin() {
-		return $this->teilnehmerMin;
-	}
+    /**
+     * Setter for beschreibung
+     *
+     * @param string $beschreibung Beschreibung der Schulung
+     * @return void
+     */
+    public function setBeschreibung($beschreibung)
+    {
+        $this->beschreibung = $beschreibung;
+    }
 
-	/**
-	 * Setter for teilnehmerMax
-	 *
-	 * @param int $teilnehmerMax Maximale Teilnehmerzahl
-	 * @return void
-	 */
-	public function setTeilnehmerMax($teilnehmerMax) {
-		$this->teilnehmerMax = $teilnehmerMax;
-	}
+    /**
+     * Getter for teilnehmerMin
+     *
+     * @return int Mindestteilnehmerzahl
+     */
+    public function getTeilnehmerMin()
+    {
+        return $this->teilnehmerMin;
+    }
 
-	/**
-	 * Getter for teilnehmerMax
-	 *
-	 * @return int Maximale Teilnehmerzahl
-	 */
-	public function getTeilnehmerMax() {
-		return $this->teilnehmerMax;
-	}
+    /**
+     * Setter for teilnehmerMin
+     *
+     * @param int $teilnehmerMin Mindestteilnehmerzahl
+     * @return void
+     */
+    public function setTeilnehmerMin($teilnehmerMin)
+    {
+        $this->teilnehmerMin = $teilnehmerMin;
+    }
 
-	/**
-	 * Setter for mailKopie
-	 *
-	 * @param string $mailKopie E-Mail Adresse einer Person
-	 * @return void
-	 */
-	public function setMailKopie($mailKopie) {
-		$this->mailKopie = $mailKopie;
-	}
+    /**
+     * Getter for teilnehmerMax
+     *
+     * @return int Maximale Teilnehmerzahl
+     */
+    public function getTeilnehmerMax()
+    {
+        return $this->teilnehmerMax;
+    }
 
-	/**
-	 * Getter for mailKopie
-	 *
-	 * @return string E-Mail Adresse einer Person
-	 */
-	public function getMailKopie() {
-		return $this->mailKopie;
-	}
+    /**
+     * Setter for teilnehmerMax
+     *
+     * @param int $teilnehmerMax Maximale Teilnehmerzahl
+     * @return void
+     */
+    public function setTeilnehmerMax($teilnehmerMax)
+    {
+        $this->teilnehmerMax = $teilnehmerMax;
+    }
 
-	/**
-	 * The constructor of this Schulung
-	 *
-	 */
-	public function __construct() {
-		//Do not remove the next line: It would break the functionality
-		$this->initStorageObjects();
-	}
+    /**
+     * Getter for mailKopie
+     *
+     * @return string E-Mail Adresse einer Person
+     */
+    public function getMailKopie()
+    {
+        return $this->mailKopie;
+    }
 
-	/**
-	 * Initializes all ObjectStorage properties.
-	 *
-	 * @return void
-	 */
-	protected function initStorageObjects() {
-		/**
-		 * Do not modify this method!
-		 * It will be rewritten on each save in the kickstarter
-		 * You may modify the constructor of this class instead
-		 */
-		$this->schulungTermine = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$this->contact = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-	}
+    /**
+     * Setter for mailKopie
+     *
+     * @param string $mailKopie E-Mail Adresse einer Person
+     * @return void
+     */
+    public function setMailKopie($mailKopie)
+    {
+        $this->mailKopie = $mailKopie;
+    }
 
-	/**
-	 * Adds a Termin
-	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Termin $schulungTermine
-	 * @return void
-	 */
-	public function addSchulungTermine(\Subugoe\Schulungen\Domain\Model\Termin $schulungTermine) {
-		$this->schulungTermine->attach($schulungTermine);
-	}
+    /**
+     * Adds a Termin
+     *
+     * @param \Subugoe\Schulungen\Domain\Model\Termin $schulungTermine
+     * @return void
+     */
+    public function addSchulungTermine(\Subugoe\Schulungen\Domain\Model\Termin $schulungTermine)
+    {
+        $this->schulungTermine->attach($schulungTermine);
+    }
 
-	/**
-	 * Removes a Termin
-	 *
-	 * @param \Subugoe\Schulungen\Domain\Model\Termin $schulungTermineToRemove The Termin to be removed
-	 * @return void
-	 */
-	public function removeSchulungTermine(\Subugoe\Schulungen\Domain\Model\Termin $schulungTermineToRemove) {
-		$this->schulungTermine->detach($schulungTermineToRemove);
-	}
+    /**
+     * Removes a Termin
+     *
+     * @param \Subugoe\Schulungen\Domain\Model\Termin $schulungTermineToRemove The Termin to be removed
+     * @return void
+     */
+    public function removeSchulungTermine(\Subugoe\Schulungen\Domain\Model\Termin $schulungTermineToRemove)
+    {
+        $this->schulungTermine->detach($schulungTermineToRemove);
+    }
 
-	/**
-	 * Returns the schulungTermine
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Termin> $schulungTermine
-	 */
-	public function getSchulungTermine() {
-		return $this->schulungTermine;
-	}
+    /**
+     * Returns the schulungTermine
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Termin> $schulungTermine
+     */
+    public function getSchulungTermine()
+    {
+        return $this->schulungTermine;
+    }
 
-	/**
-	 * Sets the schulungTermine
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Termin> $schulungTermine
-	 * @return void
-	 */
-	public function setSchulungTermine($schulungTermine) {
-		$this->schulungTermine = $schulungTermine;
-	}
+    /**
+     * Sets the schulungTermine
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Termin> $schulungTermine
+     * @return void
+     */
+    public function setSchulungTermine($schulungTermine)
+    {
+        $this->schulungTermine = $schulungTermine;
+    }
 
-	/**
-	 * Returns the $contact
-	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Person> $contact
-	 */
-	public function getContact() {
-		return $this->contact;
-	}
+    /**
+     * Returns the $contact
+     *
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Person> $contact
+     */
+    public function getContact()
+    {
+        return $this->contact;
+    }
 
-	/**
-	 * Sets the schulungTermine
-	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Person> $contact
-	 * @return void
-	 */
-	public function setContact($contact) {
-		$this->contact = $contact;
-	}
+    /**
+     * Sets the schulungTermine
+     *
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Person> $contact
+     * @return void
+     */
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
+    }
 
-	/**
-	 * Getter for voraussetzungen
-	 *
-	 * @return string voraussetzungen
-	 */
-	public function getVoraussetzungen() {
-		return $this->voraussetzungen;
-	}
+    /**
+     * Getter for voraussetzungen
+     *
+     * @return string voraussetzungen
+     */
+    public function getVoraussetzungen()
+    {
+        return $this->voraussetzungen;
+    }
 
-	/**
-	 * Setter for voraussetzungen
-	 *
-	 * @param string $voraussetzungen voraussetzungen
-	 * @return void
-	 */
-	public function setVoraussetzungen($voraussetzungen) {
-		$this->voraussetzungen = $voraussetzungen;
-	}
+    /**
+     * Setter for voraussetzungen
+     *
+     * @param string $voraussetzungen voraussetzungen
+     * @return void
+     */
+    public function setVoraussetzungen($voraussetzungen)
+    {
+        $this->voraussetzungen = $voraussetzungen;
+    }
 
-	/**
-	 * Getter for treffpunkt
-	 *
-	 * @return string treffpunkt
-	 */
-	public function getTreffpunkt() {
-		return $this->treffpunkt;
-	}
+    /**
+     * Getter for treffpunkt
+     *
+     * @return string treffpunkt
+     */
+    public function getTreffpunkt()
+    {
+        return $this->treffpunkt;
+    }
 
-	/**
-	 * Setter for treffpunkt
-	 *
-	 * @param string $treffpunkt treffpunkt
-	 * @return void
-	 */
-	public function setTreffpunkt($treffpunkt) {
-		$this->treffpunkt = $treffpunkt;
-	}
+    /**
+     * Setter for treffpunkt
+     *
+     * @param string $treffpunkt treffpunkt
+     * @return void
+     */
+    public function setTreffpunkt($treffpunkt)
+    {
+        $this->treffpunkt = $treffpunkt;
+    }
 
-	/**
-	 * Getter for dauer
-	 *
-	 * @return string dauer
-	 */
-	public function getDauer() {
-		return $this->dauer;
-	}
+    /**
+     * Getter for dauer
+     *
+     * @return string dauer
+     */
+    public function getDauer()
+    {
+        return $this->dauer;
+    }
 
-	/**
-	 * Setter for dauer
-	 *
-	 * @param string $dauer dauer
-	 * @return void
-	 */
-	public function setDauer($dauer) {
-		$this->dauer = $dauer;
-	}
+    /**
+     * Setter for dauer
+     *
+     * @param string $dauer dauer
+     * @return void
+     */
+    public function setDauer($dauer)
+    {
+        $this->dauer = $dauer;
+    }
 
-	/**
-	 * Getter for veranstalter
-	 *
-	 * @return string veranstalter
-	 */
-	public function getVeranstalter() {
-		return $this->veranstalter;
-	}
+    /**
+     * Getter for veranstalter
+     *
+     * @return string veranstalter
+     */
+    public function getVeranstalter()
+    {
+        return $this->veranstalter;
+    }
 
-	/**
-	 * Setter for veranstalter
-	 *
-	 * @param string $veranstalter veranstalter
-	 * @return void
-	 */
-	public function setVeranstalter($veranstalter) {
-		$this->veranstalter = $veranstalter;
-	}
+    /**
+     * Setter for veranstalter
+     *
+     * @param string $veranstalter veranstalter
+     * @return void
+     */
+    public function setVeranstalter($veranstalter)
+    {
+        $this->veranstalter = $veranstalter;
+    }
 
-	/**
-	 * Getter for untertitel
-	 *
-	 * @return string untertitel
-	 */
-	public function getUntertitel() {
-		return $this->untertitel;
-	}
+    /**
+     * Getter for untertitel
+     *
+     * @return string untertitel
+     */
+    public function getUntertitel()
+    {
+        return $this->untertitel;
+    }
 
-	/**
-	 * Setter for untertitel
-	 *
-	 * @param string $untertitel untertitel
-	 * @return void
-	 */
-	public function setUntertitel($untertitel) {
-		$this->untertitel = $untertitel;
-	}
+    /**
+     * Setter for untertitel
+     *
+     * @param string $untertitel untertitel
+     * @return void
+     */
+    public function setUntertitel($untertitel)
+    {
+        $this->untertitel = $untertitel;
+    }
 
-	/**
-	 * Getter for kategorie
-	 *
-	 * @return string kategorie
-	 */
-	public function getKategorie() {
-		return $this->kategorie;
-	}
+    /**
+     * Getter for kategorie
+     *
+     * @return string kategorie
+     */
+    public function getKategorie()
+    {
+        return $this->kategorie;
+    }
 
-	/**
-	 * Setter for kategorie
-	 *
-	 * @param string $kategorie kategorie
-	 * @return void
-	 */
-	public function setKategorie($kategorie) {
-		$this->kategorie = $kategorie;
-	}
+    /**
+     * Setter for kategorie
+     *
+     * @param string $kategorie kategorie
+     * @return void
+     */
+    public function setKategorie($kategorie)
+    {
+        $this->kategorie = $kategorie;
+    }
 
-	/**
-	 * Getter for termineVersteckt
-	 *
-	 * @return int termineVersteckt
-	 */
-	public function getTermineVersteckt() {
-		return $this->termineVersteckt;
-	}
+    /**
+     * Getter for termineVersteckt
+     *
+     * @return int termineVersteckt
+     */
+    public function getTermineVersteckt()
+    {
+        return $this->termineVersteckt;
+    }
 
-	/**
-	 * Setter for termineVersteckt
-	 *
-	 * @param string $termineVersteckt termineVersteckt
-	 * @return void
-	 */
-	public function setTermineVersteckt($termineVersteckt) {
-		$this->termineVersteckt = $termineVersteckt;
-	}
+    /**
+     * Setter for termineVersteckt
+     *
+     * @param string $termineVersteckt termineVersteckt
+     * @return void
+     */
+    public function setTermineVersteckt($termineVersteckt)
+    {
+        $this->termineVersteckt = $termineVersteckt;
+    }
 
-	/**
-	 * Getter for anmeldungDeaktiviert
-	 *
-	 * @return int anmeldungDeaktiviert
-	 */
-	public function getAnmeldungDeaktiviert() {
-		return $this->anmeldungDeaktiviert;
-	}
+    /**
+     * Getter for anmeldungDeaktiviert
+     *
+     * @return int anmeldungDeaktiviert
+     */
+    public function getAnmeldungDeaktiviert()
+    {
+        return $this->anmeldungDeaktiviert;
+    }
 
-	/**
-	 * Setter for anmeldungDeaktiviert
-	 *
-	 * @param int $anmeldungDeaktiviert anmeldungDeaktiviert
-	 * @return void
-	 */
-	public function setAnmeldungDeaktiviert($anmeldungDeaktiviert) {
-		$this->anmeldungDeaktiviert = $anmeldungDeaktiviert;
-	}
+    /**
+     * Setter for anmeldungDeaktiviert
+     *
+     * @param int $anmeldungDeaktiviert anmeldungDeaktiviert
+     * @return void
+     */
+    public function setAnmeldungDeaktiviert($anmeldungDeaktiviert)
+    {
+        $this->anmeldungDeaktiviert = $anmeldungDeaktiviert;
+    }
 
 
 }

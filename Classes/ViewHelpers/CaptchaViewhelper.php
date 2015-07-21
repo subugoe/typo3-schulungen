@@ -1,5 +1,6 @@
 <?php
 namespace Subugoe\Schulungen\ViewHelpers;
+
 /* * *************************************************************
  *  Copyright notice
  *
@@ -29,28 +30,31 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * ReCAPTCHA-ViewHelper
  */
-class CaptchaViewHelper extends AbstractViewHelper {
+class CaptchaViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Createing a reCaptcha
-	 *
-	 * @return string $content ReCAPTCHA-Sourcecode
-	 */
-	public function render() {
-		$this->isExtensionLoaded();
-		$captcha = new \tx_jmrecaptcha();
-		return $captcha->getReCaptcha();
-	}
+    /**
+     * Createing a reCaptcha
+     *
+     * @return string $content ReCAPTCHA-Sourcecode
+     */
+    public function render()
+    {
+        $this->isExtensionLoaded();
+        $captcha = new \tx_jmrecaptcha();
+        return $captcha->getReCaptcha();
+    }
 
-	/**
-	 * @return bool
-	 * @throws MissingExtensionDependencyException
-	 */
-	protected function isExtensionLoaded() {
-		if (!ExtensionManagementUtility::isLoaded('jm_recaptcha')) {
-			throw new MissingExtensionDependencyException('Extension jm_recaptcha is not loaded', 1432629406);
-		}
-		return TRUE;
-	}
+    /**
+     * @return bool
+     * @throws MissingExtensionDependencyException
+     */
+    protected function isExtensionLoaded()
+    {
+        if (!ExtensionManagementUtility::isLoaded('jm_recaptcha')) {
+            throw new MissingExtensionDependencyException('Extension jm_recaptcha is not loaded', 1432629406);
+        }
+        return true;
+    }
 
 }

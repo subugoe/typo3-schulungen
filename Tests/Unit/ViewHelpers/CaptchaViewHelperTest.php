@@ -28,33 +28,35 @@ namespace Subugoe\Schulungen\Texts\ViewHelpers;
 
 use Subugoe\Schulungen\ViewHelpers\CaptchaViewHelper;
 use TYPO3\CMS\Core\Tests\BaseTestCase;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
-class CaptchaViewHelperTest extends BaseTestCase {
+class CaptchaViewHelperTest extends BaseTestCase
+{
 
-	/**
-	 * @var CaptchaViewHelper
-	 */
-	protected $fixture;
+    /**
+     * @var CaptchaViewHelper
+     */
+    protected $fixture;
 
-	/**
-	 * @return void
-	 */
-	protected function setUp() {
-		$this->fixture = $this->getMock(CaptchaViewHelper::class, ['dummy']);
-	}
+    /**
+     * @test
+     */
+    public function extensionIsNotLoaded()
+    {
+        $this->fixture
+            ->expects($this->at(0))
+            ->method('isExtensionLoaded')
+            ->will($this->returnValue(false));
 
-	/**
-	 * @test
-	 */
-	public function extensionIsNotLoaded() {
-		$this->fixture
-			->expects($this->at(0))
-			->method('isExtensionLoaded')
-			->will($this->returnValue(FALSE));
+        $this->setExpectedException(\TYPO3\CMS\Extensionmanager\Exception\MissingExtensionDependencyException::class);
+        $this->markTestIncomplete();
+    }
 
-		$this->setExpectedException(\TYPO3\CMS\Extensionmanager\Exception\MissingExtensionDependencyException::class);
-		$this->markTestIncomplete();
-	}
+    /**
+     * @return void
+     */
+    protected function setUp()
+    {
+        $this->fixture = $this->getMock(CaptchaViewHelper::class, ['dummy']);
+    }
 
 }

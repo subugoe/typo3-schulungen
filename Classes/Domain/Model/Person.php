@@ -1,5 +1,6 @@
 <?php
 namespace Subugoe\Schulungen\Domain\Model;
+
 /* * *************************************************************
  *  Copyright notice
  *
@@ -31,254 +32,280 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
  *
  * @author Dominic Simm <dominic.simm@sub.goettingen.de>, Goettingen State Library
  */
-class Person extends AbstractEntity {
+class Person extends AbstractEntity
+{
 
-	/**
-	 * @var string
-	 */
-	protected $firstName;
+    /**
+     * @var string
+     */
+    protected $firstName;
 
-	/**
-	 * @var string
-	 */
-	protected $lastName;
+    /**
+     * @var string
+     */
+    protected $lastName;
 
-	/**
-	 * @var string
-	 */
-	protected $title;
+    /**
+     * @var string
+     */
+    protected $title;
 
-	/**
-	 * @var string
-	 */
-	protected $email;
+    /**
+     * @var string
+     */
+    protected $email;
 
-	/**
-	 * @var string
-	 */
-	protected $phone;
+    /**
+     * @var string
+     */
+    protected $phone;
 
-	/**
-	 * @var string
-	 */
-	protected $fax;
+    /**
+     * @var string
+     */
+    protected $fax;
 
-	/**
-	 * @var string
-	 */
-	protected $address;
+    /**
+     * @var string
+     */
+    protected $address;
 
-	/**
-	 * @var string
-	 */
-	protected $building;
+    /**
+     * @var string
+     */
+    protected $building;
 
-	/**
-	 * @var string
-	 */
-	protected $room;
+    /**
+     * @var string
+     */
+    protected $room;
 
-	/**
-	 * @var string
-	 */
-	protected $company;
+    /**
+     * @var string
+     */
+    protected $company;
 
-	/**
-	 * @var string
-	 */
-	protected $city;
+    /**
+     * @var string
+     */
+    protected $city;
 
-	/**
-	 * @var string
-	 */
-	protected $zip;
+    /**
+     * @var string
+     */
+    protected $zip;
 
-	/**
-	 * @var string
-	 */
-	protected $country;
+    /**
+     * @var string
+     */
+    protected $country;
 
+    /**
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
 
-	/**
-	 * @param string $firstName
-	 */
-	public function setFirstName($firstName) {
-		$this->firstName = $firstName;
-	}
+    /**
+     * @param string $firstName
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getFirstName() {
-		return $this->firstName;
-	}
+    /**
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
 
-	/**
-	 * @param string $lastName
-	 */
-	public function setLastName($lastName) {
-		$this->lastName = $lastName;
-	}
+    /**
+     * @param string $lastName
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getLastName() {
-		return $this->lastName;
-	}
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-	/**
-	 * @param string $title
-	 */
-	public function setTitle($title) {
-		$this->title = $title;
-	}
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getEmail() {
-		return $this->email;
-	}
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
 
-	/**
-	 * @param string $email
-	 */
-	public function setEmail($email) {
-		$this->email = $email;
-	}
+    /**
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getPhone() {
-		return $this->phone;
-	}
+    /**
+     * @param string $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    }
 
-	/**
-	 * @param string $phone
-	 */
-	public function setPhone($phone) {
-		$this->phone = $phone;
-	}
+    /**
+     * @return string
+     */
+    public function getFax()
+    {
+        return $this->fax;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getFax() {
-		return $this->fax;
-	}
+    /**
+     * @param string $fax
+     */
+    public function setFax($fax)
+    {
+        $this->fax = $fax;
+    }
 
-	/**
-	 * @param string $fax
-	 */
-	public function setFax($fax) {
-		$this->fax = $fax;
-	}
+    /**
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getAddress() {
-		return $this->address;
-	}
+    /**
+     * @param string $address
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+    }
 
-	/**
-	 * @param string $address
-	 */
-	public function setAddress($address) {
-		$this->address = $address;
-	}
+    /**
+     * @return string
+     */
+    public function getBuilding()
+    {
+        return $this->building;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getBuilding() {
-		return $this->building;
-	}
+    /**
+     * @param string $building
+     */
+    public function setBuilding($building)
+    {
+        $this->building = $building;
+    }
 
-	/**
-	 * @param string $building
-	 */
-	public function setBuilding($building) {
-		$this->building = $building;
-	}
+    /**
+     * @return string
+     */
+    public function getRoom()
+    {
+        return $this->room;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getRoom() {
-		return $this->room;
-	}
+    /**
+     * @param string $room
+     */
+    public function setRoom($room)
+    {
+        $this->room = $room;
+    }
 
-	/**
-	 * @param string $room
-	 */
-	public function setRoom($room) {
-		$this->room = $room;
-	}
+    /**
+     * @return string
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getCompany() {
-		return $this->company;
-	}
+    /**
+     * @param string $company
+     */
+    public function setCompany($company)
+    {
+        $this->company = $company;
+    }
 
-	/**
-	 * @param string $company
-	 */
-	public function setCompany($company) {
-		$this->company = $company;
-	}
+    /**
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getCity() {
-		return $this->city;
-	}
+    /**
+     * @param string $city
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+    }
 
-	/**
-	 * @param string $city
-	 */
-	public function setCity($city) {
-		$this->city = $city;
-	}
+    /**
+     * @return string
+     */
+    public function getZip()
+    {
+        return $this->zip;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getZip() {
-		return $this->zip;
-	}
+    /**
+     * @param string $zip
+     */
+    public function setZip($zip)
+    {
+        $this->zip = $zip;
+    }
 
-	/**
-	 * @param string $zip
-	 */
-	public function setZip($zip) {
-		$this->zip = $zip;
-	}
+    /**
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getCountry() {
-		return $this->country;
-	}
-
-	/**
-	 * @param string $country
-	 */
-	public function setCountry($country) {
-		$this->country = $country;
-	}
+    /**
+     * @param string $country
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+    }
 
 }

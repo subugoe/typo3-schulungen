@@ -29,24 +29,28 @@ namespace Subugoe\Schulungen\Domain\Repository;
  * Repository for Teilnehmer
  */
 
-class TeilnehmerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class TeilnehmerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
 
-	// Sortierung absteigend nach Terminbeginn
-	protected $defaultOrderings = [
-			'nachname' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
-	];
+    // Sortierung absteigend nach Terminbeginn
+    protected $defaultOrderings = [
+        'nachname' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+    ];
 
-	public function teilnehmerAngemeldet(\Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer, \Subugoe\Schulungen\Domain\Model\Termin $termin) {
-		$query = $this->createQuery();
-		$query->matching(
-				$query->logicalAnd(
-						$query->equals('termin', $termin),
-						$query->equals('email', $teilnehmer->getEmail()),
-						$query->equals('vorname', $teilnehmer->getVorname()),
-						$query->equals('nachname', $teilnehmer->getNachname())
-				)
-		);
-		$query->setOrderings(['nachname' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING]);
-		return $query->execute();
-	}
+    public function teilnehmerAngemeldet(
+        \Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer,
+        \Subugoe\Schulungen\Domain\Model\Termin $termin
+    ) {
+        $query = $this->createQuery();
+        $query->matching(
+            $query->logicalAnd(
+                $query->equals('termin', $termin),
+                $query->equals('email', $teilnehmer->getEmail()),
+                $query->equals('vorname', $teilnehmer->getVorname()),
+                $query->equals('nachname', $teilnehmer->getNachname())
+            )
+        );
+        $query->setOrderings(['nachname' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING]);
+        return $query->execute();
+    }
 }

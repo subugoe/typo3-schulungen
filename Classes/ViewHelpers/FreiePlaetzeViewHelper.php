@@ -28,22 +28,24 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * Calculating number of left participants
  */
-class FreiePlaetzeViewHelper extends AbstractViewHelper {
+class FreiePlaetzeViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * @param int $maxPlaetze Maximum number of participants
-	 * @param int $belegtePlaetze Bereits belegte Plaetze
-	 * @return int $freiePlaetze Anzahl der noch freien Plaetze
-	 */
-	public function render($maxPlaetze, $belegtePlaetze) {
+    /**
+     * @param int $maxPlaetze Maximum number of participants
+     * @param int $belegtePlaetze Bereits belegte Plaetze
+     * @return int $freiePlaetze Anzahl der noch freien Plaetze
+     */
+    public function render($maxPlaetze, $belegtePlaetze)
+    {
 
-		$freiePlaetze = 0;
+        $freiePlaetze = 0;
 
-		if ($belegtePlaetze < $maxPlaetze) {
-			$freiePlaetze = (intval($maxPlaetze) - intval($belegtePlaetze));
-		}
+        if ($belegtePlaetze < $maxPlaetze) {
+            $freiePlaetze = (intval($maxPlaetze) - intval($belegtePlaetze));
+        }
 
-		return $freiePlaetze;
-	}
+        return $freiePlaetze;
+    }
 
 }

@@ -28,24 +28,26 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * Calculating already passed events
  */
-class TerminatedViewHelper extends AbstractViewHelper {
+class TerminatedViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Calculates if a date is already passed
-	 *
-	 * @param \DateTime $time Starting time of the event
-	 * @return bool $result ending soon?
-	 */
-	public function render($time) {
+    /**
+     * Calculates if a date is already passed
+     *
+     * @param \DateTime $time Starting time of the event
+     * @return bool $result ending soon?
+     */
+    public function render($time)
+    {
 
-		$currentTime = new \DateTime();
-		$currentTime->setTimestamp(time());
+        $currentTime = new \DateTime();
+        $currentTime->setTimestamp(time());
 
-		if ($currentTime < $time) {
-			return $result = FALSE;
-		} else {
-			return $result = TRUE;
-		}
-	}
+        if ($currentTime < $time) {
+            return $result = false;
+        } else {
+            return $result = true;
+        }
+    }
 
 }

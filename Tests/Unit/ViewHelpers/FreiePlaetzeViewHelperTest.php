@@ -31,37 +31,41 @@ use TYPO3\CMS\Core\Tests\BaseTestCase;
 /**
  * Testing spare seats viewhelper
  */
-class FreiePlaetzeViewHelperTest extends BaseTestCase {
+class FreiePlaetzeViewHelperTest extends BaseTestCase
+{
 
-	/**
-	 * @var FreiePlaetzeViewHelper
-	 */
-	protected $fixture;
+    /**
+     * @var FreiePlaetzeViewHelper
+     */
+    protected $fixture;
 
-	public function setUp () {
-		$this->fixture = $this->getMock(FreiePlaetzeViewHelper::class, ['dummy']);
-	}
+    public function setUp()
+    {
+        $this->fixture = $this->getMock(FreiePlaetzeViewHelper::class, ['dummy']);
+    }
 
-	/**
-	 * @return array
-	 */
-	public function spareParticipantsProvider() {
-		return [
-			[20, 5, 15],
-			[5, 20, 0],
-			[0, 0, 0]
-		];
-	}
+    /**
+     * @return array
+     */
+    public function spareParticipantsProvider()
+    {
+        return [
+            [20, 5, 15],
+            [5, 20, 0],
+            [0, 0, 0]
+        ];
+    }
 
-	/**
-	 * @dataProvider spareParticipantsProvider
-	 *
-	 * @test
-	 * @param $maxPlaetze
-	 * @param $belegtePlaetze
-	 * @param $expected
-	 */
-	public function numberOfLeftPlacesIsCorrectlyCalculated($maxPlaetze, $belegtePlaetze, $expected) {
-		$this->assertSame($expected, $this->fixture->render($maxPlaetze, $belegtePlaetze));
-	}
+    /**
+     * @dataProvider spareParticipantsProvider
+     *
+     * @test
+     * @param $maxPlaetze
+     * @param $belegtePlaetze
+     * @param $expected
+     */
+    public function numberOfLeftPlacesIsCorrectlyCalculated($maxPlaetze, $belegtePlaetze, $expected)
+    {
+        $this->assertSame($expected, $this->fixture->render($maxPlaetze, $belegtePlaetze));
+    }
 }

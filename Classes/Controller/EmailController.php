@@ -27,145 +27,149 @@ use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extensionmanager\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Zentraler Controller fuer das Versenden von E-Mails
  * Funktioniert mit unterschiedlichen Methoden im Extbase Kontext und im Scheduler
  */
-class EmailController extends ActionController {
+class EmailController extends ActionController
+{
 
-	/**
-	 * Methode zum Versenden von E-Mails
-	 * @param string $recipient
-	 * @param string $sender
-	 * @param string $senderName
-	 * @param string $subject
-	 * @param string $templateName
-	 * @param array $variables
-	 * @return boolean
-	 */
-	public function sendeMail($recipient, $sender, $senderName, $subject, $templateName, array $variables = []) {
-		$configurationManager = $this->objectManager->get(ConfigurationManager::class);
-		$extbaseFrameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+    /**
+     * Methode zum Versenden von E-Mails
+     * @param string $recipient
+     * @param string $sender
+     * @param string $senderName
+     * @param string $subject
+     * @param string $templateName
+     * @param array $variables
+     * @return boolean
+     */
+    public function sendeMail($recipient, $sender, $senderName, $subject, $templateName, array $variables = [])
+    {
+        $configurationManager = $this->objectManager->get(ConfigurationManager::class);
+        $extbaseFrameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
-		$templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
+        $templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
 
-		$templatePathAndFilename = $templateRootPath . 'Email/' . $templateName . '.html';
-		$emailView = $this->objectManager->get(StandaloneView::class);
-		$emailView->setTemplatePathAndFilename($templatePathAndFilename);
+        $templatePathAndFilename = $templateRootPath . 'Email/' . $templateName . '.html';
+        $emailView = $this->objectManager->get(StandaloneView::class);
+        $emailView->setTemplatePathAndFilename($templatePathAndFilename);
 
-		$emailView->setFormat('html');
+        $emailView->setFormat('html');
 
-		$emailView->assignMultiple($variables);
-		$emailBody = $emailView->render();
+        $emailView->assignMultiple($variables);
+        $emailBody = $emailView->render();
 
-		$return = false;
+        $return = false;
 
-		// Wir nutzen den Swiftmailer
-		/** @var MailMessage $mail */
-		$mail = $this->objectManager->get(MailMessage::class);
+        // Wir nutzen den Swiftmailer
+        /** @var MailMessage $mail */
+        $mail = $this->objectManager->get(MailMessage::class);
 
-		$mail->setFrom($sender);
+        $mail->setFrom($sender);
 
-		$mail->addTo($recipient);
-		if ($variables['copy'] == true) {
-			if (is_array($variables['mailcopy'])) {
-				foreach ($variables['mailcopy'] as $mailcopy) {
-					$mail->addBcc($mailcopy);
-				}
-			}
-		}
+        $mail->addTo($recipient);
+        if ($variables['copy'] == true) {
+            if (is_array($variables['mailcopy'])) {
+                foreach ($variables['mailcopy'] as $mailcopy) {
+                    $mail->addBcc($mailcopy);
+                }
+            }
+        }
 
-		$mail->setSubject($subject);
-		$mail->setBody($emailBody, 'text/html');
+        $mail->setSubject($subject);
+        $mail->setBody($emailBody, 'text/html');
 
-		if ($mail->send() > 0) {
-			$return = true;
-		}
+        if ($mail->send() > 0) {
+            $return = true;
+        }
 
-		return $return;
-	}
+        return $return;
+    }
 
-	/**
-	 * Benachrichtigungsmethode über gerade erfolgte Transaktion
-	 * @param string $sender
-	 * @param string $senderName
-	 * @param string $subject
-	 * @param string $templateName
-	 * @param array $variables
-	 * @return boolean
-	 */
-	public function sendeTransactionMail($sender, $senderName, $subject, $templateName, array $variables = []) {
-		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+    /**
+     * Benachrichtigungsmethode über gerade erfolgte Transaktion
+     * @param string $sender
+     * @param string $senderName
+     * @param string $subject
+     * @param string $templateName
+     * @param array $variables
+     * @return boolean
+     */
+    public function sendeTransactionMail($sender, $senderName, $subject, $templateName, array $variables = [])
+    {
+        $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 
-		$templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
-		if (strlen($templateName) == 0) {
-			$templatePathAndFilename = $templateRootPath . 'Email/TransactionMail.html';
-		} else {
-			$templatePathAndFilename = $templateRootPath . 'Email/' . $templateName . '.html';
-		}
-		/** @var \TYPO3\CMS\Fluid\View\StandaloneView $emailView */
-		$emailView = $this->objectManager->get(StandaloneView::class);
-		$emailView->setTemplatePathAndFilename($templatePathAndFilename);
+        $templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
+        if (strlen($templateName) == 0) {
+            $templatePathAndFilename = $templateRootPath . 'Email/TransactionMail.html';
+        } else {
+            $templatePathAndFilename = $templateRootPath . 'Email/' . $templateName . '.html';
+        }
+        /** @var \TYPO3\CMS\Fluid\View\StandaloneView $emailView */
+        $emailView = $this->objectManager->get(StandaloneView::class);
+        $emailView->setTemplatePathAndFilename($templatePathAndFilename);
 
-		$emailView->setFormat('html');
+        $emailView->setFormat('html');
 
-		$emailView->assignMultiple($variables);
-		$emailBody = $emailView->render();
+        $emailView->assignMultiple($variables);
+        $emailBody = $emailView->render();
 
-		$return = false;
+        $return = false;
 
-		// Wir nutzen den Swiftmailer
-		/** @var MailMessage $mail */
-		$mail = $this->objectManager->get(MailMessage::class);
+        // Wir nutzen den Swiftmailer
+        /** @var MailMessage $mail */
+        $mail = $this->objectManager->get(MailMessage::class);
 
-		$mail->setFrom($sender);
+        $mail->setFrom($sender);
 
-		$mail->addTo($sender);
+        $mail->addTo($sender);
 
-		$mail->setSubject($subject);
-		$mail->setBody($emailBody, 'text/html');
+        $mail->setSubject($subject);
+        $mail->setBody($emailBody, 'text/html');
 
-		if ($mail->send() > 0) {
-			$return = true;
-		}
+        if ($mail->send() > 0) {
+            $return = true;
+        }
 
-		return $return;
-	}
+        return $return;
+    }
 
-	/**
-	 * Keine Fluid Frontendgeschichten verfuegbar im Scheduler (nur mit hohem Aufwand)
-	 * @todo Fluid E-Mail Templating
-	 * @param string $recipient
-	 * @param string $sender
-	 * @param string $senderName
-	 * @param string $subject
-	 * @return boolean
-	 */
-	public function sendeSchedulerMail($recipient, $sender, $senderName, $subject) {
+    /**
+     * Keine Fluid Frontendgeschichten verfuegbar im Scheduler (nur mit hohem Aufwand)
+     * @todo Fluid E-Mail Templating
+     * @param string $recipient
+     * @param string $sender
+     * @param string $senderName
+     * @param string $subject
+     * @return boolean
+     */
+    public function sendeSchedulerMail($recipient, $sender, $senderName, $subject)
+    {
 
-		//@todo Body zentral definieren wenn nicht mit fluid Nutzung
-		$emailBody = "Erinnerung an die Schulung";
+        //@todo Body zentral definieren wenn nicht mit fluid Nutzung
+        $emailBody = "Erinnerung an die Schulung";
 
-		$return = false;
+        $return = false;
 
-		/** @var MailMessage $mail */
-		$mail = $this->objectManager->get(MailMessage::class);
+        /** @var MailMessage $mail */
+        $mail = $this->objectManager->get(MailMessage::class);
 
-		$mail->setFrom($sender);
+        $mail->setFrom($sender);
 
-		$mail->setTo($recipient);
+        $mail->setTo($recipient);
 
-		$mail->setSubject($subject);
-		$mail->setBody($emailBody, 'text/html');
+        $mail->setSubject($subject);
+        $mail->setBody($emailBody, 'text/html');
 
-		if ($mail->send() > 0) {
-			$return = true;
-		}
+        if ($mail->send() > 0) {
+            $return = true;
+        }
 
-		return $return;
-	}
+        return $return;
+    }
 
 }

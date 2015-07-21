@@ -29,40 +29,44 @@ namespace Subugoe\Schulungen\Texts\ViewHelpers;
 use Subugoe\Schulungen\ViewHelpers\TerminatedViewHelper;
 use TYPO3\CMS\Core\Tests\BaseTestCase;
 
-class TerminatedViewHelperTest extends BaseTestCase {
+class TerminatedViewHelperTest extends BaseTestCase
+{
 
-	/**
-	 * @var TerminatedViewHelper
-	 */
-	protected $fixture;
+    /**
+     * @var TerminatedViewHelper
+     */
+    protected $fixture;
 
-	/**
-	 * @return void
-	 */
-	public function setUp() {
-		$this->fixture = $this->getMock(TerminatedViewHelper::class, ['dummy']);
-	}
+    /**
+     * @return void
+     */
+    public function setUp()
+    {
+        $this->fixture = $this->getMock(TerminatedViewHelper::class, ['dummy']);
+    }
 
-	/**
-	 * @test
-	 */
-	public function currentTimeIsNotLowerThanProvidedTime() {
-		$actual = new \DateTime('now');
-		$actual->add(\DateInterval::createFromDateString('9 days'));
+    /**
+     * @test
+     */
+    public function currentTimeIsNotLowerThanProvidedTime()
+    {
+        $actual = new \DateTime('now');
+        $actual->add(\DateInterval::createFromDateString('9 days'));
 
-		$expected = FALSE;
-		$this->assertSame($expected, $this->fixture->render($actual));
-	}
+        $expected = false;
+        $this->assertSame($expected, $this->fixture->render($actual));
+    }
 
-	/**
-	 * @test
-	 */
-	public function passedTimeIsLowerThanCurrentTime() {
-		$actual = new \DateTime('now');
-		$actual->sub(\DateInterval::createFromDateString('9 days'));
+    /**
+     * @test
+     */
+    public function passedTimeIsLowerThanCurrentTime()
+    {
+        $actual = new \DateTime('now');
+        $actual->sub(\DateInterval::createFromDateString('9 days'));
 
-		$expected = TRUE;
-		$this->assertSame($expected, $this->fixture->render($actual));
-	}
+        $expected = true;
+        $this->assertSame($expected, $this->fixture->render($actual));
+    }
 
 }

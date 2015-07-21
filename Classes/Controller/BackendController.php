@@ -1,5 +1,6 @@
 <?php
 namespace Subugoe\Schulungen\Controller;
+
 /* * *************************************************************
  *  Copyright notice
  *
@@ -34,211 +35,226 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /**
  * Controller for the Schulung object
  */
-class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
+class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+{
 
-	/**
-	 * schulungRepository
-	 *
-	 * @var \Subugoe\Schulungen\Domain\Repository\SchulungRepository
-	 * @inject
-	 */
-	protected $schulungRepository;
-	/**
-	 * terminRepository
-	 *
-	 * @var \Subugoe\Schulungen\Domain\Repository\TerminRepository
-	 * @inject
-	 */
-	protected $terminRepository;
-	/**
-	 * Teilnehmer
-	 * @var \Subugoe\Schulungen\Domain\Repository\TeilnehmerRepository
-	 * @inject
-	 */
-	protected $teilnehmerRepository;
+    /**
+     * schulungRepository
+     *
+     * @var \Subugoe\Schulungen\Domain\Repository\SchulungRepository
+     * @inject
+     */
+    protected $schulungRepository;
+    /**
+     * terminRepository
+     *
+     * @var \Subugoe\Schulungen\Domain\Repository\TerminRepository
+     * @inject
+     */
+    protected $terminRepository;
+    /**
+     * Teilnehmer
+     * @var \Subugoe\Schulungen\Domain\Repository\TeilnehmerRepository
+     * @inject
+     */
+    protected $teilnehmerRepository;
 
-	/**
-	 * @var \Subugoe\Schulungen\Controller\BenachrichtigungController
-	 */
-	protected $benachrichtigung;
+    /**
+     * @var \Subugoe\Schulungen\Controller\BenachrichtigungController
+     */
+    protected $benachrichtigung;
 
-	/**
-	 * Initializes the current action
-	 *
-	 * @return void
-	 */
-	protected function initializeAction() {
-		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		$this->settings = $extbaseFrameworkConfiguration;
-		$GLOBALS['TT'] = new NullTimeTracker();
+    /**
+     * Initializes the current action
+     *
+     * @return void
+     */
+    protected function initializeAction()
+    {
+        $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $this->settings = $extbaseFrameworkConfiguration;
+        $GLOBALS['TT'] = new NullTimeTracker();
 
-	}
+    }
 
-	/**
-	 * Displays all Schulungen
-	 *
-	 * @return string The rendered list view
-	 */
-	public function indexAction() {
+    /**
+     * Displays all Schulungen
+     *
+     * @return string The rendered list view
+     */
+    public function indexAction()
+    {
 
-		// workaround if findAll-method of schulungsRepository doesn't work
-		// => no data is displayed in Backend
-		$schulungs = $this->schulungRepository->findByPid('1648');
-		$termine = $this->terminRepository->findAll();
-		/** @var Schulung $schulung */
-		foreach ($schulungs as $schulung) {
-			/** @var ObjectStorage $schulungTermine */
-			$schulungTermine = GeneralUtility::makeInstance(ObjectStorage::class);
-			foreach ($termine as $termin) {
-				try {
-					if ($schulung->getTitel() == $termin->getSchulung()->getTitel()) {
-						$schulungTermine->attach($termin);
-					}
-				} catch (\Exception $e) {
-					GeneralUtility::devlog($e->getMessage(), "Schulungen", 3, [$termin]);
-				}
+        // workaround if findAll-method of schulungsRepository doesn't work
+        // => no data is displayed in Backend
+        $schulungs = $this->schulungRepository->findByPid('1648');
+        $termine = $this->terminRepository->findAll();
+        /** @var Schulung $schulung */
+        foreach ($schulungs as $schulung) {
+            /** @var ObjectStorage $schulungTermine */
+            $schulungTermine = GeneralUtility::makeInstance(ObjectStorage::class);
+            foreach ($termine as $termin) {
+                try {
+                    if ($schulung->getTitel() == $termin->getSchulung()->getTitel()) {
+                        $schulungTermine->attach($termin);
+                    }
+                } catch (\Exception $e) {
+                    GeneralUtility::devlog($e->getMessage(), "Schulungen", 3, [$termin]);
+                }
 
-			}
-			$schulung->setSchulungTermine($schulungTermine);
-		}
+            }
+            $schulung->setSchulungTermine($schulungTermine);
+        }
 
-		$numberOfTeilnehmer = $this->teilnehmerRepository->countAll();
-		$numberOfTermine = $this->terminRepository->countAll();
+        $numberOfTeilnehmer = $this->teilnehmerRepository->countAll();
+        $numberOfTermine = $this->terminRepository->countAll();
 
-		// include JQUERY
-		// checks if t3jquery is loaded
-		if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3jquery')) {
-			require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3jquery') . 'class.tx_t3jquery.php');
-			$path_to_lib = \tx_t3jquery::getJqJSBE();
-			$script_to_lib = \tx_t3jquery::getJqJSBE(true);
-		}
+        // include JQUERY
+        // checks if t3jquery is loaded
+        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3jquery')) {
+            require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3jquery') . 'class.tx_t3jquery.php');
+            $path_to_lib = \tx_t3jquery::getJqJSBE();
+            $script_to_lib = \tx_t3jquery::getJqJSBE(true);
+        }
 
-		$values = [
-			'schulungs' => $schulungs,
-			'termine' => $numberOfTermine,
-			'teilnehmer' => $numberOfTeilnehmer,
-			'jquery' => $script_to_lib
-		];
+        $values = [
+            'schulungs' => $schulungs,
+            'termine' => $numberOfTermine,
+            'teilnehmer' => $numberOfTeilnehmer,
+            'jquery' => $script_to_lib
+        ];
 
-		$this->view->assignMultiple($values);
+        $this->view->assignMultiple($values);
 
-	}
+    }
 
-	/**
-	 * Displays a single Termin with Details
-	 *
-	 * @param Termin $termin the Schulung to display
-	 * @return string The rendered view
-	 */
-	public function detailAction(Termin $termin) {
-		$this->view->assign('termin', $termin);
-	}
+    /**
+     * Displays a single Termin with Details
+     *
+     * @param Termin $termin the Schulung to display
+     * @return string The rendered view
+     */
+    public function detailAction(Termin $termin)
+    {
+        $this->view->assign('termin', $termin);
+    }
 
-	/**
-	 * Creates a new Schulung and forwards to the list action.
-	 *
-	 * @param Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
-	 * @return string An HTML form for creating a new Schulung
-	 * @dontvalidate $newSchulung
-	 */
-	public function newAction(Schulung $newSchulung = null) {
-		$this->view->assign('newSchulung', $newSchulung);
-	}
+    /**
+     * Creates a new Schulung and forwards to the list action.
+     *
+     * @param Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
+     * @return string An HTML form for creating a new Schulung
+     * @dontvalidate $newSchulung
+     */
+    public function newAction(Schulung $newSchulung = null)
+    {
+        $this->view->assign('newSchulung', $newSchulung);
+    }
 
-	/**
-	 * Creates a new Schulung and forwards to the list action.
-	 *
-	 * @param Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
-	 * @return void
-	 */
-	public function createAction(Schulung $newSchulung) {
-		$this->schulungRepository->add($newSchulung);
-		$this->addFlashMessage('Your new Schulung was created.');
-		$this->redirect('list');
-	}
+    /**
+     * Creates a new Schulung and forwards to the list action.
+     *
+     * @param Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
+     * @return void
+     */
+    public function createAction(Schulung $newSchulung)
+    {
+        $this->schulungRepository->add($newSchulung);
+        $this->addFlashMessage('Your new Schulung was created.');
+        $this->redirect('list');
+    }
 
-	/**
-	 * Deletes an existing Schulung
-	 *
-	 * @param Schulung $schulung the Schulung to be deleted
-	 * @return void
-	 */
-	public function deleteAction(Schulung $schulung) {
-		$this->schulungRepository->remove($schulung);
-		$this->addFlashMessage('Your Schulung was removed.');
-		$this->redirect('list');
-	}
+    /**
+     * Deletes an existing Schulung
+     *
+     * @param Schulung $schulung the Schulung to be deleted
+     * @return void
+     */
+    public function deleteAction(Schulung $schulung)
+    {
+        $this->schulungRepository->remove($schulung);
+        $this->addFlashMessage('Your Schulung was removed.');
+        $this->redirect('list');
+    }
 
-	/**
-	 * Absagen eines Schulungstermins
-	 *
-	 * @param Termin $termin
-	 */
-	public function cancelAction(Termin $termin) {
+    /**
+     * Absagen eines Schulungstermins
+     *
+     * @param Termin $termin
+     */
+    public function cancelAction(Termin $termin)
+    {
 
-		$time = new \DateTime();
-		$time->setTimestamp(time());
+        $time = new \DateTime();
+        $time->setTimestamp(time());
 
-		if ($termin->getStartzeit() > $time) {
-			$termin->setAbgesagt(true);
-			$this->terminRepository->update($termin);
+        if ($termin->getStartzeit() > $time) {
+            $termin->setAbgesagt(true);
+            $this->terminRepository->update($termin);
 
-			$this->benachrichtigung = $this->objectManager->get(BenachrichtigungController::class);
-			$teilnehmer = $termin->getTeilnehmer();
-			$result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
+            $this->benachrichtigung = $this->objectManager->get(BenachrichtigungController::class);
+            $teilnehmer = $termin->getTeilnehmer();
+            $result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
 
-			$this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_backend_cancel.success', 'schulungen'));
-		} else {
-			$this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_backend_timeout', 'schulungen'));
-		}
-		$this->redirect('index');
-	}
+            $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_backend_cancel.success',
+                'schulungen'));
+        } else {
+            $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_backend_timeout',
+                'schulungen'));
+        }
+        $this->redirect('index');
+    }
 
-	/**
-	 * Wieder Zusagen eines Schulungstermins
-	 * @param Termin $termin
-	 */
-	public function uncancelAction(Termin $termin) {
+    /**
+     * Wieder Zusagen eines Schulungstermins
+     * @param Termin $termin
+     */
+    public function uncancelAction(Termin $termin)
+    {
 
-		$time = new \DateTime();
-		$time->setTimestamp(time());
+        $time = new \DateTime();
+        $time->setTimestamp(time());
 
-		if ($termin->getStartzeit() > $time) {
-			$termin->setAbgesagt(false);
-			$this->terminRepository->update($termin);
+        if ($termin->getStartzeit() > $time) {
+            $termin->setAbgesagt(false);
+            $this->terminRepository->update($termin);
 
-			/** @var \Subugoe\Schulungen\Controller\BenachrichtigungController benachrichtigung */
-			$this->benachrichtigung = $this->objectManager->get(BenachrichtigungController::class);
-			$teilnehmer = $termin->getTeilnehmer();
-			$result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
+            /** @var \Subugoe\Schulungen\Controller\BenachrichtigungController benachrichtigung */
+            $this->benachrichtigung = $this->objectManager->get(BenachrichtigungController::class);
+            $teilnehmer = $termin->getTeilnehmer();
+            $result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
 
-			$this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_backend_uncancel.success', 'schulungen'));
-		} else {
-			$this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_backend_timeout', 'schulungen'));
-		}
+            $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_backend_uncancel.success',
+                'schulungen'));
+        } else {
+            $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_backend_timeout',
+                'schulungen'));
+        }
 
-		$this->redirect('index');
+        $this->redirect('index');
 
-	}
+    }
 
-	/**
-	 * action update
-	 *
-	 * @return string The rendered update action
-	 * @param $schulung
-	 */
-	public function updateAction(Schulung $schulung) {
-		$this->schulungRepository->update($schulung);
-	}
+    /**
+     * action update
+     *
+     * @return string The rendered update action
+     * @param $schulung
+     */
+    public function updateAction(Schulung $schulung)
+    {
+        $this->schulungRepository->update($schulung);
+    }
 
-	/**
-	 * Just a test for fed
-	 *
-	 * @return void
-	 */
-	public function exportAction() {
-		$schulungs = $this->schulungRepository->findAll();
-		$this->view->assign('fluidVarsObject', $schulungs);
-	}
+    /**
+     * Just a test for fed
+     *
+     * @return void
+     */
+    public function exportAction()
+    {
+        $schulungs = $this->schulungRepository->findAll();
+        $this->view->assign('fluidVarsObject', $schulungs);
+    }
 
 }

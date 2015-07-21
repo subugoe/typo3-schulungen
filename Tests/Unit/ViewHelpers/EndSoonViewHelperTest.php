@@ -29,52 +29,56 @@ namespace Subugoe\Schulungen\Texts\ViewHelpers;
 use Subugoe\Schulungen\ViewHelpers\EndSoonViewHelper;
 use TYPO3\CMS\Core\Tests\BaseTestCase;
 
-class EndSoonViewHelperTest extends BaseTestCase {
+class EndSoonViewHelperTest extends BaseTestCase
+{
 
-	/**
-	 * @var EndSoonViewHelper
-	 */
-	protected $fixture;
+    /**
+     * @var EndSoonViewHelper
+     */
+    protected $fixture;
 
-	/**
-	 * @return void
-	 */
-	public function setUp() {
-		$this->fixture = $this->getMock(EndSoonViewHelper::class, ['dummy']);
-	}
+    /**
+     * @return void
+     */
+    public function setUp()
+    {
+        $this->fixture = $this->getMock(EndSoonViewHelper::class, ['dummy']);
+    }
 
-	public function nextTwoDaysProvider() {
-		return [
-			[
-				function() {
-					$date = new \DateTime();
-					return $date;
-				},
-				FALSE
-			],
-			[
-				function() {
-					$date = new \DateTime();
-					return $date->add(\DateInterval::createFromDateString('2 days'));
-				},
-				TRUE
-			],
-			[
-				function() {
-					$date = new \DateTime();
-					return $date->sub(\DateInterval::createFromDateString('2 days'));
-				},
-				FALSE
-			]
-		];
-	}
+    public function nextTwoDaysProvider()
+    {
+        return [
+            [
+                function () {
+                    $date = new \DateTime();
+                    return $date;
+                },
+                false
+            ],
+            [
+                function () {
+                    $date = new \DateTime();
+                    return $date->add(\DateInterval::createFromDateString('2 days'));
+                },
+                true
+            ],
+            [
+                function () {
+                    $date = new \DateTime();
+                    return $date->sub(\DateInterval::createFromDateString('2 days'));
+                },
+                false
+            ]
+        ];
+    }
 
-	/**
-	 * @dataProvider nextTwoDaysProvider
-	 * @test
-	 */
-	public function dateIsInTheNextTwoDays($time, $expected) {
-		$this->assertSame($expected, $this->fixture->render($time()));
-	}
+    /**
+     * @dataProvider nextTwoDaysProvider
+     * @test
+     */
+    public function dateIsInTheNextTwoDays($time, $expected)
+    {
+        $this->assertSame($expected, $this->fixture->render($time()));
+    }
 
 }

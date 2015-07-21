@@ -24,44 +24,47 @@ namespace Subugoe\Schulungen\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
-use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use Subugoe\Schulungen\Domain\Model\Schulung;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
 /**
  * Event Repository
  */
-class TerminRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class TerminRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
 
-	protected $defaultPid = 1648;
+    protected $defaultPid = 1648;
 
-	// Sortierung absteigend nach Terminbeginn
-	protected $defaultOrderings = [
-			'startzeit' => QueryInterface::ORDER_DESCENDING
-	];
+    // Sortierung absteigend nach Terminbeginn
+    protected $defaultOrderings = [
+        'startzeit' => QueryInterface::ORDER_DESCENDING
+    ];
 
-	public function errechneAnstehendeTermine() {
-		$query = $this->createQuery();
-		$query->matching(
-				$query->logicalAnd(
-						$query->equals('erinnerungen_verschickt', 0),
-						$query->greaterThan('startzeit', time()), // > today
-						$query->lessThan('startzeit', time() + (2 * 60 * 60 * 24)) // < overnext day
-				)
-		);
-		$query->setOrderings(['startzeit' => QueryInterface::ORDER_ASCENDING]);
-		return $query->execute();
-	}
+    public function errechneAnstehendeTermine()
+    {
+        $query = $this->createQuery();
+        $query->matching(
+            $query->logicalAnd(
+                $query->equals('erinnerungen_verschickt', 0),
+                $query->greaterThan('startzeit', time()), // > today
+                $query->lessThan('startzeit', time() + (2 * 60 * 60 * 24)) // < overnext day
+            )
+        );
+        $query->setOrderings(['startzeit' => QueryInterface::ORDER_ASCENDING]);
+        return $query->execute();
+    }
 
-	public function errechneAnstehendeSchulungTermine(Schulung $schulung) {
-		$query = $this->createQuery();
-		$query->matching(
-				$query->logicalAnd(
-						$query->equals('schulung', $schulung),
-						$query->greaterThan('startzeit', time())
-				)
-		);
-		$query->setOrderings(['startzeit' => QueryInterface::ORDER_ASCENDING]);
-		return $query->execute();
-	}
+    public function errechneAnstehendeSchulungTermine(Schulung $schulung)
+    {
+        $query = $this->createQuery();
+        $query->matching(
+            $query->logicalAnd(
+                $query->equals('schulung', $schulung),
+                $query->greaterThan('startzeit', time())
+            )
+        );
+        $query->setOrderings(['startzeit' => QueryInterface::ORDER_ASCENDING]);
+        return $query->execute();
+    }
 
 }

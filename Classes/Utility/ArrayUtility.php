@@ -1,5 +1,6 @@
 <?php
 namespace Subugoe\Schulungen\Utility;
+
 /* * *************************************************************
  *  Copyright notice
  *
@@ -27,23 +28,26 @@ namespace Subugoe\Schulungen\Utility;
 /**
  * Helper-Class for array sorting
  */
-class ArrayUtility {
+class ArrayUtility
+{
 
-	/**
-	 * @param $array
-	 * @return bool
-	 */
-	static public function sortByName($array) {
-		return usort($array, 'ArrayUtility::usortByName');
-	}
+    /**
+     * @param $array
+     * @return bool
+     */
+    static public function sortByName($array)
+    {
+        return usort($array, 'ArrayUtility::usortByName');
+    }
 
-	/**
-	 * @param $a
-	 * @param $b
-	 * @return int
-	 */
-	static public function usortByName($a, $b) {
-		return strnatcasecmp($a->getName(), $b->getName());
-	}
+    /**
+     * @param $a
+     * @param $b
+     * @return int
+     */
+    static public function usortByName($a, $b)
+    {
+        return strnatcasecmp($a->getName(), $b->getName());
+    }
 
 }

@@ -32,35 +32,38 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Testing sort viewhelper
  */
-class SortViewHelperTest extends BaseTestCase {
+class SortViewHelperTest extends BaseTestCase
+{
 
-	/**
-	 * @var SortViewHelper
-	 */
-	protected $fixture;
+    /**
+     * @var SortViewHelper
+     */
+    protected $fixture;
 
-	/**
-	 * @var ObjectStorage
-	 */
-	protected $objectStorage;
+    /**
+     * @var ObjectStorage
+     */
+    protected $objectStorage;
 
-	public function setUp () {
-		$this->fixture = $this->getMock(SortViewHelper::class, ['dummy']);
-		$this->objectStorage = $this->getMock(ObjectStorage::class, ['dummy']);
-	}
+    public function setUp()
+    {
+        $this->fixture = $this->getMock(SortViewHelper::class, ['dummy']);
+        $this->objectStorage = $this->getMock(ObjectStorage::class, ['dummy']);
+    }
 
-	/**
-	 * @test
-	 */
-	public function ObjectsAreSortedCorrectly() {
-		$objects = $this->objectStorage;
-		$objects->attach(new \stdClass());
-		$orderBy = NULL;
-		$order = NULL;
-		$expected = NULL;
+    /**
+     * @test
+     */
+    public function ObjectsAreSortedCorrectly()
+    {
+        $objects = $this->objectStorage;
+        $objects->attach(new \stdClass());
+        $orderBy = null;
+        $order = null;
+        $expected = null;
 
-		$this->markTestIncomplete();
-		$this->assertSame($expected, $this->fixture->render($objects, $orderBy, $order));
+        $this->markTestIncomplete();
+        $this->assertSame($expected, $this->fixture->render($objects, $orderBy, $order));
 
-	}
+    }
 }

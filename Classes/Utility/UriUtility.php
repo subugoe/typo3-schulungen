@@ -34,92 +34,100 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  * @abstract
  * @static
  */
-abstract class UriUtility {
+abstract class UriUtility
+{
 
-	protected static $configuration = null;
+    protected static $configuration = null;
 
-	/**
-	 * UriBuilder
-	 * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
-	 */
-	protected static $uriBuilder = null;
+    /**
+     * UriBuilder
+     * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
+     */
+    protected static $uriBuilder = null;
 
-	/**
-	 * Build an uriBuilder that can be used from any context (backend, frontend, TCA) to generate frontend URI
-	 * @param string $extensionName
-	 * @param string $pluginName
-	 * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
-	 */
-	protected static function buildUriBuilder($extensionName, $pluginName) {
+    /**
+     * Build an uriBuilder that can be used from any context (backend, frontend, TCA) to generate frontend URI
+     * @param string $extensionName
+     * @param string $pluginName
+     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
+     */
+    protected static function buildUriBuilder($extensionName, $pluginName)
+    {
 
-		// If we are in Backend we need to simulate minimal TSFE
-		if (!isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
-			if (!is_object($GLOBALS['TT'])) {
-				$GLOBALS['TT'] = new TimeTracker();
-				$GLOBALS['TT']->start();
-			}
-			$TSFEclassName = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
-			/** @var TypoScriptFrontendController $GLOBALS['TSFE'] */
-			$GLOBALS['TSFE'] = new $TSFEclassName($GLOBALS['TYPO3_CONF_VARS'], 0, '0', 1, '', '', '', '');
-			$GLOBALS['TSFE']->initFEuser();
-			$GLOBALS['TSFE']->fetch_the_id();
-			$GLOBALS['TSFE']->getPageAndRootline();
-			$GLOBALS['TSFE']->initTemplate();
-			$GLOBALS['TSFE']->tmpl->getFileName_backPath = PATH_site;
-			$GLOBALS['TSFE']->forceTemplateParsing = 1;
-			$GLOBALS['TSFE']->getConfigArray();
-		}
+        // If we are in Backend we need to simulate minimal TSFE
+        if (!isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
+            if (!is_object($GLOBALS['TT'])) {
+                $GLOBALS['TT'] = new TimeTracker();
+                $GLOBALS['TT']->start();
+            }
+            $TSFEclassName = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
+            /** @var TypoScriptFrontendController $GLOBALS ['TSFE'] */
+            $GLOBALS['TSFE'] = new $TSFEclassName($GLOBALS['TYPO3_CONF_VARS'], 0, '0', 1, '', '', '', '');
+            $GLOBALS['TSFE']->initFEuser();
+            $GLOBALS['TSFE']->fetch_the_id();
+            $GLOBALS['TSFE']->getPageAndRootline();
+            $GLOBALS['TSFE']->initTemplate();
+            $GLOBALS['TSFE']->tmpl->getFileName_backPath = PATH_site;
+            $GLOBALS['TSFE']->forceTemplateParsing = 1;
+            $GLOBALS['TSFE']->getConfigArray();
+        }
 
-		// If extbase is not boostrapped yet, we must do it before building uriBuilder (when used from TCA)
-		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-		$objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		if (!(isset($GLOBALS['dispatcher']) && $GLOBALS['dispatcher'] instanceof \TYPO3\CMS\Extbase\Core\Bootstrap)) {
-			$extbaseBootstrap = $objectManager->get(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
-			$extbaseBootstrap->initialize(
-				[
-					'extensionName' => $extensionName,
-					'pluginName' => $pluginName
-				]
-			);
-		}
+        // If extbase is not boostrapped yet, we must do it before building uriBuilder (when used from TCA)
+        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        if (!(isset($GLOBALS['dispatcher']) && $GLOBALS['dispatcher'] instanceof \TYPO3\CMS\Extbase\Core\Bootstrap)) {
+            $extbaseBootstrap = $objectManager->get(\TYPO3\CMS\Extbase\Core\Bootstrap::class);
+            $extbaseBootstrap->initialize(
+                [
+                    'extensionName' => $extensionName,
+                    'pluginName' => $pluginName
+                ]
+            );
+        }
 
-		return $objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
-	}
+        return $objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
+    }
 
 
-	/**
-	 * Returns a frontend URI independently of current context, with or without extbase, and with or without TSFE
-	 * @param string $actionName
-	 * @param array $controllerArguments
-	 * @param string $controllerName
-	 * @param string $extensionName
-	 * @param string $pluginName
-	 * @return string absolute URI
-	 */
-	public static function buildFrontendUri($actionName, array $controllerArguments, $controllerName, $extensionName = 'Schulungen', $pluginName = 'Schulungen') {
+    /**
+     * Returns a frontend URI independently of current context, with or without extbase, and with or without TSFE
+     * @param string $actionName
+     * @param array $controllerArguments
+     * @param string $controllerName
+     * @param string $extensionName
+     * @param string $pluginName
+     * @return string absolute URI
+     */
+    public static function buildFrontendUri(
+        $actionName,
+        array $controllerArguments,
+        $controllerName,
+        $extensionName = 'Schulungen',
+        $pluginName = 'Schulungen'
+    ) {
 
-		if (!self::$uriBuilder) {
-			self::$uriBuilder = self::buildUriBuilder($extensionName, $pluginName);
-		}
-		$controllerArguments['action'] = $actionName;
-		$controllerArguments['controller'] = $controllerName;
+        if (!self::$uriBuilder) {
+            self::$uriBuilder = self::buildUriBuilder($extensionName, $pluginName);
+        }
+        $controllerArguments['action'] = $actionName;
+        $controllerArguments['controller'] = $controllerName;
 
-		/** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-		$objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-		/** @var  \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService */
-		$extensionService = $objectManager->get(ExtensionService::class);
+        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        /** @var  \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService */
+        $extensionService = $objectManager->get(ExtensionService::class);
 
-		$pluginNamespace = $extensionService->getPluginNamespace($extensionName, $pluginName);
+        $pluginNamespace = $extensionService->getPluginNamespace($extensionName, $pluginName);
 
-		$arguments = [$pluginNamespace => $controllerArguments];
+        $arguments = [$pluginNamespace => $controllerArguments];
 
-		self::$uriBuilder
-				->reset()
-				->setUseCacheHash(FALSE)
-				->setCreateAbsoluteUri(TRUE)
-				->setArguments($arguments);
+        self::$uriBuilder
+            ->reset()
+            ->setUseCacheHash(false)
+            ->setCreateAbsoluteUri(true)
+            ->setArguments($arguments);
 
-		return self::$uriBuilder->buildFrontendUri() . '&type=1342671779';
-	}
+        return self::$uriBuilder->buildFrontendUri() . '&type=1342671779';
+    }
 
 }

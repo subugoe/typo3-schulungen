@@ -30,26 +30,28 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
  *
  * @author dsimm
  */
-class EndSoonViewHelper extends AbstractViewHelper {
+class EndSoonViewHelper extends AbstractViewHelper
+{
 
-	/**
-	 * Calculating if the date will be in the next two days
-	 *
-	 * @param \DateTime $time startingtime of the date
-	 * @return bool $result
-	 */
-	public function render($time) {
+    /**
+     * Calculating if the date will be in the next two days
+     *
+     * @param \DateTime $time startingtime of the date
+     * @return bool $result
+     */
+    public function render($time)
+    {
 
-		$currentTime = new \DateTime();
-		$currentTime->setTimestamp(time());
+        $currentTime = new \DateTime();
+        $currentTime->setTimestamp(time());
 
-		$interval = date_diff($currentTime, $time);
+        $interval = date_diff($currentTime, $time);
 
-		if ($currentTime < $time && $interval->format("%r%a") <= 2) {
-			return $result = true;
-		} else {
-			return $result = false;
-		}
-	}
+        if ($currentTime < $time && $interval->format("%r%a") <= 2) {
+            return $result = true;
+        } else {
+            return $result = false;
+        }
+    }
 
 }
