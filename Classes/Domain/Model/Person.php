@@ -29,8 +29,6 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * Model for Persons as mapped by tt_address table
- *
- * @author Dominic Simm <dominic.simm@sub.goettingen.de>, Goettingen State Library
  */
 class Person extends AbstractEntity
 {

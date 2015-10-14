@@ -105,7 +105,6 @@ class Teilnehmer extends AbstractEntity
      * Setter for secret
      *
      * @param string $secret
-     * @return void
      */
     public function setSecret($secret)
     {
@@ -147,7 +146,6 @@ class Teilnehmer extends AbstractEntity
      * Setter for captcha
      *
      * @param string $captcha
-     * @return void
      */
     public function setCaptcha($captcha)
     {
@@ -168,7 +166,6 @@ class Teilnehmer extends AbstractEntity
      * Setter for vorname
      *
      * @param string $vorname Vorname des Teilnehmers
-     * @return void
      */
     public function setVorname($vorname)
     {
@@ -189,7 +186,6 @@ class Teilnehmer extends AbstractEntity
      * Setter for nachname
      *
      * @param string $nachname Nachname des Teilnehmers
-     * @return void
      */
     public function setNachname($nachname)
     {
@@ -210,7 +206,6 @@ class Teilnehmer extends AbstractEntity
      * Setter for email
      *
      * @param string $email E-Mail Adresse des Teilnehmers
-     * @return void
      */
     public function setEmail($email)
     {
@@ -231,7 +226,6 @@ class Teilnehmer extends AbstractEntity
      * Setter for studienfach
      *
      * @param string $studienfach Studienfach des Teilnehmers
-     * @return void
      */
     public function setStudienfach($studienfach)
     {
@@ -252,7 +246,6 @@ class Teilnehmer extends AbstractEntity
      * Setter for bemerkung
      *
      * @param string $bemerkung Bemerkung des Teilnehmers
-     * @return void
      */
     public function setBemerkung($bemerkung)
     {
@@ -273,7 +266,6 @@ class Teilnehmer extends AbstractEntity
      * Sets the termin
      *
      * @param \Subugoe\Schulungen\Domain\Model\Termin $termin
-     * @return void
      */
     public function setTermin($termin)
     {

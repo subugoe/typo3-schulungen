@@ -13,10 +13,10 @@ class CaptchaValidator extends AbstractValidator
 
         $status = $recaptcha->validateReCaptcha();
         if ($status['verified']) {
-            return true; // validates if TRUE
+            return true;
         } else {
-            $this->addError($status['error'], 1338820079); // type \TYPO3\CMS\Extbase\ValidationError
-            return false; // no Validation
+            $this->addError($status['error'], 1338820079);
+            return false;
         }
     }
 }

@@ -82,12 +82,9 @@ class SendRemindersTask extends AbstractTask
         $res = $this->db->exec_SELECTquery(
             '*', //WHAT
             'tx_schulungen_domain_model_termin', //FROM
-            'WHERE erinnerungenverschickt = 0 AND abgesagt = 0 AND  TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) >=0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) <2',
-            //WHERE
-            '',
-            '', //ORDER BY
-            '' //LIMIT
+            'WHERE erinnerungenverschickt = 0 AND abgesagt = 0 AND  TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) >=0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) <2'
         );
+
         while ($termin = $this->db->sql_fetch_assoc($res)) {
             $this->terminModel = GeneralUtility::makeInstance(Termin::class);
             $this->getTeilnehmer($termin['uid']);

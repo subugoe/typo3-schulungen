@@ -36,22 +36,25 @@ use TYPO3\CMS\Extbase\Core\Bootstrap;
 class SendRemindersTaskLogic extends Bootstrap
 {
 
+    protected $pObj;
+
     /**
      * @var BenachrichtigungController
      */
     protected $benachrichtigung;
 
+    /**
+     * @param $pObj
+     * @return bool
+     */
     public function execute(&$pObj)
     {
 
         // set parent task object
         $this->pObj = $pObj;
 
-        // set this sucker up!
         $this->setupFramework();
-
-        // initalization
-        $this->initRepositories();
+        $this->InitializeRepositories();
 
         $success = true;
         $this->benachrichtigung = GeneralUtility::makeInstance(BenachrichtigungController::class);
@@ -82,17 +85,18 @@ class SendRemindersTaskLogic extends Bootstrap
             'settings' => '< plugin.tx_schulungen',
             'controller' => 'Benachrichtigung',
             'switchableControllerActions' => [
-                'Benachrichtigung' => ['actions' => 'sendeBenachrichtigung'],
-                'Termin' => ['actions' => 'update']
+                'Benachrichtigung' => [
+                    'actions' => 'sendeBenachrichtigung'
+                ],
+                'Termin' => [
+                    'actions' => 'update'
+                ]
             ],
         ];
         $this->initialize($configuration);
     }
 
-    /**
-     * @return void
-     */
-    protected function initRepositories()
+    protected function InitializeRepositories()
     {
         $this->schulungRepository = $this->objectManager->get(SchulungRepository::class);
         $this->teilnehmerRepository = $this->objectManager->get(TeilnehmerRepository::class);

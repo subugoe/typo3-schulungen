@@ -95,12 +95,12 @@ class TeilnehmerController extends ActionController
     /**
      * Creates a new Teilnehmer and forwards to the list action.
      *
-     * @param \Subugoe\Schulungen\Domain\Model\Teilnehmer $newTeilnehmer a fresh Teilnehmer object which has not yet been added to the repository
+     * @param Teilnehmer $newTeilnehmer a fresh Teilnehmer object which has not yet been added to the repository
      * @param Termin $termin
      * @return string An HTML form for creating a new Teilnehmer
      * @dontvalidate $newTeilnehmer
      */
-    public function newAction(\Subugoe\Schulungen\Domain\Model\Teilnehmer $newTeilnehmer = null, Termin $termin = null)
+    public function newAction(Teilnehmer $newTeilnehmer = null, Termin $termin = null)
     {
 
         $termin = intval($this->request->getArgument('termin'));
@@ -124,8 +124,7 @@ class TeilnehmerController extends ActionController
     /**
      * Creates a new Teilnehmer and forwards to the list action.
      *
-     * @param \Subugoe\Schulungen\Domain\Model\Teilnehmer $newTeilnehmer a fresh Teilnehmer object which has not yet been added to the repository
-     * @return void
+     * @param Teilnehmer $newTeilnehmer a fresh Teilnehmer object which has not yet been added to the repository
      */
     public function createAction(Teilnehmer $newTeilnehmer)
     {
@@ -267,7 +266,6 @@ class TeilnehmerController extends ActionController
      *
      * @param array $identifier Teilnehmer to be de-registered
      * @ignorevalidation $identifier
-     * @return void
      */
     public function deregisterAction($identifier)
     {
@@ -333,7 +331,6 @@ class TeilnehmerController extends ActionController
      * Deletes an existing Teilnehmer
      *
      * @param Teilnehmer $teilnehmer the Teilnehmer to be deleted
-     * @return void
      */
     public function deleteAction(Teilnehmer $teilnehmer)
     {
@@ -347,7 +344,6 @@ class TeilnehmerController extends ActionController
      * Deletes an existing Teilnehmer
      *
      * @param Teilnehmer $teilnehmer the Teilnehmer to be deleted
-     * @return void
      */
     public function deleteBackendAction(Teilnehmer $teilnehmer)
     {

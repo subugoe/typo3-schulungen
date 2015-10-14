@@ -24,23 +24,27 @@ namespace Subugoe\Schulungen\Domain\Repository;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use Subugoe\Schulungen\Domain\Model\Teilnehmer;
+use Subugoe\Schulungen\Domain\Model\Termin;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * Repository for Teilnehmer
  */
 
-class TeilnehmerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class TeilnehmerRepository extends Repository
 {
-
-    // Sortierung absteigend nach Terminbeginn
     protected $defaultOrderings = [
-        'nachname' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
+        'nachname' => QueryInterface::ORDER_ASCENDING
     ];
 
-    public function teilnehmerAngemeldet(
-        \Subugoe\Schulungen\Domain\Model\Teilnehmer $teilnehmer,
-        \Subugoe\Schulungen\Domain\Model\Termin $termin
-    ) {
+    /**
+     * @param Teilnehmer $teilnehmer
+     * @param Termin $termin
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
+    public function teilnehmerAngemeldet(Teilnehmer $teilnehmer, Termin $termin) {
         $query = $this->createQuery();
         $query->matching(
             $query->logicalAnd(
@@ -50,7 +54,7 @@ class TeilnehmerRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 $query->equals('nachname', $teilnehmer->getNachname())
             )
         );
-        $query->setOrderings(['nachname' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING]);
+        $query->setOrderings(['nachname' => QueryInterface::ORDER_ASCENDING]);
         return $query->execute();
     }
 }

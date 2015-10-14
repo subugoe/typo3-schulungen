@@ -32,9 +32,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Controller for the Schulung object
- *
- * @copyright Copyright belongs to the respective authors
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 class SchulungController extends ActionController
 {
@@ -188,7 +185,6 @@ class SchulungController extends ActionController
      * Creates a new Schulung and forwards to the list action.
      *
      * @param Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
-     * @return void
      */
     public function createAction(Schulung $newSchulung)
     {
@@ -201,7 +197,6 @@ class SchulungController extends ActionController
      * Deletes an existing Schulung
      *
      * @param Schulung $schulung the Schulung to be deleted
-     * @return void
      */
     public function deleteAction(Schulung $schulung)
     {
@@ -236,7 +231,6 @@ class SchulungController extends ActionController
     /**
      * action export
      *
-     * @return void
      * @param int $uid
      */
     public function exportAction($uid = null)

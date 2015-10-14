@@ -38,6 +38,14 @@ class CaptchaViewHelperTest extends BaseTestCase
     protected $fixture;
 
     /**
+     * @return void
+     */
+    protected function setUp()
+    {
+        $this->fixture = $this->getMock(CaptchaViewHelper::class, ['dummy']);
+    }
+
+    /**
      * @test
      */
     public function extensionIsNotLoaded()
@@ -49,14 +57,6 @@ class CaptchaViewHelperTest extends BaseTestCase
 
         $this->setExpectedException(\TYPO3\CMS\Extensionmanager\Exception\MissingExtensionDependencyException::class);
         $this->markTestIncomplete();
-    }
-
-    /**
-     * @return void
-     */
-    protected function setUp()
-    {
-        $this->fixture = $this->getMock(CaptchaViewHelper::class, ['dummy']);
     }
 
 }

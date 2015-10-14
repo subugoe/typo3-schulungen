@@ -4,7 +4,7 @@ namespace Subugoe\Schulungen\Domain\Repository;
 /* * *************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>, Goettingen State Library
+ *  (c) 2011 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
  *
  *  All rights reserved
  *
@@ -26,13 +26,17 @@ namespace Subugoe\Schulungen\Domain\Repository;
  * ************************************************************* */
 use Subugoe\Schulungen\Domain\Model\Schulung;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
  * Event Repository
  */
-class TerminRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class TerminRepository extends Repository
 {
 
+    /**
+     * @var int
+     */
     protected $defaultPid = 1648;
 
     // Sortierung absteigend nach Terminbeginn
@@ -40,6 +44,9 @@ class TerminRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         'startzeit' => QueryInterface::ORDER_DESCENDING
     ];
 
+    /**
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
     public function errechneAnstehendeTermine()
     {
         $query = $this->createQuery();
@@ -54,6 +61,10 @@ class TerminRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         return $query->execute();
     }
 
+    /**
+     * @param Schulung $schulung
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
     public function errechneAnstehendeSchulungTermine(Schulung $schulung)
     {
         $query = $this->createQuery();

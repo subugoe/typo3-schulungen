@@ -17,10 +17,9 @@ if (!defined('TYPO3_MODE')) {
  */
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
     'Subugoe.' . $_EXTKEY,
-    'web', // Make module a submodule of 'web'
-    'schulungsverwaltung', // Submodule key
+    'web',
+    'schulungsverwaltung',
     '',
-    // Position
     [
         'Backend' => 'index,detail,cancel,uncancel,export',
         'Teilnehmer' => 'deregister,edit,list,updateBackend,deleteBackend'

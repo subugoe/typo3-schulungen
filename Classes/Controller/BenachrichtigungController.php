@@ -76,8 +76,6 @@ class BenachrichtigungController extends ActionController
 
     /**
      * Initializes the current action
-     *
-     * @return void
      */
     protected function initializeAction()
     {
@@ -131,14 +129,15 @@ class BenachrichtigungController extends ActionController
 
     /**
      * Action für das Backend: Einfacher Mailversand bei Ab/-Zusage von Schulungsterminen
-     * @param Teilnehmer $teilnehmer
-     * @param Termin $termin
+     * @param Teilnehmer $participant
+     * @param Termin $date
      * @param mixed $obj
+     * @return bool
      */
-    public function sendeBenachrichtigungSofortAction($teilnehmer, $termin, &$obj)
+    public function sendeBenachrichtigungSofortAction(Teilnehmer $participant, Termin $date, &$obj)
     {
         $this->initializeAction();
-        $result = $this->verschickeMailAnTeilnehmer($teilnehmer, $termin, true);
+        $result = $this->verschickeMailAnTeilnehmer($participant, $date, true);
         return $result;
     }
 
@@ -267,8 +266,8 @@ class BenachrichtigungController extends ActionController
 
         $termin = $tn->getTermin();
         $schulung = $termin->getSchulung();
-        /** @var \Subugoe\Schulungen\Controller\EmailController $mail */
-        $mail = $this->objectManager->get(\Subugoe\Schulungen\Controller\EmailController::class);
+        /** @var EmailController $mail */
+        $mail = $this->objectManager->get(EmailController::class);
 
         $mailcopy = [];
         $contacts = $schulung->getContact();

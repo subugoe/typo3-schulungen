@@ -24,6 +24,7 @@ namespace Subugoe\Schulungen\Domain\Model;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
+use Subugoe\Schulungen\Domain\Repository\TeilnehmerRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
@@ -79,26 +80,6 @@ class Termin extends AbstractEntity
     protected $erinnerungenVerschickt;
 
     /**
-     * The constructor of this Termin
-     *
-     */
-    public function __construct()
-    {
-        //Do not remove the next line: It would break the functionality
-        $this->initStorageObjects();
-    }
-
-    /**
-     * Initializes all Persistence\ObjectStorage properties.
-     *
-     * @return void
-     */
-    protected function initStorageObjects()
-    {
-        // empty
-    }
-
-    /**
      * getSchulung
      * @return Schulung
      * @throws \Exception
@@ -116,7 +97,6 @@ class Termin extends AbstractEntity
      * setSchulung
      *
      * @param $schulung
-     * @return void
      */
     public function setSchulung($schulung)
     {
@@ -130,7 +110,7 @@ class Termin extends AbstractEntity
      */
     public function getAnzahlTeilnehmer()
     {
-        $teilnehmer = GeneralUtility::makeInstance('Subugoe\\Schulungen\\Domain\\Repository\\TeilnehmerRepository');
+        $teilnehmer = GeneralUtility::makeInstance(TeilnehmerRepository::class);
         return $teilnehmer->countByTermin($this->uid);
     }
 
@@ -138,7 +118,6 @@ class Termin extends AbstractEntity
      * Sets the number of Teilnehmer
      *
      * @param int $anzahlTeilnehmer
-     * @return void
      */
     public function setAnzahlTeilnehmer($anzahlTeilnehmer)
     {
@@ -153,8 +132,8 @@ class Termin extends AbstractEntity
      */
     public function getTeilnehmer()
     {
-        /** @var \Subugoe\Schulungen\Domain\Repository\TeilnehmerRepository $teilnehmer */
-        $teilnehmer = GeneralUtility::makeInstance('Subugoe\\Schulungen\\Domain\\Repository\\TeilnehmerRepository');
+        /** @var TeilnehmerRepository $teilnehmer */
+        $teilnehmer = GeneralUtility::makeInstance(TeilnehmerRepository::class);
         return $teilnehmer->findByTermin($this->getUid());
     }
 
@@ -162,7 +141,6 @@ class Termin extends AbstractEntity
      * Setter of Teilnehmer
      *
      * @param array $teilnehmer Teilnehmer
-     * @return void
      */
     public function setTeilnehmer($teilnehmer)
     {
@@ -183,7 +161,6 @@ class Termin extends AbstractEntity
      * Sets the startzeit
      *
      * @param \DateTime $startzeit
-     * @return void
      */
     public function setStartzeit($startzeit)
     {
@@ -204,7 +181,6 @@ class Termin extends AbstractEntity
      * Sets the ende
      *
      * @param \DateTime $ende
-     * @return void
      */
     public function setEnde($ende)
     {
@@ -235,7 +211,6 @@ class Termin extends AbstractEntity
      * Sets the abgesagt
      *
      * @param boolean $abgesagt
-     * @return void
      */
     public function setAbgesagt($abgesagt)
     {
@@ -256,7 +231,6 @@ class Termin extends AbstractEntity
      * Returns the startzeit
      *
      * @param boolean $erinnerungenVerschickt
-     * @return void
      */
     public function setErinnerungenVerschickt($erinnerungenVerschickt)
     {

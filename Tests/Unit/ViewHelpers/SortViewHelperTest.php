@@ -54,7 +54,7 @@ class SortViewHelperTest extends BaseTestCase
     /**
      * @test
      */
-    public function ObjectsAreSortedCorrectly()
+    public function objectsAreSortedCorrectly()
     {
         $objects = $this->objectStorage;
         $objects->attach(new \stdClass());

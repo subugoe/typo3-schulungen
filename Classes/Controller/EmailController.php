@@ -65,7 +65,6 @@ class EmailController extends ActionController
 
         $return = false;
 
-        // Wir nutzen den Swiftmailer
         /** @var MailMessage $mail */
         $mail = $this->objectManager->get(MailMessage::class);
 
@@ -120,7 +119,6 @@ class EmailController extends ActionController
 
         $return = false;
 
-        // Wir nutzen den Swiftmailer
         /** @var MailMessage $mail */
         $mail = $this->objectManager->get(MailMessage::class);
 

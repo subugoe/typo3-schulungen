@@ -45,6 +45,9 @@ class EndSoonViewHelperTest extends BaseTestCase
         $this->fixture = $this->getMock(EndSoonViewHelper::class, ['dummy']);
     }
 
+    /**
+     * @return array
+     */
     public function nextTwoDaysProvider()
     {
         return [

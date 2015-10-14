@@ -25,6 +25,7 @@ namespace Subugoe\Schulungen\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 
 /**
@@ -148,24 +149,16 @@ class Schulung extends AbstractEntity
      */
     public function __construct()
     {
-        //Do not remove the next line: It would break the functionality
         $this->initStorageObjects();
     }
 
     /**
      * Initializes all ObjectStorage properties.
-     *
-     * @return void
      */
     protected function initStorageObjects()
     {
-        /**
-         * Do not modify this method!
-         * It will be rewritten on each save in the kickstarter
-         * You may modify the constructor of this class instead
-         */
-        $this->schulungTermine = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $this->contact = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->schulungTermine = new ObjectStorage();
+        $this->contact = new ObjectStorage();
     }
 
     /**
@@ -182,7 +175,6 @@ class Schulung extends AbstractEntity
      * Setter for titel
      *
      * @param string $titel Titel der Schulung
-     * @return void
      */
     public function setTitel($titel)
     {
@@ -203,7 +195,6 @@ class Schulung extends AbstractEntity
      * Setter for beschreibung
      *
      * @param string $beschreibung Beschreibung der Schulung
-     * @return void
      */
     public function setBeschreibung($beschreibung)
     {
@@ -224,7 +215,6 @@ class Schulung extends AbstractEntity
      * Setter for teilnehmerMin
      *
      * @param int $teilnehmerMin Mindestteilnehmerzahl
-     * @return void
      */
     public function setTeilnehmerMin($teilnehmerMin)
     {
@@ -245,7 +235,6 @@ class Schulung extends AbstractEntity
      * Setter for teilnehmerMax
      *
      * @param int $teilnehmerMax Maximale Teilnehmerzahl
-     * @return void
      */
     public function setTeilnehmerMax($teilnehmerMax)
     {
@@ -266,7 +255,6 @@ class Schulung extends AbstractEntity
      * Setter for mailKopie
      *
      * @param string $mailKopie E-Mail Adresse einer Person
-     * @return void
      */
     public function setMailKopie($mailKopie)
     {
@@ -277,7 +265,6 @@ class Schulung extends AbstractEntity
      * Adds a Termin
      *
      * @param \Subugoe\Schulungen\Domain\Model\Termin $schulungTermine
-     * @return void
      */
     public function addSchulungTermine(\Subugoe\Schulungen\Domain\Model\Termin $schulungTermine)
     {
@@ -288,7 +275,6 @@ class Schulung extends AbstractEntity
      * Removes a Termin
      *
      * @param \Subugoe\Schulungen\Domain\Model\Termin $schulungTermineToRemove The Termin to be removed
-     * @return void
      */
     public function removeSchulungTermine(\Subugoe\Schulungen\Domain\Model\Termin $schulungTermineToRemove)
     {
@@ -309,7 +295,6 @@ class Schulung extends AbstractEntity
      * Sets the schulungTermine
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Termin> $schulungTermine
-     * @return void
      */
     public function setSchulungTermine($schulungTermine)
     {
@@ -330,7 +315,6 @@ class Schulung extends AbstractEntity
      * Sets the schulungTermine
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Subugoe\Schulungen\Domain\Model\Person> $contact
-     * @return void
      */
     public function setContact($contact)
     {
@@ -351,7 +335,6 @@ class Schulung extends AbstractEntity
      * Setter for voraussetzungen
      *
      * @param string $voraussetzungen voraussetzungen
-     * @return void
      */
     public function setVoraussetzungen($voraussetzungen)
     {
@@ -372,7 +355,6 @@ class Schulung extends AbstractEntity
      * Setter for treffpunkt
      *
      * @param string $treffpunkt treffpunkt
-     * @return void
      */
     public function setTreffpunkt($treffpunkt)
     {
@@ -393,7 +375,6 @@ class Schulung extends AbstractEntity
      * Setter for dauer
      *
      * @param string $dauer dauer
-     * @return void
      */
     public function setDauer($dauer)
     {
@@ -414,7 +395,6 @@ class Schulung extends AbstractEntity
      * Setter for veranstalter
      *
      * @param string $veranstalter veranstalter
-     * @return void
      */
     public function setVeranstalter($veranstalter)
     {
@@ -435,7 +415,6 @@ class Schulung extends AbstractEntity
      * Setter for untertitel
      *
      * @param string $untertitel untertitel
-     * @return void
      */
     public function setUntertitel($untertitel)
     {
@@ -456,7 +435,6 @@ class Schulung extends AbstractEntity
      * Setter for kategorie
      *
      * @param string $kategorie kategorie
-     * @return void
      */
     public function setKategorie($kategorie)
     {
@@ -477,7 +455,6 @@ class Schulung extends AbstractEntity
      * Setter for termineVersteckt
      *
      * @param string $termineVersteckt termineVersteckt
-     * @return void
      */
     public function setTermineVersteckt($termineVersteckt)
     {
@@ -498,12 +475,10 @@ class Schulung extends AbstractEntity
      * Setter for anmeldungDeaktiviert
      *
      * @param int $anmeldungDeaktiviert anmeldungDeaktiviert
-     * @return void
      */
     public function setAnmeldungDeaktiviert($anmeldungDeaktiviert)
     {
         $this->anmeldungDeaktiviert = $anmeldungDeaktiviert;
     }
-
 
 }

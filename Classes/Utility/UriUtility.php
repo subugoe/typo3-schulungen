@@ -31,7 +31,6 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 /**
  * Toolbox for independet URI generation
  *
- * @abstract
  * @static
  */
 abstract class UriUtility

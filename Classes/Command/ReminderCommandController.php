@@ -24,16 +24,13 @@ namespace Subugoe\Schulungen\Command;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-/**
- * Reminder an die Teilnehmer versenden
- */
 use Subugoe\Schulungen\Controller\BenachrichtigungController;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 /**
- * A dummy Command Controller with a noop command which simply echoes the argument
+ * reminder for upcoming seminars
  */
 class ReminderCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandController
 {
@@ -49,15 +46,15 @@ class ReminderCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
     {
         /** @var ConfigurationManager $configurationManager */
         $configurationManager = $this->objectManager->get(ConfigurationManager::class);
-        $extbaseFrameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        $typoScriptConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         $configuration = [
             'settings' => [
                 'persistence' => [
                     'storagePid' => 1648
                 ],
                 'mail' => [
-                    'fromMail' => $extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['mail.']['fromMail'],
-                    'fromName' => $extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['mail.']['fromName']
+                    'fromMail' => $typoScriptConfiguration['plugin.']['tx_schulungen.']['settings.']['mail.']['fromMail'],
+                    'fromName' => $typoScriptConfiguration['plugin.']['tx_schulungen.']['settings.']['mail.']['fromName']
                 ]
             ]
         ];

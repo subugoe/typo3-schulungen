@@ -31,9 +31,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
  * Controller for the Termin object
- *
- * @copyright Copyright belongs to the respective authors
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 class TerminController extends ActionController
 {
@@ -58,15 +55,6 @@ class TerminController extends ActionController
     }
 
     /**
-     * action list
-     *
-     * @return string The rendered list action
-     */
-    public function listAction()
-    {
-    }
-
-    /**
      * action new
      *
      * @return string The rendered new action
@@ -77,45 +65,8 @@ class TerminController extends ActionController
     }
 
     /**
-     * action create
-     *
-     * @return string The rendered create action
-     */
-    public function createAction()
-    {
-    }
-
-    /**
-     * action edit
-     *
-     * @return string The rendered edit action
-     */
-    public function editAction()
-    {
-    }
-
-    /**
-     * action update
-     *
-     * @return string The rendered update action
-     */
-    public function updateAction()
-    {
-    }
-
-    /**
-     * action delete
-     *
-     * @return string The rendered delete action
-     */
-    public function deleteAction()
-    {
-    }
-
-    /**
      * action export
      *
-     * @return void
      * @param int $uid
      */
     public function exportAction($uid = null)

@@ -7,7 +7,7 @@ class CustomEmailAddressValidator extends AbstractValidator
 {
     public function isValid($elem)
     {
-        $option1 = $this->options['option1']; // options access
+        $option1 = $this->options['option1'];
         $this->addError('ErrorString', 1262341470);
         return true;
     }

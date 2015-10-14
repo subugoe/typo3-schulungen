@@ -12,7 +12,6 @@ if (!defined('TYPO3_MODE')) {
         'Teilnehmer' => 'list, show, new, create, edit, update, delete, deregister',
         'Benachrichtigung' => 'sendeBenachrichtigung'
     ],
-    // notCacheAbleActions
     [
         'Schulung' => 'show',
         'Teilnehmer' => 'new, create, list, deregister'

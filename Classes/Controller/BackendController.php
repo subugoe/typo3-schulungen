@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extensionmanager\Exception\MissingExtensionDependencyException;
 
 /**
  * Controller for the Schulung object
@@ -66,8 +67,6 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
     /**
      * Initializes the current action
-     *
-     * @return void
      */
     protected function initializeAction()
     {
@@ -85,8 +84,7 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     public function indexAction()
     {
 
-        // workaround if findAll-method of schulungsRepository doesn't work
-        // => no data is displayed in Backend
+        /** @var Schulung $schulungs */
         $schulungs = $this->schulungRepository->findByPid('1648');
         $termine = $this->terminRepository->findAll();
         /** @var Schulung $schulung */
@@ -108,14 +106,7 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
         $numberOfTeilnehmer = $this->teilnehmerRepository->countAll();
         $numberOfTermine = $this->terminRepository->countAll();
-
-        // include JQUERY
-        // checks if t3jquery is loaded
-        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3jquery')) {
-            require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3jquery') . 'class.tx_t3jquery.php');
-            $path_to_lib = \tx_t3jquery::getJqJSBE();
-            $script_to_lib = \tx_t3jquery::getJqJSBE(true);
-        }
+        $script_to_lib = $this->includeJquery();
 
         $values = [
             'schulungs' => $schulungs,
@@ -155,7 +146,6 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * Creates a new Schulung and forwards to the list action.
      *
      * @param Schulung $newSchulung a fresh Schulung object which has not yet been added to the repository
-     * @return void
      */
     public function createAction(Schulung $newSchulung)
     {
@@ -168,7 +158,6 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      * Deletes an existing Schulung
      *
      * @param Schulung $schulung the Schulung to be deleted
-     * @return void
      */
     public function deleteAction(Schulung $schulung)
     {
@@ -248,13 +237,27 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 
     /**
      * Just a test for fed
-     *
-     * @return void
      */
     public function exportAction()
     {
         $schulungs = $this->schulungRepository->findAll();
         $this->view->assign('fluidVarsObject', $schulungs);
+    }
+
+    /**
+     * @return string
+     * @throws MissingExtensionDependencyException
+     */
+    protected function includeJquery()
+    {
+        // checks if t3jquery is loaded
+        if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('t3jquery')) {
+            require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('t3jquery') . 'class.tx_t3jquery.php');
+            $script_to_lib = \T3Ext\T3jquery\Utility\T3jqueryUtility::getJqJSBE(true);
+            return $script_to_lib;
+        } else {
+            throw new MissingExtensionDependencyException();
+        }
     }
 
 }

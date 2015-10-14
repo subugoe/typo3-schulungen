@@ -9,10 +9,10 @@ class EmptyValidator extends AbstractValidator
     public function isValid($elem)
     {
         if (empty($elem) || $elem === "") {
-            return true; // validates if TRUE
+            return true;
         } else {
             $this->addError('ErrorString', 1338992386);
-            return false; // no Validation
+            return false;
         }
     }
 }
