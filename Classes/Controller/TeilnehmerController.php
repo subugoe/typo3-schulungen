@@ -73,8 +73,8 @@ class TeilnehmerController extends ActionController
      */
     public function listAction(Schulung $schulung, $status)
     {
-        $teilnehmers = $this->teilnehmerRepository->findAll();
-        $this->view->assign('teilnehmers', $teilnehmers);
+        $participants = $this->teilnehmerRepository->findAll();
+        $this->view->assign('teilnehmers', $participants);
 
         $this->view->assign('schulungsTitel', $schulung->getTitel());
         $this->view->assign('status', $status);
@@ -272,7 +272,10 @@ class TeilnehmerController extends ActionController
         $time_format = LocalizationUtility::translate('tx_schulungen_format.date', 'schulungen');
         $now = new \DateTime();
         GeneralUtility::devlog("De-Registration: Passed value " . $identifier[0], "Schulungen", 1, $identifier);
+
+        /** @var Teilnehmer $teilnehmer */
         if (count($teilnehmer = $this->teilnehmerRepository->findOneBySecret($identifier[0])) > 0) {
+            /** @var Schulung $schulung */
             $schulung = $teilnehmer->getTermin()->getSchulung();
 
             // create deep copy of termin to prevent db-update

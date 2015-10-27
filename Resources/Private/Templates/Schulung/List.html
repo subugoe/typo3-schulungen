@@ -1,23 +1,35 @@
-<f:layout name="default" />
+<f:layout name="default"/>
 
 <f:section name="main">
-	<h2><f:translate key="tx_schulungen_domain_model_schulung.schulungsangebote" /></h2>
+	<h2>
+		<f:translate key="tx_schulungen_domain_model_schulung.schulungsangebote"/>
+	</h2>
 
 	<f:format.html>{settings.welcome}</f:format.html>
 	<f:for each="{schulungs}" as="schulungSet">
-		<h3><f:translate key="tx_schulungen_domain_model_schulung.kategorie.{schulungSet.0.kategorie}" />:</h3>
+		<h3>
+			<f:translate key="tx_schulungen_domain_model_schulung.kategorie.{schulungSet.0.kategorie}"/>
+			:
+		</h3>
 		<ul>
-		<f:for each="{schulungSet}" as="schulung">
-			<li><f:link.action action="show" arguments="{schulung : schulung}">{schulung.titel}</f:link.action></li>
-		</f:for>
+			<f:for each="{schulungSet}" as="schulung">
+				<li>
+					<f:link.action action="show" arguments="{schulung : schulung}">{schulung.titel}</f:link.action>
+				</li>
+			</f:for>
 		</ul>
 	</f:for>
-	<br />
+	<br/>
 	<f:format.html>{settings.afterListing}</f:format.html>
-	
+
 	<f:if condition="{contact}">
-		<br />
-		<div><h2><f:translate key="tx_schulungen_domain_model_schulung.kontakt" /></h2></div>
-		<f:render partial="Schulung/contact" arguments="{contact:contact}" />
+		<br/>
+
+		<div>
+			<h2>
+				<f:translate key="tx_schulungen_domain_model_schulung.kontakt"/>
+			</h2>
+		</div>
+		<f:render partial="Schulung/contact" arguments="{contact:contact}"/>
 	</f:if>
 </f:section>

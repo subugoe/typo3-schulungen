@@ -6,12 +6,8 @@
 
 	<h1><f:translate key="tx_schulungen_controller_teilnehmer_new.title" /></h1>
 	<h2>{schulungsTitel}</h2>
-	<!--<h3><f:translate key="tx_schulungen_domain_model_termin.wochentag.{teilnehmerTermin.startzeit -> f:format.date(format: 'N')}" />,
-		<f:format.date format="{f:translate(key: 'tx_schulungen_format.date_long')}">{teilnehmerTermin.startzeit}</f:format.date> - <f:format.date format="{f:translate(key: 'tx_schulungen_format.hour')}">{teilnehmerTermin.ende}</f:format.date></h3>-->
-	<!--<f:flashMessages />-->
-	<!--<f:render partial="formErrors" />-->
 
-	<div class="tx-powermail-pi1">	
+	<div class="tx-powermail-pi1">
 		<div class="tx-powermail-pi1_formwrap">
 		<f:form method="post" action="create" controller="Teilnehmer" class="tx_powermail_pi1_form" name="newTeilnehmer" object="{newTeilnehmer}" additionalParams="{tx_schulungen_schulungen: {schulung: '{teilnehmerTermin.schulung.uid}', termin: '{teilnehmerTermin.uid}'}}">
 			<div class="fieldsets">

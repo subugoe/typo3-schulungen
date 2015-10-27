@@ -1,14 +1,16 @@
-<f:layout name="default" />
+<f:layout name="default"/>
 
 <f:section name="main">
-<h1><f:translate key="tx_schulungen_controller_schulung_edit.title" /></h1>
+	<h1>
+		<f:translate key="tx_schulungen_controller_schulung_edit.title"/>
+	</h1>
 
-<f:flashMessages />
+	<f:flashMessages/>
 
-<f:render partial="formErrors" />
+	<f:render partial="formErrors"/>
 
-<f:form method="post" action="update" name="schulung" object="{schulung}" >
-<f:render partial="Schulung/formFields" arguments="{schulung:schulung}" />
-	<f:form.submit value="Save" />
-</f:form>
+	<f:form method="post" action="update" name="schulung" object="{schulung}">
+		<f:render partial="Schulung/formFields" arguments="{schulung:schulung}"/>
+		<f:form.submit value="Save"/>
+	</f:form>
 </f:section>

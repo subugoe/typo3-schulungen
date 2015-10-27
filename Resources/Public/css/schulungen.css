@@ -1,7 +1,3 @@
-root { 
-	display: block;
-}
-
 .tx-schulungen-pi1 h3 {
 	padding: 4px 0 4px 0 !important;
 }
@@ -35,18 +31,14 @@ root {
 
 .tx-schulungen-pi1 dt {
 	margin-top: 12px;
-/*	color: #626262; */
 	font-weight: bold;
-/*	float: left; */
 }
 
 .tx-schulungen-pi1 dd {
-/*	text-indent: 20px; */
 	margin-left: 20px;
 }
 
 .tx-schulungen-pi1 ul {
-/*	text-indent: 20px; */
 	padding-bottom: 10px !important;
 }
 
@@ -56,6 +48,6 @@ root {
 
 .tx-schulungen-pi1 #icon_cal {
 	float: right;
-	border: 0px;
+	border: 0;
 	margin-right: 4px;
 }

@@ -1,10 +1,11 @@
 <?php
-namespace Subugoe\Schulungen\Domain\Repository;
+namespace Subugoe\Schulungen\Service;
 
-/***************************************************************
+/* * *************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
+ *  (c) 2015 Ingo Pfennigstorf <pfennigstorf@sub-goettingen.de>
+ *      Goettingen State Library
  *
  *  All rights reserved
  *
@@ -23,26 +24,15 @@ namespace Subugoe\Schulungen\Domain\Repository;
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
-use TYPO3\CMS\Extbase\Persistence\QueryInterface;
-use TYPO3\CMS\Extbase\Persistence\Repository;
+ * ************************************************************* */
 
 /**
- * Repository for Schulung
+ *
  */
-class SchulungRepository extends Repository
+class SeminarStateService
 {
-
-    protected $defaultOrderings = [
-        'sort_index' => QueryInterface::ORDER_ASCENDING
-    ];
-
-    public function findTranslated()
-    {
-        $query = $this->createQuery();
-        $query->equals('translated', 1);
-        $query->setOrderings(['titel' => QueryInterface::ORDER_ASCENDING]);
-        return $query->execute();
-    }
+    const TAKES_PLACE = 0;
+    const TOO_FEW_PARTICIPANTS = 1;
+    const CANCELED = 2;
 
 }

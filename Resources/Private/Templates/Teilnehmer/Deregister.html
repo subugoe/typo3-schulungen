@@ -1,17 +1,5 @@
 <f:layout name="default" />
 
-This Template is responsible for creating a table of domain objects.
-
-
-If you modify this template, do not forget to change the overwrite settings 
-in /Configuration/Kickstarter/settings.yaml:
-	Resources:
-		Private: 
-			Templates:
-				List.html		keep
-
-Otherwise your changes will be overwritten the next time you save the extension in the kickstarter
-
 <f:section name="main">
 	<link href="{f:uri.resource(path:'css/schulungen_mod.css')}" rel="stylesheet" />
 
@@ -19,7 +7,7 @@ Otherwise your changes will be overwritten the next time you save the extension 
 	<h2><f:translate key="tx_schulungen_domain_model_teilnehmer.deregister.{status}" /></h2>
 
 	<f:flashMessages />
-        
+
     <f:link.action action="list" controller="Schulung"><f:translate key="tx_schulungen_zurueck" /></f:link.action><br />
 
 	<br /><br />
@@ -30,5 +18,5 @@ Otherwise your changes will be overwritten the next time you save the extension 
 		</f:for>
 	</f:if>
 
-        
+
 </f:section>

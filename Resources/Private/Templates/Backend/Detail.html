@@ -43,7 +43,6 @@
 	<f:if condition="{termin.abgesagt}">
 		<f:then>
 			<f:link.action action="uncancel" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-hide" style="top:-2px;" alt="Uncancel" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} zusagen"></span> <f:translate key="tx_schulungen_domain_model_termin.zusagen" /></f:link.action>
-			<!--<f:be.buttons.icon uri="{f:uri.action(action:'uncancel',arguments:{termin:termin})}" icon="button_unhide" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} zusagen" />-->
 		</f:then>
 		<f:else>
 			<f:link.action action="cancel" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-unhide" style="top:-2px;" alt="Cancel" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} absagen"></span> <f:translate key="tx_schulungen_domain_model_termin.absagen"/></f:link.action>

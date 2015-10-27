@@ -1,172 +1,212 @@
-<f:layout name="backend" />
+<f:layout name="backend"/>
 
 <f:section name="backend">
 	{namespace schulungen=Subugoe\Schulungen\ViewHelpers}
 	<script type="text/javascript" src="{jquery}"></script>
 	<script>
-	jQuery.noConflict();
-	// Use jQuery via jQuery(...)
-	jQuery(document).ready(function(){
-	  // jQuery("div").hide();
-	});
+		jQuery.noConflict();
+		jQuery(document).ready(function() {
+		});
 
-	function splitter(id) {
-	  // alert(jQuery('#schulung_' + id).html());
-	  expand = "Alle Termine anzeigen";
-	  collapse = "Zukünftige Termine anzeigen";
-	  jQuery('.schulung_' + id).toggle();
-	  var addOrHide = jQuery('#span_splitter_' + id).attr('title') == collapse ? true : false;
-	  jQuery('#span_splitter_' + id).toggleClass('t3-icon-pagetree-collapse', addOrHide);
-	  jQuery('#span_splitter_' + id).toggleClass('t3-icon-pagetree-expand', !addOrHide);
-	  jQuery('#span_splitter_' + id).attr('title', (addOrHide == true ? expand : collapse));
-	}
+		function splitter(id) {
+			expand = "Alle Termine anzeigen";
+			collapse = "Zukünftige Termine anzeigen";
+			jQuery('.schulung_' + id).toggle();
+			var addOrHide = jQuery('#span_splitter_' + id).attr('title') == collapse ? true : false;
+			jQuery('#span_splitter_' + id).toggleClass('t3-icon-pagetree-collapse', addOrHide);
+			jQuery('#span_splitter_' + id).toggleClass('t3-icon-pagetree-expand', !addOrHide);
+			jQuery('#span_splitter_' + id).attr('title', (addOrHide == true ? expand : collapse));
+		}
 
 	</script>
 
-	<h2 class="uppercase"><f:translate key="tx_schulungen_controller_backend_index.title" /></h2>
+	<h2 class="uppercase">
+		<f:translate key="tx_schulungen_controller_backend_index.title"/>
+	</h2>
 	<div id="tx_schulungen-inhalt">
 
 		<f:for each="{schulungs}" as="schulung" iteration="schulungIterator">
 			<h4>{schulung.titel}</h4>
-			<p><strong><f:translate key="tx_schulungen_domain_model_schulung.teilnehmer" />: {schulung.teilnehmerMin} - {schulung.teilnehmerMax} <f:translate key="tx_schulungen_domain_model_schulung.personen" /></strong></p>
+			<p><strong>
+				<f:translate key="tx_schulungen_domain_model_schulung.teilnehmer"/>
+				: {schulung.teilnehmerMin} - {schulung.teilnehmerMax}
+				<f:translate key="tx_schulungen_domain_model_schulung.personen"/>
+			</strong></p>
 			<table>
 				<thead>
-				  <tr>
+				<tr>
 					<th width="5%">
-					  <span onclick="javascript:splitter('{schulungIterator.index}');" id="span_splitter_{schulungIterator.index}" class="t3-icon t3-icon-actions t3-icon-actions-pagetree t3-icon-pagetree-collapse" alt="" title="Alle Termine anzeigen"></span>	  
-					  <f:translate key="tx_schulungen_domain_model_schulung.details" />
-					</th>						  
-					<th width="10%" colspan="2"><f:translate key="tx_schulungen_domain_model_schulung.datum" /></th>
-					<th width="5%"><f:translate key="tx_schulungen_domain_model_schulung.beginn" /></th>
-					<th width="5%"><f:translate key="tx_schulungen_domain_model_schulung.ende" /></th>
-					<th width="5%"><f:translate key="tx_schulungen_domain_model_schulung.teilnehmer_backend" /></th>
-					<th width="5%"><f:translate key="tx_schulungen_domain_model_schulung.status" /></th>
-				  </tr>
+						<span onclick="javascript:splitter('{schulungIterator.index}');" id="span_splitter_{schulungIterator.index}" class="t3-icon t3-icon-actions t3-icon-actions-pagetree t3-icon-pagetree-collapse" alt="" title="Alle Termine anzeigen"></span>
+						<f:translate key="tx_schulungen_domain_model_schulung.details"/>
+					</th>
+					<th width="10%" colspan="2">
+						<f:translate key="tx_schulungen_domain_model_schulung.datum"/>
+					</th>
+					<th width="5%">
+						<f:translate key="tx_schulungen_domain_model_schulung.beginn"/>
+					</th>
+					<th width="5%">
+						<f:translate key="tx_schulungen_domain_model_schulung.ende"/>
+					</th>
+					<th width="5%">
+						<f:translate key="tx_schulungen_domain_model_schulung.teilnehmer_backend"/>
+					</th>
+					<th width="5%">
+						<f:translate key="tx_schulungen_domain_model_schulung.status"/>
+					</th>
+				</tr>
 				</thead>
 				<tbody id="schulung_{schulungIterator.index}">
-					<f:if condition="{schulung.schulungTermine}">
-						<f:then>
-							<f:for each="{schulungen:sort(objects:schulung.schulungTermine,orderBy:'startzeit',order:'ASC')}" as="termin" reverse="TRUE" iteration="Iterator">
-								<f:if condition="{schulungen:terminated(time:termin.startzeit)}">
-									<f:then>
-									  <tr class="Over {f:if(condition: Iterator.isEven, then: 'Even')} schulung_{schulungIterator.index}" onload="javascript:splitter('{schulungIterator.index}');">
-										  <td>
-											  <f:link.action action="detail" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-open" alt="Details" title="Detailansicht"></span></f:link.action>
-											  <!--<f:be.buttons.icon uri="{f:uri.action(action:'detail',arguments:'{termin:termin}')}" icon="zoom" title="Detailansicht" />-->
-											  <f:if condition="{termin.abgesagt}">
-												  <f:then>
-													  <f:link.action action="uncancel" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-unhide" alt="Uncancel" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} zusagen"></span></f:link.action>
-													  <!--<f:be.buttons.icon uri="{f:uri.action(action:'uncancel',arguments:{termin:termin})}" icon="button_unhide" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} zusagen" />-->
-												  </f:then>
-												  <f:else>
-													  <f:link.action action="cancel" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-hide" alt="Cancel" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} absagen"></span></f:link.action>
-													  <!--<f:be.buttons.icon uri="{f:uri.action(action:'cancel',arguments:{termin:termin})}" icon="button_hide" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} absagen" />-->
-												  </f:else>
-											  </f:if>
-										  </td>	
-										  <td class="date">
-											  <f:translate key="tx_schulungen_domain_model_termin.wochentag.{termin.startzeit -> f:format.date(format: 'N')}" />
-										  </td>
-										  <td class="date">
-											  <f:format.date format="{f:translate(key: 'tx_schulungen_format.date_only')}">{termin.startZeit}</f:format.date>
-										  </td>
-										  <td class="date">
-											  <f:format.date format="{f:translate(key: 'tx_schulungen_format.hour')}">{termin.startZeit}</f:format.date>
-										  </td>
-										  <td class="date">
-											  <f:format.date format="{f:translate(key: 'tx_schulungen_format.hour')}">{termin.ende}</f:format.date>
-										  </td>
-										  <td class="anzahlTeilnehmer">
-											  {termin.anzahlTeilnehmer}
-										  </td>
-										  <td>
-											  <f:if condition="{termin.abgesagt}">
-												  <f:then>
-													  <f:image src="{f:uri.resource(path:'img/fail.png')}" alt="abgesagt" title="abgesagt" />
-												  </f:then>
-												  <f:else>
-													  <f:image src="{f:uri.resource(path:'img/ok.png')}" alt="findet statt" title="findet statt" />
-												  </f:else>
-											  </f:if>
-										  </td>
-									  </tr>
-									</f:then>
-									<f:else>
-									  <tr class="{f:if(condition: Iterator.isEven, then: 'Even')}
+				<f:if condition="{schulung.schulungTermine}">
+					<f:then>
+						<f:for each="{schulungen:sort(objects:schulung.schulungTermine,orderBy:'startzeit',order:'ASC')}" as="termin" reverse="TRUE" iteration="Iterator">
+							<f:if condition="{schulungen:terminated(time:termin.startzeit)}">
+								<f:then>
+									<tr class="Over {f:if(condition: Iterator.isEven, then: 'Even')} schulung_{schulungIterator.index}" onload="javascript:splitter('{schulungIterator.index}');">
+										<td>
+											<f:link.action action="detail" arguments="{termin:termin}">
+												<span class="t3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-open" alt="Details" title="Detailansicht"></span>
+											</f:link.action>
+											<f:if condition="{termin.abgesagt}">
+												<f:then>
+													<f:link.action action="uncancel" arguments="{termin:termin}">
+														<span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-unhide" alt="Uncancel" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} zusagen"></span>
+													</f:link.action>
+												</f:then>
+												<f:else>
+													<f:link.action action="cancel" arguments="{termin:termin}">
+														<span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-hide" alt="Cancel" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} absagen"></span>
+													</f:link.action>
+												</f:else>
+											</f:if>
+										</td>
+										<td class="date">
+											<f:translate key="tx_schulungen_domain_model_termin.wochentag.{termin.startzeit -> f:format.date(format: 'N')}"/>
+										</td>
+										<td class="date">
+											<f:format.date format="{f:translate(key: 'tx_schulungen_format.date_only')}">{termin.startZeit}</f:format.date>
+										</td>
+										<td class="date">
+											<f:format.date format="{f:translate(key: 'tx_schulungen_format.hour')}">{termin.startZeit}</f:format.date>
+										</td>
+										<td class="date">
+											<f:format.date format="{f:translate(key: 'tx_schulungen_format.hour')}">{termin.ende}</f:format.date>
+										</td>
+										<td class="anzahlTeilnehmer">
+											{termin.anzahlTeilnehmer}
+										</td>
+										<td>
+											<f:if condition="{termin.abgesagt}">
+												<f:then>
+													<f:image src="{f:uri.resource(path:'img/fail.png')}" alt="abgesagt" title="abgesagt"/>
+												</f:then>
+												<f:else>
+													<f:image src="{f:uri.resource(path:'img/ok.png')}" alt="findet statt" title="findet statt"/>
+												</f:else>
+											</f:if>
+										</td>
+									</tr>
+								</f:then>
+								<f:else>
+									<tr class="{f:if(condition: Iterator.isEven, then: 'Even')}
 										  {f:if(condition: '{schulungen:endSoon(time:termin.startzeit)}', then: 'Soon')}
 										  ">
-										  <td>
-											  <f:link.action action="detail" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-open" alt="Details" title="Detailansicht"></span></f:link.action>
-											  <!--<f:be.buttons.icon uri="{f:uri.action(action:'detail',arguments:'{termin:termin}')}" icon="zoom" title="Detailansicht" />-->
-											  <f:if condition="{termin.abgesagt}">
-												  <f:then>
-													  <f:link.action action="uncancel" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-unhide" alt="Uncancel" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} zusagen"></span></f:link.action>
-													  <!--<f:be.buttons.icon uri="{f:uri.action(action:'uncancel',arguments:{termin:termin})}" icon="button_unhide" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} zusagen" />-->
-												  </f:then>
-												  <f:else>
-													  <f:link.action action="cancel" arguments="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-hide" alt="Cancel" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} absagen"></span></f:link.action>
-													  <!--<f:be.buttons.icon uri="{f:uri.action(action:'cancel',arguments:{termin:termin})}" icon="button_hide" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} absagen" />-->
-												  </f:else>
-											  </f:if>
-										  </td>	
-										  <td class="date">
-											  <f:translate key="tx_schulungen_domain_model_termin.wochentag.{termin.startzeit -> f:format.date(format: 'N')}" />
-										  </td>
-										  <td class="date">
-											  <f:format.date format="{f:translate(key: 'tx_schulungen_format.date_only')}">{termin.startZeit}</f:format.date>
-										  </td>
-										  <td class="date">
-											  <f:format.date format="{f:translate(key: 'tx_schulungen_format.hour')}">{termin.startZeit}</f:format.date>
-										  </td>
-										  <td class="date">
-											  <f:format.date format="{f:translate(key: 'tx_schulungen_format.hour')}">{termin.ende}</f:format.date>
-										  </td>
-										  <td class="anzahlTeilnehmer">
-											  {termin.anzahlTeilnehmer}
-										  </td>
-										  <td>
-											  <f:if condition="{termin.abgesagt}">
-												  <f:then>
-													  <f:image src="{f:uri.resource(path:'img/fail.png')}" alt="abgesagt" title="abgesagt" />
-												  </f:then>
-												  <f:else>
-													  <f:image src="{f:uri.resource(path:'img/ok.png')}" alt="findet statt" title="findet statt" />
-												  </f:else>
-											  </f:if>
-										  </td>
-									  </tr>
-									</f:else>
-								</f:if>
-							</f:for>
-							</div>  
-						</f:then>
+										<td>
+											<f:link.action action="detail" arguments="{termin:termin}">
+												<span class="t3-icon t3-icon-actions t3-icon-actions-page t3-icon-page-open" alt="Details" title="Detailansicht"></span>
+											</f:link.action>
+											<!--<f:be.buttons.icon uri="{f:uri.action(action:'detail',arguments:'{termin:termin}')}" icon="zoom" title="Detailansicht" />-->
+											<f:if condition="{termin.abgesagt}">
+												<f:then>
+													<f:link.action action="uncancel" arguments="{termin:termin}">
+														<span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-unhide" alt="Uncancel" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} zusagen"></span>
+													</f:link.action>
+													<!--<f:be.buttons.icon uri="{f:uri.action(action:'uncancel',arguments:{termin:termin})}" icon="button_unhide" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} zusagen" />-->
+												</f:then>
+												<f:else>
+													<f:link.action action="cancel" arguments="{termin:termin}">
+														<span class="t3-icon t3-icon-actions t3-icon-actions-edit t3-icon-edit-hide" alt="Cancel" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} absagen"></span>
+													</f:link.action>
+													<!--<f:be.buttons.icon uri="{f:uri.action(action:'cancel',arguments:{termin:termin})}" icon="button_hide" title="Schulung {termin.schulung.titel} am {f:format.date(format:'d.m.Y',date:'{termin.ende}')} absagen" />-->
+												</f:else>
+											</f:if>
+										</td>
+										<td class="date">
+											<f:translate key="tx_schulungen_domain_model_termin.wochentag.{termin.startzeit -> f:format.date(format: 'N')}"/>
+										</td>
+										<td class="date">
+											<f:format.date format="{f:translate(key: 'tx_schulungen_format.date_only')}">{termin.startZeit}</f:format.date>
+										</td>
+										<td class="date">
+											<f:format.date format="{f:translate(key: 'tx_schulungen_format.hour')}">{termin.startZeit}</f:format.date>
+										</td>
+										<td class="date">
+											<f:format.date format="{f:translate(key: 'tx_schulungen_format.hour')}">{termin.ende}</f:format.date>
+										</td>
+										<td class="anzahlTeilnehmer">
+											{termin.anzahlTeilnehmer}
+										</td>
+										<td>
+											<f:if condition="{termin.abgesagt}">
+												<f:then>
+													<f:image src="{f:uri.resource(path:'img/fail.png')}" alt="abgesagt" title="abgesagt"/>
+												</f:then>
+												<f:else>
+													<f:image src="{f:uri.resource(path:'img/ok.png')}" alt="findet statt" title="findet statt"/>
+												</f:else>
+											</f:if>
+										</td>
+									</tr>
+								</f:else>
+							</f:if>
+						</f:for>
+	</div>
+	</f:then>
 
-						<f:else>
-							<tr>
-								<td colspan="7"><f:translate key="tx_schulungen_domain_model_termin.keine_termine" /></td>
-							</tr>
-						</f:else>
-					</f:if>
-				</tbody>
-			</table>
-		</f:for>
+	<f:else>
+		<tr>
+			<td colspan="7">
+				<f:translate key="tx_schulungen_domain_model_termin.keine_termine"/>
+			</td>
+		</tr>
+	</f:else>
+	</f:if>
+	</tbody>
+	</table>
+	</f:for>
 
-		<h4><f:translate key="tx_schulungen_domain_model_schulung.uebersicht" /></h4>
-		<table>
-			<thead>
-				<tr><th><f:translate key="tx_schulungen_domain_model_schulung.schulung_termine_backend" /></th><th><f:translate key="tx_schulungen_domain_model_schulung.teilnehmer_backend" /></th></tr>
-			</thead>
-			<tbody>
-				<tr><td>{termine}</td><td>{teilnehmer}</td></tr>
-			</tbody>
-		</table>
+	<h4>
+		<f:translate key="tx_schulungen_domain_model_schulung.uebersicht"/>
+	</h4>
+	<table>
+		<thead>
+		<tr>
+			<th>
+				<f:translate key="tx_schulungen_domain_model_schulung.schulung_termine_backend"/>
+			</th>
+			<th>
+				<f:translate key="tx_schulungen_domain_model_schulung.teilnehmer_backend"/>
+			</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>{termine}</td>
+			<td>{teilnehmer}</td>
+		</tr>
+		</tbody>
+	</table>
 
-		<f:link.action controller="Backend" action="export" format="csv" pluginName="Csvexport" pageType="1321464620"><span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-export-csv" alt="Details" title="Detailansicht"></span></f:link.action>
-		<f:link.action controller="Backend" action="export" format="csv" pluginName="Csvexport" pageType="1321464620">CSV-Export</f:link.action>
+	<f:link.action controller="Backend" action="export" format="csv" pluginName="Csvexport" pageType="1321464620">
+		<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-export-csv" alt="Details" title="Detailansicht"></span>
+	</f:link.action>
+	<f:link.action controller="Backend" action="export" format="csv" pluginName="Csvexport" pageType="1321464620">
+		CSV-Export
+	</f:link.action>
 	</div>
 
 	<script type="text/javascript">
-	jQuery('.Over').toggle();
+		jQuery('.Over').toggle();
 	</script>
-	
+
 </f:section>

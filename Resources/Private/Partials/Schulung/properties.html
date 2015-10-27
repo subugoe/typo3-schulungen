@@ -1,47 +1,67 @@
 <h1>{schulung.titel}</h1>
 <f:if condition="{schulung.untertitel}">
-    <f:then>
-        <h2>{schulung.untertitel}</h2>
-    </f:then>
+	<f:then>
+		<h2>{schulung.untertitel}</h2>
+	</f:then>
 </f:if>
 <f:format.html>{schulung.beschreibung}</f:format.html>
 
 <dl class="tx-schulungen-pi1">
-<f:if condition="{0: false} == {0: schulung.termineVersteckt}">
-	<f:then>
-		<f:if condition="{schulung.teilnehmerMin}">
-			<f:then>
-				<dt><f:translate key="tx_schulungen_domain_model_schulung.teilnehmerzahl" />:&nbsp;</dt>
-				<f:if condition="{schulung.teilnehmerMax} == 1">
-					<f:then><dd>{schulung.teilnehmerMax} <f:translate key="tx_schulungen_domain_model_schulung.teilnehmer" /></dd></f:then>
-					<f:else><dd>{schulung.teilnehmerMin} - {schulung.teilnehmerMax} <f:translate key="tx_schulungen_domain_model_schulung.teilnehmer" /></dd></f:else>
-				</f:if>
-			</f:then>
-		</f:if>
-	</f:then>
-</f:if>
-<f:if condition="{schulung.voraussetzungen}">
-    <f:then>
-        <dt><f:translate key="tx_schulungen_domain_model_schulung.voraussetzungen" />:&nbsp;</dt>
-        <dd>{schulung.voraussetzungen}</dd>
-    </f:then>
-</f:if>
-<f:if condition="{schulung.treffpunkt}">
-    <f:then>
-        <dt><f:translate key="tx_schulungen_domain_model_schulung.treffpunkt" />:&nbsp;</dt>
-        <dd><f:format.nl2br>{schulung.treffpunkt}</f:format.nl2br></dd>
-    </f:then>
-</f:if>
-<f:if condition="{schulung.dauer}">
-    <f:then>
-        <dt><f:translate key="tx_schulungen_domain_model_schulung.dauer" />:&nbsp;</dt>
-        <dd>{schulung.dauer}</dd>
-    </f:then>
-</f:if>
-<f:if condition="{schulung.veranstalter}">
-    <f:then>
-        <dt><f:translate key="tx_schulungen_domain_model_schulung.veranstalter" />:&nbsp;</dt>
-        <dd>{schulung.contact.firstName} {schulung.contact.lastName}</dd>
-    </f:then>
-</f:if>
+	<f:if condition="{0: false} == {0: schulung.termineVersteckt}">
+		<f:then>
+			<f:if condition="{schulung.teilnehmerMin}">
+				<f:then>
+					<dt>
+						<f:translate key="tx_schulungen_domain_model_schulung.teilnehmerzahl"/>
+						:&nbsp;</dt>
+					<f:if condition="{schulung.teilnehmerMax} == 1">
+						<f:then>
+							<dd>{schulung.teilnehmerMax}
+								<f:translate key="tx_schulungen_domain_model_schulung.teilnehmer"/>
+							</dd>
+						</f:then>
+						<f:else>
+							<dd>{schulung.teilnehmerMin} - {schulung.teilnehmerMax}
+								<f:translate key="tx_schulungen_domain_model_schulung.teilnehmer"/>
+							</dd>
+						</f:else>
+					</f:if>
+				</f:then>
+			</f:if>
+		</f:then>
+	</f:if>
+	<f:if condition="{schulung.voraussetzungen}">
+		<f:then>
+			<dt>
+				<f:translate key="tx_schulungen_domain_model_schulung.voraussetzungen"/>
+				:&nbsp;</dt>
+			<dd>{schulung.voraussetzungen}</dd>
+		</f:then>
+	</f:if>
+	<f:if condition="{schulung.treffpunkt}">
+		<f:then>
+			<dt>
+				<f:translate key="tx_schulungen_domain_model_schulung.treffpunkt"/>
+				:&nbsp;</dt>
+			<dd>
+				<f:format.nl2br>{schulung.treffpunkt}</f:format.nl2br>
+			</dd>
+		</f:then>
+	</f:if>
+	<f:if condition="{schulung.dauer}">
+		<f:then>
+			<dt>
+				<f:translate key="tx_schulungen_domain_model_schulung.dauer"/>
+				:&nbsp;</dt>
+			<dd>{schulung.dauer}</dd>
+		</f:then>
+	</f:if>
+	<f:if condition="{schulung.veranstalter}">
+		<f:then>
+			<dt>
+				<f:translate key="tx_schulungen_domain_model_schulung.veranstalter"/>
+				:&nbsp;</dt>
+			<dd>{schulung.contact.firstName} {schulung.contact.lastName}</dd>
+		</f:then>
+	</f:if>
 </dl>

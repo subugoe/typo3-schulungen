@@ -33,12 +33,6 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class TerminRepository extends Repository
 {
-
-    /**
-     * @var int
-     */
-    protected $defaultPid = 1648;
-
     // Sortierung absteigend nach Terminbeginn
     protected $defaultOrderings = [
         'startzeit' => QueryInterface::ORDER_DESCENDING
@@ -53,8 +47,8 @@ class TerminRepository extends Repository
         $query->matching(
             $query->logicalAnd(
                 $query->equals('erinnerungen_verschickt', 0),
-                $query->greaterThan('startzeit', time()), // > today
-                $query->lessThan('startzeit', time() + (2 * 60 * 60 * 24)) // < overnext day
+                $query->greaterThan('startzeit', time()),
+                $query->lessThan('startzeit', time() + (2 * 60 * 60 * 24))
             )
         );
         $query->setOrderings(['startzeit' => QueryInterface::ORDER_ASCENDING]);

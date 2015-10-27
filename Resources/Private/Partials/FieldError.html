@@ -1,34 +1,34 @@
 <f:form.errors for="{formName}">
-    <f:if condition="{0:error.propertyName} == {0:'{fieldName}'}">
-        <f:for each="{error.errors}" as="errorItem">
-            <f:if condition="{errorItem.code} == 1221560718">
-                <f:then>
-                    <strong style="font-size:11px; color: red;">
-                        <f:translate key="tx_schulungen_domain_validator_empty" />
-                    </strong><br />
-                </f:then>
-            </f:if>
-            <f:if condition="{errorItem.code} == 1221559976">
-                <f:then>
-                    <strong style="font-size:11px; color: red;">
-                        <f:translate key="tx_schulungen_domain_validator_emailaddress" />
-                    </strong><br />
-                </f:then>
-            </f:if>
-            <f:if condition="{errorItem.code} == 1338820079">
-                <f:then>
-                    <strong style="font-size:11px; color: red;">
-                        <f:translate key="tx_schulungen_domain_validator_captcha" />
-                    </strong><br />
-                </f:then>
-            </f:if>
-            <f:if condition="{errorItem.code} == 1338992386">
-                <f:then>
-                    <strong style="font-size:11px; color: red;">
-                        <f:translate key="tx_schulungen_domain_validator_hide" />
-                    </strong><br />
-                </f:then>
-            </f:if>
-        </f:for>
-    </f:if>
+	<f:if condition="{0:error.propertyName} == {0:'{fieldName}'}">
+		<f:for each="{error.errors}" as="errorItem">
+			<f:if condition="{errorItem.code} == 1221560718">
+				<f:then>
+					<strong style="font-size:11px; color: red;">
+						<f:translate key="tx_schulungen_domain_validator_empty"/>
+					</strong><br/>
+				</f:then>
+			</f:if>
+			<f:if condition="{errorItem.code} == 1221559976">
+				<f:then>
+					<strong style="font-size:11px; color: red;">
+						<f:translate key="tx_schulungen_domain_validator_emailaddress"/>
+					</strong><br/>
+				</f:then>
+			</f:if>
+			<f:if condition="{errorItem.code} == 1338820079">
+				<f:then>
+					<strong style="font-size:11px; color: red;">
+						<f:translate key="tx_schulungen_domain_validator_captcha"/>
+					</strong><br/>
+				</f:then>
+			</f:if>
+			<f:if condition="{errorItem.code} == 1338992386">
+				<f:then>
+					<strong style="font-size:11px; color: red;">
+						<f:translate key="tx_schulungen_domain_validator_hide"/>
+					</strong><br/>
+				</f:then>
+			</f:if>
+		</f:for>
+	</f:if>
 </f:form.errors>

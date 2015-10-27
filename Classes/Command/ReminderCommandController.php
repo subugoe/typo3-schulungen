@@ -50,7 +50,7 @@ class ReminderCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\Comman
         $configuration = [
             'settings' => [
                 'persistence' => [
-                    'storagePid' => 1648
+                    'storagePid' => $typoScriptConfiguration['plugin.']['tx_schulungen']['persistence']['storagePid']
                 ],
                 'mail' => [
                     'fromMail' => $typoScriptConfiguration['plugin.']['tx_schulungen.']['settings.']['mail.']['fromMail'],

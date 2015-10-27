@@ -1,51 +1,44 @@
-/* 
-    Document   : backend.css
-    Created on : 01.04.2011, 13:36:21
-    Author     : ingop
-    Description:
-    CSS fuer das Backend Modul der Schulungsextension
-*/
-
-.tx-schulungen-mod table{
-		padding-bottom: 16px;
+.tx-schulungen-mod table {
+	padding-bottom: 16px;
 }
 
 .tx-schulungen-mod th {
-		border-bottom: 1px solid black;	
-		font-size: 12px;
-		font-weight: normal;
-		text-align: center;
+	border-bottom: 1px solid black;
+	font-size: 12px;
+	font-weight: normal;
+	text-align: center;
 }
 
-.tx-schulungen-mod tbody tr{
-		background-color: #DDD;
-		text-align: center;
+.tx-schulungen-mod tbody tr {
+	background-color: #DDD;
+	text-align: center;
 }
 
-.tx-schulungen-mod tr.Even{
-		background-color: #EEE !important;
+.tx-schulungen-mod tr.Even {
+	background-color: #EEE !important;
 }
 
-.tx-schulungen-mod tr.Over{
-		color: #999;
+.tx-schulungen-mod tr.Over {
+	color: #999;
 }
 
-.tx-schulungen-mod tr.Soon{
-		background-color: #e4d0d0 !important;
+.tx-schulungen-mod tr.Soon {
+	background-color: #e4d0d0 !important;
 }
 
-.tx-schulungen-mod td{
-		border-right: 1px solid black;
-		border-bottom: 1px solid black;	
-		border: 1px solid #333;
-		padding: 2px;
-		vertical-align: middle;
+.tx-schulungen-mod td {
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+	border-left: 1px solid #333;
+	border-top: 1px solid #333;
+	padding: 2px;
+	vertical-align: middle;
 }
 
-.tx-schulungen-mod .anzahlTeilnehmer{
-		text-align: center;
+.tx-schulungen-mod .anzahlTeilnehmer {
+	text-align: center;
 }
 
-.tx-schulungen-mod .date{
-		text-align: center;
+.tx-schulungen-mod .date {
+	text-align: center;
 }

@@ -1,11 +1,15 @@
-
 <f:for each="{schulungs}" as="schulungSet">
 	<f:if condition="{schulungSet}">
-		<strong><f:translate key="LLL:EXT:schulungen/Resources/Private/Language/locallang.xml:tx_schulungen_domain_model_schulung.kategorie.{schulungSet.0.kategorie}" />:</strong><br />
+		<strong>
+			<f:translate key="LLL:EXT:schulungen/Resources/Private/Language/locallang.xml:tx_schulungen_domain_model_schulung.kategorie.{schulungSet.0.kategorie}"/>
+			:</strong><br/>
 	</f:if>
 	<f:for each="{schulungSet}" as="schulung">
 
-		<li><f:link.action action="show" arguments="{schulung : schulung}" extensionName="Schulungen" 
-						controller="Schulung" pluginName="Schulungen">{schulung.titel}</f:link.action></li>
+		<li>
+			<f:link.action action="show" arguments="{schulung : schulung}" extensionName="Schulungen"
+			               controller="Schulung" pluginName="Schulungen">{schulung.titel}
+			</f:link.action>
+		</li>
 	</f:for>
 </f:for>

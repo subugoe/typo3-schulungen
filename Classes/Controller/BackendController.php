@@ -70,8 +70,7 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     protected function initializeAction()
     {
-        $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $this->settings = $extbaseFrameworkConfiguration;
+        $this->settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $GLOBALS['TT'] = new NullTimeTracker();
 
     }
@@ -85,7 +84,7 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     {
 
         /** @var Schulung $schulungs */
-        $schulungs = $this->schulungRepository->findByPid('1648');
+        $schulungs = $this->schulungRepository->findByPid($this->settings['persistence']['storagePid']);
         $termine = $this->terminRepository->findAll();
         /** @var Schulung $schulung */
         foreach ($schulungs as $schulung) {

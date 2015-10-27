@@ -26,6 +26,7 @@ namespace Subugoe\Schulungen\Controller;
 use Subugoe\Schulungen\Domain\Model\Teilnehmer;
 use Subugoe\Schulungen\Domain\Model\Termin;
 use Subugoe\Schulungen\Domain\Repository\TerminRepository;
+use Subugoe\Schulungen\Service\SeminarStateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -53,17 +54,6 @@ class BenachrichtigungController extends ActionController
      */
     protected $teilnehmerRepository;
 
-    /*
-     * 0 = normale Erinnerung
-     * 1 = zu wenig Teilnehmer
-     * 2 = Termin wurde gecanceled
-     */
-    protected $mailType = [
-        'Reminder',
-        'ReminderParticipation',
-        'ReminderCancelation'
-    ];
-
     /**
      * @var ObjectManager
      */
@@ -73,6 +63,11 @@ class BenachrichtigungController extends ActionController
      * @var PersistenceManager
      */
     protected $persistenceManager;
+
+    /**
+     * @var SeminarStateService
+     */
+    protected $seminarStateService;
 
     /**
      * Initializes the current action
@@ -91,6 +86,7 @@ class BenachrichtigungController extends ActionController
         $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
         $this->terminRepository = $this->objectManager->get(TerminRepository::class);
         $this->teilnehmerRepository = $this->objectManager->get(Teilnehmer::class);
+        $this->seminarStateService = $this->objectManager->get(SeminarStateService::class);
     }
 
     /**
@@ -107,7 +103,7 @@ class BenachrichtigungController extends ActionController
         /** @var Termin $erinnerungsTermin */
         foreach ($anstehendeTermine as $erinnerungsTermin) {
             if ($erinnerungsTermin->getErinnerungenVerschickt() == false) {
-                $this->verschickeMailAnTeilnehmer($erinnerungsTermin->getTeilnehmer(), $erinnerungsTermin, true);
+                $this->sendMailToParticipants($erinnerungsTermin->getTeilnehmer(), $erinnerungsTermin, true);
             } else {
                 GeneralUtility::devLog(
                     'Reminder mails already sent.',
@@ -137,7 +133,7 @@ class BenachrichtigungController extends ActionController
     public function sendeBenachrichtigungSofortAction(Teilnehmer $participant, Termin $date, &$obj)
     {
         $this->initializeAction();
-        $result = $this->verschickeMailAnTeilnehmer($participant, $date, true);
+        $result = $this->sendMailToParticipants($participant, $date, true);
         return $result;
     }
 
@@ -152,34 +148,31 @@ class BenachrichtigungController extends ActionController
      * @param mixed $teilnehmer
      * @param Termin $termin
      * @param bool $silent
-     * @return bool
+     * @return bool returns TRUE, if all messages are sent successfully
      */
-    protected function verschickeMailAnTeilnehmer($teilnehmer, &$termin, $silent = false)
+    protected function sendMailToParticipants($teilnehmer, &$termin, $silent = false)
     {
 
         $fail = false;
-        $mailType = 0;
-        $schulung = $termin->getSchulung();
+        $seminarState = SeminarStateService::TAKES_PLACE;
+        $seminar = $termin->getSchulung();
 
         /** @var Teilnehmer $person */
         foreach ($teilnehmer as $person) {
-            if (!$termin->isAbgesagt()) {
-                if ($termin->getAnzahlTeilnehmer() >= $schulung->getTeilnehmerMin()) {
-                    /* normale Erinnerung */
-                    $mailType = 0;
-                    $cc = false;
-                } else {
-                    /* zu wenig Teilnehmer */
-                    $mailType = 1;
-                    $cc = false;
-                }
+            if ($termin->isAbgesagt()) {
+                $seminarState = SeminarStateService::CANCELED;
             } else {
-                /* Termin wurde ohne Begründung abgesagt */
-                $mailType = 2;
-                $cc = false;
+
+                if ($termin->getAnzahlTeilnehmer() >= $seminar->getTeilnehmerMin()) {
+                    $seminarState = SeminarStateService::TAKES_PLACE;
+                } else {
+                    $seminarState = SeminarStateService::TOO_FEW_PARTICIPANTS;
+                }
             }
+
+
             /* Abschalten der Copy ($cc) für Reminder, da Transaktionsmail existiert */
-            $result = $this->sendeMail($person, $mailType, $cc);
+            $result = $this->sendMail($person, $seminarState);
 
             if ($result) {
                 if (!$silent) {
@@ -187,7 +180,7 @@ class BenachrichtigungController extends ActionController
                             'schulungen') . $person->getEmail());
                 }
                 GeneralUtility::devLog(
-                    'Reminder mail ("' . substr($schulung->getTitel(), 0,
+                    'Reminder mail ("' . substr($seminar->getTitel(), 0,
                         20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' successfully sent.',
                     'schulungen',
                     -1
@@ -198,7 +191,7 @@ class BenachrichtigungController extends ActionController
                         'schulungen'));
                 }
                 GeneralUtility::devLog(
-                    'Reminder mail ("' . substr($schulung->getTitel(), 0,
+                    'Reminder mail ("' . substr($seminar->getTitel(), 0,
                         20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' failed to send!',
                     'schulungen',
                     3
@@ -206,7 +199,8 @@ class BenachrichtigungController extends ActionController
                 $fail = true;
             }
         }
-        $termin->setAbgesagt($mailType > 0 ? true : false);
+
+        $termin->setAbgesagt($seminarState > 0 ? true : false);
 
         if (!$fail && $termin->getAnzahlTeilnehmer() > 0) {
             $termin->setErinnerungenVerschickt(true);
@@ -218,9 +212,9 @@ class BenachrichtigungController extends ActionController
                 LocalizationUtility::translate('tx_schulungen_email_versand.transaction_title', 'schulungen'), '',
                 [
                     'teilnehmer' => $teilnehmer,
-                    'action' => LocalizationUtility::translate('tx_schulungen_email_versand.mail_type.' . $mailType,
+                    'action' => LocalizationUtility::translate('tx_schulungen_email_versand.mail_type.' . $seminarState,
                         'schulungen'),
-                    'schulung' => $schulung->getTitel(),
+                    'schulung' => $seminar->getTitel(),
                     'termin' => $termin->getStartzeit(),
                     'ende' => $termin->getEnde()
                 ]
@@ -231,7 +225,7 @@ class BenachrichtigungController extends ActionController
                             'schulungen') . $person->getEmail());
                 }
                 GeneralUtility::devLog(
-                    'Transaction mail ("' . substr($schulung->getTitel(), 0,
+                    'Transaction mail ("' . substr($seminar->getTitel(), 0,
                         20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') successfully sent!',
                     'schulungen',
                     -1
@@ -242,29 +236,29 @@ class BenachrichtigungController extends ActionController
                         'schulungen'));
                 }
                 GeneralUtility::devLog(
-                    'Transaction mail ("' . substr($schulung->getTitel(), 0,
+                    'Transaction mail ("' . substr($seminar->getTitel(), 0,
                         20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') failed to send!',
                     'schulungen',
                     3
                 );
             }
         }
+        $this->terminRepository->update($termin);
         $this->persistenceManager->persistAll();
 
-        return !$fail; // returns TRUE, wenn alle Nachrichten erfolgreich versendet wurden
+        return !$fail;
     }
 
     /**
-     * @param Teilnehmer $tn
-     * @param $type
-     * @param $cc
+     * @param Teilnehmer $participant
+     * @param int $type
      * @return bool
      * @throws \Exception
      */
-    protected function sendeMail(Teilnehmer $tn, $type, $cc)
+    protected function sendMail(Teilnehmer $participant, $type)
     {
 
-        $termin = $tn->getTermin();
+        $termin = $participant->getTermin();
         $schulung = $termin->getSchulung();
         /** @var EmailController $mail */
         $mail = $this->objectManager->get(EmailController::class);
@@ -276,23 +270,22 @@ class BenachrichtigungController extends ActionController
         }
 
         $result = $mail->sendeMail(
-            $tn->getEmail(),
+            $participant->getEmail(),
             $this->settings['mail']['fromMail'],
             $this->settings['mail']['fromName'],
             LocalizationUtility::translate('tx_schulungen_email_versand.reminder_title', 'schulungen'),
-            $this->mailType[$type],
+            $type,
             [
-                'vorname' => $tn->getVorname(),
-                'nachname' => $tn->getNachname(),
-                'studienfach' => $tn->getStudienfach(),
-                'bemerkung' => $tn->getBemerkung(),
+                'vorname' => $participant->getVorname(),
+                'nachname' => $participant->getNachname(),
+                'studienfach' => $participant->getStudienfach(),
+                'bemerkung' => $participant->getBemerkung(),
                 'start' => $termin->getStartzeit(),
                 'ende' => $termin->getEnde(),
                 'schulung' => $schulung->getTitel(),
-                'identifier' => $tn->getSecret(),
+                'identifier' => $participant->getSecret(),
                 'contact' => $mailcopy[0],
-                'mailcopy' => $mailcopy,
-                'copy' => $cc
+                'mailcopy' => $mailcopy
             ]
         );
 

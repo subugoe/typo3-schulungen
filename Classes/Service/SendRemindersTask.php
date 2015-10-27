@@ -82,7 +82,7 @@ class SendRemindersTask extends AbstractTask
         $res = $this->db->exec_SELECTquery(
             '*', //WHAT
             'tx_schulungen_domain_model_termin', //FROM
-            'WHERE erinnerungenverschickt = 0 AND abgesagt = 0 AND  TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) >=0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) <2'
+            'WHERE erinnerungen_verschickt = 0 AND abgesagt = 0 AND  TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) >=0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) <2'
         );
 
         while ($termin = $this->db->sql_fetch_assoc($res)) {
@@ -101,11 +101,8 @@ class SendRemindersTask extends AbstractTask
     {
         $teilnehmerquery = $this->db->exec_SELECTquery(
             '*', //WHAT
-            'tx_schulungen_domain_model_teilnehmer', //FROM
-            'WHERE termin = ' . $schulungstermin, //WHERE
-            '',
-            '', //ORDER BY
-            '' //LIMIT
+            'tx_schulungen_domain_model_teilnehmer',
+            'WHERE termin = ' . $schulungstermin
         );
         while ($teilnehmer = $this->db->sql_fetch_assoc($teilnehmerquery)) {
             $this->sendeErinnerungsMail($teilnehmer['email']);
