@@ -80,8 +80,8 @@ class SendRemindersTask extends AbstractTask
     {
 
         $res = $this->db->exec_SELECTquery(
-            '*', //WHAT
-            'tx_schulungen_domain_model_termin', //FROM
+            '*',
+            'tx_schulungen_domain_model_termin',
             'WHERE erinnerungen_verschickt = 0 AND abgesagt = 0 AND  TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) >=0 AND TIMESTAMPDIFF(DAY,FROM_UNIXTIME(startzeit),NOW()) <2'
         );
 
@@ -100,7 +100,7 @@ class SendRemindersTask extends AbstractTask
     private function getTeilnehmer($schulungstermin)
     {
         $teilnehmerquery = $this->db->exec_SELECTquery(
-            '*', //WHAT
+            '*',
             'tx_schulungen_domain_model_teilnehmer',
             'WHERE termin = ' . $schulungstermin
         );

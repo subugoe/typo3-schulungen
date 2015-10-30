@@ -1,5 +1,5 @@
 <?php
-namespace Subugoe\Schulungen\Service;
+namespace Subugoe\Schulungen\Tests\Unit\Service;
 
 /* * *************************************************************
  *  Copyright notice
@@ -26,13 +26,34 @@ namespace Subugoe\Schulungen\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-/**
- * Service for determination of seminar states
- */
-class SeminarStateService
+use Subugoe\Schulungen\Service\SeminarStateService;
+use TYPO3\CMS\Core\Tests\BaseTestCase;
+
+class SeminarStateServiceTest extends BaseTestCase
 {
-    const TAKES_PLACE = 0;
-    const TOO_FEW_PARTICIPANTS = 1;
-    const CANCELED = 2;
+    /**
+     * @var SeminarStateService
+     */
+    protected $fixture;
+
+    public function setUp()
+    {
+        $this->fixture = $this->getMock(SeminarStateService::class, ['dummy']);
+    }
+
+    /**
+     * @test
+     */
+    public function constantsRepresentIntegerValues()
+    {
+        $this->assertSame(0, SeminarStateService::TAKES_PLACE);
+        $this->assertSame(1, SeminarStateService::TOO_FEW_PARTICIPANTS);
+        $this->assertSame(2, SeminarStateService::CANCELED);
+    }
+
+    public function tearDown()
+    {
+
+    }
 
 }
