@@ -64,7 +64,7 @@
 	<f:if condition="{contacts}">
 		<div><h2><f:translate key="tx_schulungen_domain_model_schulung.kontakt" /></h2></div>
 		<f:for each="{contacts}" as="contact" iteration="Iterator">
-			<f:render partial="Schulung/contact" arguments="{contact:contact}" />
+			<f:render partial="Schulung/contact" arguments="{contact:contact, subBuilding:contact.subBuilding}" />
 		</f:for>
 	</f:if>
 

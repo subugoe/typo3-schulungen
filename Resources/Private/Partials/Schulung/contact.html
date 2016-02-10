@@ -1,14 +1,11 @@
 <div class="tx-ttaddress-pi1">
-
 	<div class="singleAddress">
 		<strong>{contact.title} {contact.firstName} {contact.lastName}</strong>
-		<f:if condition="{contact.organization}"><strong>{contact.organization}</strong></f:if>
 		<ul>
-			<f:if condition="{contact.address}">
-				<li>{contact.address}</li>
+			<f:if condition="{subBuilding.address}">
+				<li>{subBuilding.address}</li>
+				<li>{subBuilding.zip} {subBuilding.city}, {subBuilding.country}</li>
 			</f:if>
-			<li>{contact.zip} {contact.city}, {contact.country}</li>
-
 			<f:if condition="{contact.phone}">
 				<li>{contact.phone}
 					<f:translate key="tx_schulungen_domain_model_schulung.phone"/>
@@ -24,6 +21,4 @@
 			</f:if>
 		</ul>
 	</div>
-
 </div>
-
