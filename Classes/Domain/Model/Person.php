@@ -26,13 +26,13 @@ namespace Subugoe\Schulungen\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use Subugoe\Substaff\Domain\Model\Building;
 
 /**
  * Model for Persons as mapped by tt_address table
  */
 class Person extends AbstractEntity
 {
-
     /**
      * @var string
      */
@@ -97,6 +97,13 @@ class Person extends AbstractEntity
      * @var string
      */
     protected $country;
+
+    /**
+     * building
+     * @lazy
+     * @var \Subugoe\Substaff\Domain\Model\Building
+     */
+    protected $subBuilding;
 
     /**
      * @return string
@@ -306,4 +313,23 @@ class Person extends AbstractEntity
         $this->country = $country;
     }
 
+    /**
+     * Returns the building
+     *
+     * @return Building $building
+     */
+    public function getSubBuilding()
+    {
+        return $this->subBuilding;
+    }
+
+    /**
+     * Sets the building
+     *
+     * @param Building $building
+     */
+    public function setSubBuilding(Building $building)
+    {
+        $this->subBuilding = $building;
+    }
 }
