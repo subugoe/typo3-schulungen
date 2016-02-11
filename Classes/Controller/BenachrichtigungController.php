@@ -25,6 +25,7 @@ namespace Subugoe\Schulungen\Controller;
  * ************************************************************* */
 use Subugoe\Schulungen\Domain\Model\Teilnehmer;
 use Subugoe\Schulungen\Domain\Model\Termin;
+use Subugoe\Schulungen\Domain\Repository\TeilnehmerRepository;
 use Subugoe\Schulungen\Domain\Repository\TerminRepository;
 use Subugoe\Schulungen\Service\SeminarStateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -85,7 +86,7 @@ class BenachrichtigungController extends ActionController
 
         $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
         $this->terminRepository = $this->objectManager->get(TerminRepository::class);
-        $this->teilnehmerRepository = $this->objectManager->get(Teilnehmer::class);
+        $this->teilnehmerRepository = $this->objectManager->get(TeilnehmerRepository::class);
         $this->seminarStateService = $this->objectManager->get(SeminarStateService::class);
     }
 

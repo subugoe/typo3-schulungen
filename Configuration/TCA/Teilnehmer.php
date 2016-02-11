@@ -21,6 +21,7 @@ $TCA['tx_schulungen_domain_model_teilnehmer'] = [
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
             'config' => [
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
                 'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => [
@@ -35,6 +36,7 @@ $TCA['tx_schulungen_domain_model_teilnehmer'] = [
             'label' => 'LLL:EXT:lang/locallang_general.php:LGL.l18n_parent',
             'config' => [
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'items' => [
                     ['', 0],
                 ],
@@ -113,6 +115,7 @@ $TCA['tx_schulungen_domain_model_teilnehmer'] = [
             'label' => 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_teilnehmer.teilnehmer_termin',
             'config' => [
                 'type' => 'select',
+                'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_schulungen_domain_model_termin',
                 'size' => 1,
                 'maxitems' => 1,

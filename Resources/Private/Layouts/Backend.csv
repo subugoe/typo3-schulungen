@@ -1,4 +1,4 @@
-<f:be.container loadExtJs="true" pageTitle="Schulungen" enableExtJsDebug="true" addJsFile="{f:uri.resource(path:'Js/schulungenBackend.js')}" addCssFile="{f:uri.resource(path:'css/backend.css')}">
+<f:be.container pageTitle="Schulungen" includeCssFiles="{0: '{f:uri.resource(path:\'css/backend.css\')}'}">
 
 	<f:base />
 	<div id="typo3-docheader">

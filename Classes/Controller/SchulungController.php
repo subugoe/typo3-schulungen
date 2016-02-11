@@ -35,7 +35,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class SchulungController extends ActionController
 {
-
     /**
      * schulungRepository
      *
@@ -43,6 +42,7 @@ class SchulungController extends ActionController
      * @inject
      */
     protected $schulungRepository;
+
     /**
      * terminRepository
      *
@@ -50,12 +50,14 @@ class SchulungController extends ActionController
      * @inject
      */
     protected $terminRepository;
+
     /**
      * Teilnehmer
      * @var \Subugoe\Schulungen\Domain\Repository\TeilnehmerRepository
      * @inject
      */
     protected $teilnehmerRepository;
+
     /**
      * Person
      * @var \Subugoe\Schulungen\Domain\Repository\PersonRepository
@@ -70,7 +72,6 @@ class SchulungController extends ActionController
      */
     public function listAction()
     {
-
         $schulungSet = [];
         for ($i = 0; $i < 3; $i++) {
             if ($this->schulungRepository->countByKategorie($i) > 0) {
@@ -78,14 +79,11 @@ class SchulungController extends ActionController
             }
         }
         $contact = $this->personRepository->findByUid($this->settings['contact']);
-
         $values = [
             "schulungs" => $schulungSet,
             "contact" => $contact
         ];
-
         $this->view->assignMultiple($values);
-
     }
 
     /**
@@ -96,16 +94,13 @@ class SchulungController extends ActionController
      */
     public function listSlimAction(&$tmp = null, &$obj = null)
     {
-
         $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-
         $templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
         $templatePathAndFilename = $templateRootPath . 'Schulung/ListSlim.html';
         /** @var StandaloneView $view */
         $view = $this->objectManager->get(StandaloneView::class);
         $view->setTemplatePathAndFilename($templatePathAndFilename);
         $view->setFormat('html');
-
         $schulungSet = [];
         for ($i = 0; $i < 3; $i++) {
             if ($this->schulungRepository->countByKategorie($i) > 0) {
@@ -115,11 +110,8 @@ class SchulungController extends ActionController
         $values = [
             "schulungs" => $schulungSet,
         ];
-
         $view->assignMultiple($values);
-
         $tmp = $view->render() . $tmp;
-
     }
 
     /**
@@ -130,11 +122,9 @@ class SchulungController extends ActionController
      */
     public function modTOCAction(&$tmp = null, &$obj = null)
     {
-
         if ($GLOBALS['TSFE']->lang == "en") {
             $tmp = "<li>We regret that this page is not available in English.</li>";
         }
-
     }
 
     /**
@@ -142,7 +132,6 @@ class SchulungController extends ActionController
      */
     public function listTermineUndTeilnehmerAction()
     {
-
         $schulung = $this->schulungRepository->findAll();
         $this->view->assign('schulung', $schulung);
     }
@@ -155,12 +144,9 @@ class SchulungController extends ActionController
      */
     public function showAction(Schulung $schulung)
     {
-
         $termine = $this->terminRepository->errechneAnstehendeSchulungTermine($schulung);
-
         $time = new \DateTime();
         $time->setTimestamp(time());
-
         $this->view->assign('time', $time);
         if (count($termine) > 0) {
             $this->view->assign('termine', $termine);
@@ -227,7 +213,6 @@ class SchulungController extends ActionController
         $this->schulungRepository->update($schulung);
     }
 
-
     /**
      * action export
      *
@@ -238,5 +223,4 @@ class SchulungController extends ActionController
         $schulungs = $this->schulungRepository->findAll();
         $this->view->assign('fluidVarsObject', $schulungs);
     }
-
 }
