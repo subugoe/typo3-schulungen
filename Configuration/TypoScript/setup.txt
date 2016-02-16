@@ -10,6 +10,10 @@ plugin.tx_schulungen {
 			fromMail = {$plugin.tx_schulungen.mail.fromMail}
 			fromName = {$plugin.tx_schulungen.mail.fromName}
 		}
+
+		categoryHavingExtraText = {$plugin.tx_schulungen.categoryHavingExtraText}
+		schlagwoerterPageId = {$plugin.tx_schulungen.schlagwoerterPageId}
+		fachinformationCategoryId = {$plugin.tx_schulungen.fachinformationCategoryId}
 	}
 
 	persistence {
