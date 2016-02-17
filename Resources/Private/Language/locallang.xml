@@ -178,9 +178,11 @@
 			<label index="tx_schulungen_domain_model_schulung.status">Status</label>
 			<label index="tx_schulungen_domain_model_schulung.mail_kopie">E-Mail Adresse einer Person</label>
 			<label index="tx_schulungen_domain_model_schulung.kategorie">Kategorie</label>
-			<label index="tx_schulungen_domain_model_schulung.kategorie.0">Anfänger</label>
-			<label index="tx_schulungen_domain_model_schulung.kategorie.1">Fortgeschrittene</label>
-			<label index="tx_schulungen_domain_model_schulung.kategorie.2">Spezielle Angebote</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.0">Die SUB Göttingen kennenlernen: Führungen</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.1">Literatur finden</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.2">Literatur verwalten</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.3">Fachspezifische Angebote</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.4">Weitere spezielle Angebote</label>
 			<label index="tx_schulungen_domain_model_schulung.schulung_termine">Termine der Schulung</label>
 			<label index="tx_schulungen_domain_model_schulung.schulung_termine_backend">Termine</label>
 			<label index="tx_schulungen_domain_model_schulung.schulung_termine_backend_gesamt">Termine (Gesamt)</label>
@@ -190,6 +192,8 @@
 			<label index="tx_schulungen_domain_model_schulung.kontakt">Kontakt</label>
 			<label index="tx_schulungen_domain_model_schulung.phone">(Tel.)</label>
 			<label index="tx_schulungen_domain_model_schulung.fax">(Fax)</label>
+			<label index="tx_schulungen_domain_model_schulung.text_fachspezifische_angebote_1">Bitte beachten Sie auch weitere Kurs- und Informationsangebote auf den</label>
+			<label index="tx_schulungen_domain_model_schulung.text_fachspezifische_angebote_2">Fachinformationsseiten!</label>
 			<label index="tx_schulungen_controller_schulung_edit.title">Schulung bearbeiten</label>
 			<label index="tx_schulungen_domain_model_termin">Termin</label>
 			<label index="tx_schulungen_domain_model_termin.title">Termine</label>

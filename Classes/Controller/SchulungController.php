@@ -72,16 +72,23 @@ class SchulungController extends ActionController
      */
     public function listAction()
     {
+        $numberOfCategories = $this->schulungRepository->findNumberOfCategories();
         $schulungSet = [];
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < $numberOfCategories; $i++) {
             if ($this->schulungRepository->countByKategorie($i) > 0) {
                 $schulungSet[$i] = $this->schulungRepository->findByKategorie($i);
             }
         }
         $contact = $this->personRepository->findByUid($this->settings['contact']);
+        $categoryHavingExtraText = $this->settings['categoryHavingExtraText'];
+        $schlagwoerterPageId = $this->settings['schlagwoerterPageId'];;
+        $fachinformationCategoryId = $this->settings['fachinformationCategoryId'];;
         $values = [
             "schulungs" => $schulungSet,
-            "contact" => $contact
+            "contact" => $contact,
+            "schlagwoerterPageId" => $schlagwoerterPageId,
+            "fachinformationCategoryId" => $fachinformationCategoryId,
+            "categoryHavingExtraText" => $categoryHavingExtraText
         ];
         $this->view->assignMultiple($values);
     }
