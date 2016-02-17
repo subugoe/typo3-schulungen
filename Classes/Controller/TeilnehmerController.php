@@ -293,7 +293,6 @@ class TeilnehmerController extends ActionController
                 $flashMsg = LocalizationUtility::translate('tx_schulungen_domain_model_teilnehmer.deregister.success.flash',
                     'schulungen');
                 $this->addFlashMessage($flashMsg . $teilnehmer->getVorname() . ' ' . $teilnehmer->getNachname() . ' (' . $teilnehmer->getEmail() . ')');
-                $this->addFlashMessage($flashMsg . $teilnehmer->getVorname() . ' ' . $teilnehmer->getNachname() . ' (' . $teilnehmer->getEmail() . ')');
 
                 // Mail notification
                 $sender = $this->settings['mail']['fromMail'];
