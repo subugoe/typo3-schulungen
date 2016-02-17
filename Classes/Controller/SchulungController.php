@@ -82,7 +82,7 @@ class SchulungController extends ActionController
         $contact = $this->personRepository->findByUid($this->settings['contact']);
         $categoryHavingExtraText = $this->settings['categoryHavingExtraText'];
         $schlagwoerterPageId = $this->settings['schlagwoerterPageId'];;
-        $fachinformationCategoryId = $this->settings['fachinformationPageId'];;
+        $fachinformationCategoryId = $this->settings['fachinformationCategoryId'];;
         $values = [
             "schulungs" => $schulungSet,
             "contact" => $contact,
