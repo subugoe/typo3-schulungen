@@ -10,11 +10,11 @@
 			<label index="tx_schulungen_domain_model_schulung.titel">Titel</label>
 			<label index="tx_schulungen_domain_model_schulung.untertitel">Untertitel</label>
 			<label index="tx_schulungen_domain_model_schulung.kategorie">Kategorie</label>
-			<label index="tx_schulungen_domain_model_schulung.kategorie.0">Führungen</label>
-			<label index="tx_schulungen_domain_model_schulung.kategorie.1">Schulungen für die Literatursuche</label>
-			<label index="tx_schulungen_domain_model_schulung.kategorie.2">Spezielle Angebote</label>
-			<label index="tx_schulungen_domain_model_schulung.kategorie.3">Literaturverwaltung</label>
-			<label index="tx_schulungen_domain_model_schulung.kategorie.4">Fachspezifische Schulungen in den Bereichsbibliotheken</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.0">Die SUB Göttingen kennenlernen: Führungen</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.1">Literatur finden</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.2">Literatur verwalten</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.3">Fachspezifische Angebote</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.4">Weitere spezielle Angebote</label>
 			<label index="tx_schulungen_domain_model_schulung.beschreibung">Beschreibung</label>
 			<label index="tx_schulungen_domain_model_schulung.voraussetzungen">Voraussetzungen</label>
 			<label index="tx_schulungen_domain_model_schulung.treffpunkt">Treffpunkt</label>

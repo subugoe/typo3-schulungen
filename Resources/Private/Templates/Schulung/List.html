@@ -9,8 +9,11 @@
 	<f:for each="{schulungs}" as="schulungSet">
 		<h3>
 			<f:translate key="tx_schulungen_domain_model_schulung.kategorie.{schulungSet.0.kategorie}"/>
-			:
 		</h3>
+		<f:if condition="{schulungSet.0.kategorie} == {categoryHavingExtraText}">
+			<f:translate key="tx_schulungen_domain_model_schulung.text_fachspezifische_angebote_1"/>
+			<f:link.page pageUid="{schlagwoerterPageId}" additionalParams="{tx_nkwkeywords_detail: '{category: fachinformationCategoryId}'}"><f:translate key="tx_schulungen_domain_model_schulung.text_fachspezifische_angebote_2"/></f:link.page>
+		</f:if>
 		<ul>
 			<f:for each="{schulungSet}" as="schulung">
 				<li>
