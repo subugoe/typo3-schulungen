@@ -12,6 +12,7 @@ CREATE TABLE tx_schulungen_domain_model_schulung (
 	treffpunkt text NOT NULL,
 	dauer varchar(255) DEFAULT '' NOT NULL,
 	veranstalter varchar(255) DEFAULT '' NOT NULL,
+	email_zusatz text NOT NULL,
 	teilnehmer_min int(11) DEFAULT '0' NOT NULL,
 	teilnehmer_max int(11) DEFAULT '0' NOT NULL,
 	mail_kopie varchar(255) DEFAULT '' NOT NULL,

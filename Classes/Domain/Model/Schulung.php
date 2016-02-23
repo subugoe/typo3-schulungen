@@ -93,6 +93,13 @@ class Schulung extends AbstractEntity
     protected $veranstalter;
 
     /**
+     * Email Zusatz
+     *
+     * @var string $emailZusatz
+     */
+    protected $emailZusatz;
+
+    /**
      * Untertitel
      *
      * @var string $untertitel
@@ -399,6 +406,26 @@ class Schulung extends AbstractEntity
     public function setVeranstalter($veranstalter)
     {
         $this->veranstalter = $veranstalter;
+    }
+
+    /**
+     * Getter for emailZusatz
+     *
+     * @return string emailZusatz
+     */
+    public function getEmailZusatz()
+    {
+        return $this->emailZusatz;
+    }
+
+    /**
+     * Setter for emailZusatz
+     *
+     * @param string $emailZusatz emailZusatz
+     */
+    public function setEmailZusatz($emailZusatz)
+    {
+        $this->emailZusatz = $emailZusatz;
     }
 
     /**
