@@ -20,6 +20,7 @@
 			<label index="tx_schulungen_domain_model_schulung.treffpunkt">Treffpunkt</label>
 			<label index="tx_schulungen_domain_model_schulung.dauer">Veranstaltungsdauer</label>
 			<label index="tx_schulungen_domain_model_schulung.veranstalter">Veranstalter</label>
+			<label index="tx_schulungen_domain_model_schulung.email_zusatz">Email-Zusatz für Schulungsabsage</label>
 			<label index="tx_schulungen_domain_model_schulung.teilnehmer_min">Teilnehmer Min.</label>
 			<label index="tx_schulungen_domain_model_schulung.teilnehmer_max">Teilnehmer Max.</label>
 			<label index="tx_schulungen_domain_model_schulung.mail_kopie">Mail-Kopie an:</label>

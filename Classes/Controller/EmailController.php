@@ -51,25 +51,17 @@ class EmailController extends ActionController
     {
         $configurationManager = $this->objectManager->get(ConfigurationManager::class);
         $extbaseFrameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-
         $templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
-
         $templatePathAndFilename = $templateRootPath . 'Email/' . $templateName . '.html';
         $emailView = $this->objectManager->get(StandaloneView::class);
         $emailView->setTemplatePathAndFilename($templatePathAndFilename);
-
         $emailView->setFormat('html');
-
         $emailView->assignMultiple($variables);
         $emailBody = $emailView->render();
-
         $return = false;
-
         /** @var MailMessage $mail */
         $mail = $this->objectManager->get(MailMessage::class);
-
         $mail->setFrom($sender);
-
         $mail->addTo($recipient);
         if ($variables['copy'] == true) {
             if (is_array($variables['mailcopy'])) {
@@ -78,14 +70,11 @@ class EmailController extends ActionController
                 }
             }
         }
-
         $mail->setSubject($subject);
         $mail->setBody($emailBody, 'text/html');
-
         if ($mail->send() > 0) {
             $return = true;
         }
-
         return $return;
     }
 
@@ -101,7 +90,6 @@ class EmailController extends ActionController
     public function sendeTransactionMail($sender, $senderName, $subject, $templateName, array $variables = [])
     {
         $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-
         $templateRootPath = GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['plugin.']['tx_schulungen.']['settings.']['view.']['templateRootPath']);
         if (strlen($templateName) == 0) {
             $templatePathAndFilename = $templateRootPath . 'Email/TransactionMail.html';
@@ -111,28 +99,19 @@ class EmailController extends ActionController
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $emailView */
         $emailView = $this->objectManager->get(StandaloneView::class);
         $emailView->setTemplatePathAndFilename($templatePathAndFilename);
-
         $emailView->setFormat('html');
-
         $emailView->assignMultiple($variables);
         $emailBody = $emailView->render();
-
         $return = false;
-
         /** @var MailMessage $mail */
         $mail = $this->objectManager->get(MailMessage::class);
-
         $mail->setFrom($sender);
-
         $mail->addTo($sender);
-
         $mail->setSubject($subject);
         $mail->setBody($emailBody, 'text/html');
-
         if ($mail->send() > 0) {
             $return = true;
         }
-
         return $return;
     }
 
@@ -147,26 +126,18 @@ class EmailController extends ActionController
      */
     public function sendeSchedulerMail($recipient, $sender, $senderName, $subject)
     {
-
         //@todo Body zentral definieren wenn nicht mit fluid Nutzung
         $emailBody = "Erinnerung an die Schulung";
-
         $return = false;
-
         /** @var MailMessage $mail */
         $mail = $this->objectManager->get(MailMessage::class);
-
         $mail->setFrom($sender);
-
         $mail->setTo($recipient);
-
         $mail->setSubject($subject);
         $mail->setBody($emailBody, 'text/html');
-
         if ($mail->send() > 0) {
             $return = true;
         }
-
         return $return;
     }
 

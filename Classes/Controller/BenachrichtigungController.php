@@ -75,15 +75,11 @@ class BenachrichtigungController extends ActionController
      */
     protected function initializeAction()
     {
-
         /** @var ObjectManager objectManager */
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-
         $configurationManager = $this->objectManager->get(ConfigurationManager::class);
-
         $extbaseFrameworkConfiguration = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $this->settings = $extbaseFrameworkConfiguration;
-
         $this->persistenceManager = $this->objectManager->get(PersistenceManager::class);
         $this->terminRepository = $this->objectManager->get(TerminRepository::class);
         $this->teilnehmerRepository = $this->objectManager->get(TeilnehmerRepository::class);
@@ -97,10 +93,8 @@ class BenachrichtigungController extends ActionController
      */
     public function sendeBenachrichtigungAction()
     {
-
         $this->initializeAction();
         $anstehendeTermine = $this->terminRepository->errechneAnstehendeTermine();
-
         /** @var Termin $erinnerungsTermin */
         foreach ($anstehendeTermine as $erinnerungsTermin) {
             if ($erinnerungsTermin->getErinnerungenVerschickt() == false) {
@@ -113,28 +107,26 @@ class BenachrichtigungController extends ActionController
                 );
             }
         }
-
         if (count($anstehendeTermine) === 0) {
             GeneralUtility::devLog(
                 'No seminars for the next two days.',
                 'schulungen',
                 0);
         }
-
         return true;
     }
 
     /**
      * Action für das Backend: Einfacher Mailversand bei Ab/-Zusage von Schulungsterminen
-     * @param Teilnehmer $participant
-     * @param Termin $date
+     * @param $teilnehmer
+     * @param Termin $termin
      * @param mixed $obj
      * @return bool
      */
-    public function sendeBenachrichtigungSofortAction(Teilnehmer $participant, Termin $date, &$obj)
+    public function sendeBenachrichtigungSofortAction($teilnehmer, Termin $termin, &$obj)
     {
         $this->initializeAction();
-        $result = $this->sendMailToParticipants($participant, $date, true);
+        $result = $this->sendMailToParticipants($teilnehmer, $termin, true);
         return $result;
     }
 
@@ -151,145 +143,127 @@ class BenachrichtigungController extends ActionController
      * @param bool $silent
      * @return bool returns TRUE, if all messages are sent successfully
      */
-    protected function sendMailToParticipants($teilnehmer, &$termin, $silent = false)
+    protected function sendMailToParticipants($teilnehmer, Termin $termin, $silent = false)
     {
-
         $fail = false;
         $seminarState = SeminarStateService::TAKES_PLACE;
         $seminar = $termin->getSchulung();
-
         /** @var Teilnehmer $person */
         foreach ($teilnehmer as $person) {
             if ($termin->isAbgesagt()) {
                 $seminarState = SeminarStateService::CANCELED;
             } else {
-
                 if ($termin->getAnzahlTeilnehmer() >= $seminar->getTeilnehmerMin()) {
                     $seminarState = SeminarStateService::TAKES_PLACE;
                 } else {
                     $seminarState = SeminarStateService::TOO_FEW_PARTICIPANTS;
                 }
             }
-
-
             /* Abschalten der Copy ($cc) für Reminder, da Transaktionsmail existiert */
             $result = $this->sendMail($person, $seminarState);
-
             if ($result) {
                 if (!$silent) {
-                    $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.success',
-                            'schulungen') . $person->getEmail());
+                    $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.success', 'schulungen') . $person->getEmail());
                 }
                 GeneralUtility::devLog(
-                    'Reminder mail ("' . substr($seminar->getTitel(), 0,
-                        20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' successfully sent.',
-                    'schulungen',
-                    -1
+                        'Reminder mail ("' . substr($seminar->getTitel(), 0,
+                                20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' successfully sent.',
+                        'schulungen',
+                        -1
                 );
             } else {
                 if (!$silent) {
-                    $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.fail',
-                        'schulungen'));
+                    $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.fail', 'schulungen'));
                 }
                 GeneralUtility::devLog(
-                    'Reminder mail ("' . substr($seminar->getTitel(), 0,
-                        20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' failed to send!',
-                    'schulungen',
-                    3
+                        'Reminder mail ("' . substr($seminar->getTitel(), 0,
+                                20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') to ' . $person->getEmail() . ' failed to send!',
+                        'schulungen',
+                        3
                 );
                 $fail = true;
             }
         }
-
         $termin->setAbgesagt($seminarState > 0 ? true : false);
-
         if (!$fail && $termin->getAnzahlTeilnehmer() > 0) {
             $termin->setErinnerungenVerschickt(true);
-
             /* Transaktionsmail an Admin/Redakteur */
             $mail = $this->objectManager->get(EmailController::class);
             $result = $mail->sendeTransactionMail($this->settings['mail']['fromMail'],
-                $this->settings['mail']['fromName'],
-                LocalizationUtility::translate('tx_schulungen_email_versand.transaction_title', 'schulungen'), '',
-                [
-                    'teilnehmer' => $teilnehmer,
-                    'action' => LocalizationUtility::translate('tx_schulungen_email_versand.mail_type.' . $seminarState,
+                    $this->settings['mail']['fromName'],
+                    LocalizationUtility::translate('tx_schulungen_email_versand.transaction_title', 'schulungen'), '',
+                    [
+                        'teilnehmer' => $teilnehmer,
+                        'action' => LocalizationUtility::translate('tx_schulungen_email_versand.mail_type.' . $seminarState,
                         'schulungen'),
-                    'schulung' => $seminar->getTitel(),
-                    'termin' => $termin->getStartzeit(),
-                    'ende' => $termin->getEnde()
-                ]
+                        'schulung' => $seminar->getTitel(),
+                        'termin' => $termin->getStartzeit(),
+                        'ende' => $termin->getEnde()
+                    ]
             );
             if ($result) {
                 if (!$silent) {
-                    $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.success',
-                            'schulungen') . $person->getEmail());
+                    $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.success', 'schulungen') . $person->getEmail());
                 }
                 GeneralUtility::devLog(
-                    'Transaction mail ("' . substr($seminar->getTitel(), 0,
-                        20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') successfully sent!',
-                    'schulungen',
-                    -1
+                        'Transaction mail ("' . substr($seminar->getTitel(), 0,
+                                20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') successfully sent!',
+                        'schulungen',
+                        -1
                 );
             } else {
                 if (!$silent) {
-                    $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.fail',
-                        'schulungen'));
+                    $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.fail', 'schulungen'));
                 }
                 GeneralUtility::devLog(
-                    'Transaction mail ("' . substr($seminar->getTitel(), 0,
-                        20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') failed to send!',
-                    'schulungen',
-                    3
+                        'Transaction mail ("' . substr($seminar->getTitel(), 0,
+                                20) . '...", ' . $termin->getStartzeit()->format('d.m.Y') . ') failed to send!',
+                        'schulungen', 3
                 );
             }
         }
         $this->terminRepository->update($termin);
         $this->persistenceManager->persistAll();
-
         return !$fail;
     }
 
     /**
-     * @param Teilnehmer $participant
+     * @param $teilnehmer
      * @param int $type
      * @return bool
      * @throws \Exception
      */
-    protected function sendMail(Teilnehmer $participant, $type)
+    protected function sendMail(Teilnehmer $teilnehmer, $type)
     {
-
-        $termin = $participant->getTermin();
+        $termin = $teilnehmer->getTermin();
         $schulung = $termin->getSchulung();
         /** @var EmailController $mail */
         $mail = $this->objectManager->get(EmailController::class);
-
         $mailcopy = [];
         $contacts = $schulung->getContact();
         foreach ($contacts as $contact) {
             array_push($mailcopy, $contact->getEmail());
         }
-
         $result = $mail->sendeMail(
-            $participant->getEmail(),
-            $this->settings['mail']['fromMail'],
-            $this->settings['mail']['fromName'],
-            LocalizationUtility::translate('tx_schulungen_email_versand.reminder_title', 'schulungen'),
-            $type,
-            [
-                'vorname' => $participant->getVorname(),
-                'nachname' => $participant->getNachname(),
-                'studienfach' => $participant->getStudienfach(),
-                'bemerkung' => $participant->getBemerkung(),
-                'start' => $termin->getStartzeit(),
-                'ende' => $termin->getEnde(),
-                'schulung' => $schulung->getTitel(),
-                'identifier' => $participant->getSecret(),
-                'contact' => $mailcopy[0],
-                'mailcopy' => $mailcopy
-            ]
+                $teilnehmer->getEmail(),
+                $this->settings['mail']['fromMail'],
+                $this->settings['mail']['fromName'],
+                LocalizationUtility::translate('tx_schulungen_email_versand.reminder_title', 'schulungen'),
+                $type,
+                [
+                    'vorname' => $teilnehmer->getVorname(),
+                    'nachname' => $teilnehmer->getNachname(),
+                    'studienfach' => $teilnehmer->getStudienfach(),
+                    'bemerkung' => $teilnehmer->getBemerkung(),
+                    'start' => $termin->getStartzeit(),
+                    'ende' => $termin->getEnde(),
+                    'schulung' => $schulung->getTitel(),
+                    'identifier' => $teilnehmer->getSecret(),
+                    'contact' => $mailcopy[0],
+                    'mailcopy' => $mailcopy,
+                    'mailzusatz' => $schulung->getEmailZusatz()
+                ]
         );
-
         return $result;
     }
 

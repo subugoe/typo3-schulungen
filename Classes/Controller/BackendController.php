@@ -82,7 +82,6 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function indexAction()
     {
-
         /** @var Schulung $schulungs */
         $schulungs = $this->schulungRepository->findByPid($this->settings['persistence']['storagePid']);
         $termine = $this->terminRepository->findAll();
@@ -102,20 +101,16 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             }
             $schulung->setSchulungTermine($schulungTermine);
         }
-
         $numberOfTeilnehmer = $this->teilnehmerRepository->countAll();
         $numberOfTermine = $this->terminRepository->countAll();
         $script_to_lib = $this->includeJquery();
-
         $values = [
             'schulungs' => $schulungs,
             'termine' => $numberOfTermine,
             'teilnehmer' => $numberOfTeilnehmer,
             'jquery' => $script_to_lib
         ];
-
         $this->view->assignMultiple($values);
-
     }
 
     /**
@@ -172,18 +167,14 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function cancelAction(Termin $termin)
     {
-
         $time = new \DateTime();
         $time->setTimestamp(time());
-
         if ($termin->getStartzeit() > $time) {
             $termin->setAbgesagt(true);
             $this->terminRepository->update($termin);
-
             $this->benachrichtigung = $this->objectManager->get(BenachrichtigungController::class);
             $teilnehmer = $termin->getTeilnehmer();
             $result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
-
             $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_backend_cancel.success',
                 'schulungen'));
         } else {
@@ -199,28 +190,22 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function uncancelAction(Termin $termin)
     {
-
         $time = new \DateTime();
         $time->setTimestamp(time());
-
         if ($termin->getStartzeit() > $time) {
             $termin->setAbgesagt(false);
             $this->terminRepository->update($termin);
-
             /** @var \Subugoe\Schulungen\Controller\BenachrichtigungController benachrichtigung */
             $this->benachrichtigung = $this->objectManager->get(BenachrichtigungController::class);
             $teilnehmer = $termin->getTeilnehmer();
             $result = $this->benachrichtigung->sendeBenachrichtigungSofortAction($teilnehmer, $termin, $this);
-
             $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_backend_uncancel.success',
                 'schulungen'));
         } else {
             $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_backend_timeout',
                 'schulungen'));
         }
-
         $this->redirect('index');
-
     }
 
     /**
