@@ -66,13 +66,17 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     protected $benachrichtigung;
 
     /**
+     * @var string
+     */
+    const teilnehmerlisteFilename = 'Teilnehmerliste.csv';
+
+    /**
      * Initializes the current action
      */
     protected function initializeAction()
     {
         $this->settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $GLOBALS['TT'] = new NullTimeTracker();
-
     }
 
     /**
@@ -242,6 +246,67 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         } else {
             throw new MissingExtensionDependencyException();
         }
+    }
+
+    /**
+     * exports a Termin
+     *
+     * @param Termin $termin
+     */
+    public function exportterminAction(Termin $termin) {
+        $rawTeilnehmerListe = $termin->getTeilnehmer();
+        $teilnehmerListe = array();
+        $startzeit = $termin->getStartzeit();
+        $schulung = $termin->getSchulung();
+        $schulungsTitel = $schulung->getTitel();
+        foreach($rawTeilnehmerListe as $key => $value){
+            $teilnehmerListe[$key]['vorname'] = $value->getVorname();
+            $teilnehmerListe[$key]['nachname'] = $value->getNachname();
+            $teilnehmerListe[$key]['email'] = $value->getEmail();
+            $teilnehmerListe[$key]['studienfach'] = $value->getStudienfach();
+            $teilnehmerListe[$key]['bemerkung'] = $value->getBemerkung();
+        }
+        $this->setCSVHeaders(self::teilnehmerlisteFilename);
+        $outstream = fopen("php://output", "w");
+        //description
+        fputcsv($outstream, array($schulungsTitel . ' am ' . $startzeit->format('d.m.Y'), ), ';');
+        //headline
+        fputcsv($outstream, array('Teilnehmer (Name, Vorname)', 'E-Mail', 'Fachrichtung/Studiengang', 'Bemerkung'), ';');
+        //data
+        foreach($teilnehmerListe as $teilnehmer){
+            fputcsv(
+                    $outstream,
+                    array(
+                            $teilnehmer['nachname'] . ', ' . $teilnehmer['vorname'],
+                            $teilnehmer['email'],
+                            $teilnehmer['studienfach'],
+                            str_replace(array('\r\n', '\r', '\n'), ' ', $teilnehmer['bemerkung'])
+                    ),
+                    ';'
+            );
+        }
+        fclose($outstream);
+        exit;
+    }
+
+    /**
+     * sets headers for the csv file
+     *
+     * @param string $teilnehmerlisteFilename
+     */
+    protected function setCSVHeaders($teilnehmerlisteFilename){
+        $headers = array(
+                'Pragma' => 'public',
+                'Expires' => 0,
+                'Cache-Control' => 'public, must-revalidate, post-check=0, pre-check=0',
+                'Content-Description' => 'File Transfer',
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename=' . $teilnehmerlisteFilename,
+                );
+        foreach ($headers as $header => $data){
+            $this->response->setHeader($header, $data);
+        }
+        $this->response->sendHeaders();
     }
 
 }

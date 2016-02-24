@@ -21,7 +21,7 @@ if (!defined('TYPO3_MODE')) {
     'schulungsverwaltung',
     '',
     [
-        'Backend' => 'index,detail,cancel,uncancel,export',
+        'Backend' => 'index,detail,cancel,uncancel,export,exporttermin',
         'Teilnehmer' => 'deregister,edit,list,updateBackend,deleteBackend'
     ],
     [
