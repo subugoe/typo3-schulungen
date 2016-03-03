@@ -9,9 +9,8 @@
 
 	<f:if condition="{0: false} == {0: schulung.termineVersteckt}">
 	<f:then>
-		<dl><dt><f:translate key="tx_schulungen_domain_model_termin.title" />:</dt></dl>
-		<ul>
-			<table width="100%">
+			<table>
+				<caption><f:translate key="tx_schulungen_domain_model_termin.title" /></caption>
 			<tr><th><f:translate key="tx_schulungen_domain_model_termin.wochentag" /></th>
 				<th><f:translate key="tx_schulungen_domain_model_termin.datum" /></th>
 				<th><f:translate key="tx_schulungen_domain_model_termin.freiePlaetze" /></th>
@@ -54,7 +53,6 @@
 				</f:else>
 			</f:if>
 			</table>
-		</ul>
 	</f:then>
 	<f:else>
 		<br />
