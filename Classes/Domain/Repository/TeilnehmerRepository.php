@@ -44,7 +44,8 @@ class TeilnehmerRepository extends Repository
      * @param Termin $termin
      * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
      */
-    public function teilnehmerAngemeldet(Teilnehmer $teilnehmer, Termin $termin) {
+    public function teilnehmerAngemeldet(Teilnehmer $teilnehmer, Termin $termin)
+    {
         $query = $this->createQuery();
         $query->matching(
             $query->logicalAnd(
@@ -57,4 +58,40 @@ class TeilnehmerRepository extends Repository
         $query->setOrderings(['nachname' => QueryInterface::ORDER_ASCENDING]);
         return $query->execute();
     }
+
+    /*
+     * @param int $terminUid
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
+    public function findTeilnehmerToBeSubstituted($terminUid)
+    {
+        $query = $this->createQuery();
+        $query->matching(
+            $query->logicalAnd(
+                $query->equals('termin', $terminUid),
+                $query->equals('substitution', 1)
+            )
+        );
+        $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
+        $query->setLimit(1);
+        return $query->execute();
+    }
+
+    /*
+     * @param int $terminUid
+     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
+    public function findNumberOfWaitinglistTeilnehmer($terminUid)
+    {
+        $query = $this->createQuery();
+        $query->matching(
+            $query->logicalAnd(
+                $query->equals('termin', $terminUid),
+                $query->equals('substitution', 1)
+            )
+        );
+        $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
+        return $query->execute()->count();
+    }
+
 }

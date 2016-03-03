@@ -7,13 +7,16 @@
 
 	<h4>{termin.schulung.titel}</h4>
 	<strong><f:translate key="tx_schulungen_domain_model_termin" />:</strong> <f:format.date format="{f:translate(key: 'tx_schulungen_format.date')}">{termin.startZeit}</f:format.date> - <f:format.date format="{f:translate(key: 'tx_schulungen_format.hour')}">{termin.ende}</f:format.date><br />
-	<strong><f:translate key="tx_schulungen_domain_model_schulung.teilnehmerzahl" />:</strong> {termin.anzahlTeilnehmer}<br /><br />
-	<table>
+	<strong><f:translate key="tx_schulungen_domain_model_schulung.teilnehmerzahl" />:</strong> {termin.anzahlTeilnehmer}<br />
+	<strong><f:translate key="tx_schulungen_domain_model_teilnehmer.registered" />:</strong> {numberOfRegisteredTeilnehmer}<br />
+	<strong><f:translate key="tx_schulungen_domain_model_teilnehmer.waitinglist" />:</strong> {numberOfWaitinglistTeilnehmer}<br /><br />
+		<table>
 		<thead>
 			<tr>
 				<th width="30%"><f:translate key="tx_schulungen_controller_backend_index.teilnehmer" /></th>
 				<th width="30%"><f:translate key="tx_schulungen_domain_model_teilnehmer.email" /></th>
 				<th width="30%"><f:translate key="tx_schulungen_domain_model_teilnehmer.studienfach" /></th>
+				<th width="30%"><f:translate key="tx_schulungen_domain_model_teilnehmer.registration_status" /></th>
 				<th width="30%"><f:translate key="tx_schulungen_domain_model_teilnehmer.bemerkung" /></th>
 				<th width="10%"><f:translate key="tx_schulungen_controller_backend_detail.operationen" /></th>
 			</tr>
@@ -26,6 +29,7 @@
 							<td class="date">{teilnehmer.vorname} {teilnehmer.nachname}</td>
 							<td class="date"><f:link.email email="{teilnehmer.email}">{teilnehmer.email}</f:link.email></td>
 							<td class="date">{f:if(condition: teilnehmer.studienfach, then: teilnehmer.studienfach, else: '-')}</td>
+							<td class="date"><f:if condition="{teilnehmer.substitution} == 0"><f:then><f:translate key="tx_schulungen_domain_model_teilnehmer.registered" /></f:then><f:else><f:translate key="tx_schulungen_domain_model_teilnehmer.waitinglist" /></f:else></f:if></td>
 							<td class="date" title="{f:if(condition: teilnehmer.bemerkung, then: teilnehmer.bemerkung, else: '-')}"><f:format.crop maxCharacters="50" append="&nbsp;...">{f:if(condition: teilnehmer.bemerkung, then: teilnehmer.bemerkung, else: '-')}</f:format.crop></td>
 							<td class="date">
 								<f:link.action action="edit" controller="Teilnehmer" arguments="{teilnehmer:teilnehmer}" additionalParams="{termin:termin}"><span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-open" alt="Edit" title="Edit"></span></f:link.action>

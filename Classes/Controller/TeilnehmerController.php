@@ -45,12 +45,14 @@ class TeilnehmerController extends ActionController
      * @inject
      */
     protected $teilnehmerRepository;
+
     /**
      *
      * @var \Subugoe\Schulungen\Domain\Repository\TerminRepository
      * @inject
      */
     protected $terminRepository;
+
     /**
      *
      * @var \Subugoe\Schulungen\Controller\EmailController
@@ -65,6 +67,16 @@ class TeilnehmerController extends ActionController
     protected $schulungController;
 
     /**
+     * @var string
+     */
+    const confirmRegistrationTemplate = 'Bestaetigung';
+
+    /**
+     * @var string
+     */
+    const confirmWaitinglistRegistrationTemplate = 'Warteliste';
+
+    /**
      * Displays all Teilnehmers
      *
      * @param Schulung $schulung
@@ -75,7 +87,6 @@ class TeilnehmerController extends ActionController
     {
         $participants = $this->teilnehmerRepository->findAll();
         $this->view->assign('teilnehmers', $participants);
-
         $this->view->assign('schulungsTitel', $schulung->getTitel());
         $this->view->assign('status', $status);
         $this->view->assign('contacts', $schulung->getContact());
@@ -102,23 +113,22 @@ class TeilnehmerController extends ActionController
      */
     public function newAction(Teilnehmer $newTeilnehmer = null, Termin $termin = null)
     {
-
         $termin = intval($this->request->getArgument('termin'));
+        if ($this->request->hasArgument('substitution')) {
+            $substitution = intval($this->request->getArgument('substitution'));
+        }
         /** @var Termin $terminObj */
         $terminObj = $this->terminRepository->findByUid($termin);
         $schulung = $terminObj->getSchulung();
         $schulungsTitel = $schulung->getTitel();
         $contacts = $schulung->getContact();
-
         $this->view->assign('teilnehmerTermin', $terminObj);
         $this->view->assign('newTeilnehmer', $newTeilnehmer);
         $this->view->assign('schulungsTitel', $schulungsTitel);
         $this->view->assign('contacts', $contacts);
-
-        if ($terminObj->getAnzahlTeilnehmer() >= $terminObj->getSchulung()->getTeilnehmerMax()) {
-            $this->redirect('show', 'Schulung', null, ['schulung' => $schulung]);
+        if (isset($substitution)) {
+            $this->view->assign('substitution', $substitution);
         }
-
     }
 
     /**
@@ -134,62 +144,51 @@ class TeilnehmerController extends ActionController
         /** @var Termin $termin */
         $termin = $this->terminRepository->findByUid($termin);
         $schulung = $termin->getSchulung();
-
         $newTeilnehmer->setTermin($termin);
         // secret-identifier: timestamp,lastname,email,prename
         $identifier = md5($time->getTimestamp() . $newTeilnehmer->getNachname() .
             $newTeilnehmer->getEmail() . $newTeilnehmer->getVorname());
         $newTeilnehmer->setSecret($identifier);
-
-        if ($termin->getAnzahlTeilnehmer() < $schulung->getTeilnehmerMax()) {
-
-            if (count($this->teilnehmerRepository->teilnehmerAngemeldet($newTeilnehmer, $termin)) == 0) {
-
-                try {
-                    $this->teilnehmerRepository->add($newTeilnehmer);
-                    $error = false;
-                } catch (IllegalObjectTypeException $e) {
-                    $error = true;
-                }
-                if ($error === false) {
-                    //mail versenden
-                    $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
-                    $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_teilnehmer_create.bestaetigung.text',
-                        'schulungen'));
-
-                    if ($sender = $this->sendeBestaetigungsMail($newTeilnehmer)) {
-                        $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_teilnehmer_create.bestaetigung.email',
-                            'schulungen', [$newTeilnehmer->getEmail()]));
-                        $status = 'success';
-                    } else {
-                        $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.fail',
-                            'schulungen'));
-                    }
-                }
-                // Teilnehmer existiert schon
-            } else {
-                $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
-                $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_teilnehmer_create.already_registered',
-                    'schulungen'));
+        if (count($this->teilnehmerRepository->teilnehmerAngemeldet($newTeilnehmer, $termin)) == 0) {
+            try {
+                $this->teilnehmerRepository->add($newTeilnehmer);
+                $error = false;
+            } catch (IllegalObjectTypeException $e) {
+                $error = true;
             }
-            // Termin ist voll
+            if ($error === false) {
+                //mail versenden
+                $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
+                $substitution = $newTeilnehmer->getSubstitution();
+                if ($substitution === Null) {
+                    $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_teilnehmer_create.bestaetigung.text', 'schulungen'));
+                } else {
+                    $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_teilnehmer_create.warteliste.bestaetigung.text', 'schulungen'));
+                }
+                if ($sender = $this->sendeBestaetigungsMail($newTeilnehmer, self::confirmRegistrationTemplate, $substitution)) {
+                    $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_teilnehmer_create.bestaetigung.email', 'schulungen', [$newTeilnehmer->getEmail()]));
+                    $status = 'success';
+                } else {
+                    $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_email_versand.fail', 'schulungen'));
+                }
+            }
+        // Teilnehmer existiert schon
         } else {
             $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
-            $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_teilnehmer_create.fail',
-                'schulungen'));
+            $this->addFlashMessage(LocalizationUtility::translate('tx_schulungen_controller_teilnehmer_create.already_registered', 'schulungen'));
         }
-
         //an die list-action weiterleiten
         $this->redirect('list', 'Teilnehmer', null, ["schulung" => $schulung, "status" => $status]);
     }
 
     /**
      * Mailsendemethode
-     * @todo Termin usw in Mail mit angeben. View?
      * @param Teilnehmer $teilnehmer
+     * @param string $templateName
+     * @param int $substitution
      * @return boolean
      */
-    private function sendeBestaetigungsMail(Teilnehmer $teilnehmer)
+    private function sendeBestaetigungsMail(Teilnehmer $teilnehmer, $templateName, $substitution = null)
     {
         $time = new \DateTime('now');
         $recipient = $teilnehmer->getEmail();
@@ -200,7 +199,6 @@ class TeilnehmerController extends ActionController
         foreach ($contacts as $contact) {
             array_push($mailcopy, $contact->getEmail());
         }
-
         $variables = [
             'nachname' => $teilnehmer->getNachname(),
             'vorname' => $teilnehmer->getVorname(),
@@ -214,16 +212,12 @@ class TeilnehmerController extends ActionController
             'identifier' => [$teilnehmer->getSecret()],
             'mailcopy' => $mailcopy,
             'copy' => true,
+            'substitution' => $substitution,
         ];
-
-        $templateName = LocalizationUtility::translate('tx_schulungen_email_bestaetigung_template', 'schulungen');
-
         $title = explode(':', $teilnehmer->getTermin()->getSchulung()->getTitel());
         $subject = LocalizationUtility::translate('tx_schulungen_email_bestaetigung_subject',
                 'schulungen') . " (" . $title[0] . " - " . $teilnehmer->getTermin()->getStartzeit()->format('d.m.Y H:i') . ")";
-
         return $this->emailController->sendeMail($recipient, $sender, $senderName, $subject, $templateName, $variables);
-
     }
 
     /**
@@ -272,36 +266,41 @@ class TeilnehmerController extends ActionController
         $time_format = LocalizationUtility::translate('tx_schulungen_format.date', 'schulungen');
         $now = new \DateTime();
         GeneralUtility::devlog("De-Registration: Passed value " . $identifier[0], "Schulungen", 1, $identifier);
-
+        $teilnehmerVorhanden = count($teilnehmer = $this->teilnehmerRepository->findOneBySecret($identifier[0]));
         /** @var Teilnehmer $teilnehmer */
-        if (count($teilnehmer = $this->teilnehmerRepository->findOneBySecret($identifier[0])) > 0) {
+        if ($teilnehmerVorhanden > 0) {
             /** @var Schulung $schulung */
             $schulung = $teilnehmer->getTermin()->getSchulung();
-
             // create deep copy of termin to prevent db-update
             $termin = unserialize(serialize($teilnehmer->getTermin()));
-            $this->view->assign('schulungsTitel',
-                $schulung->getTitel() . ' (' . $termin->getStartzeit()->format($time_format) . ')');
-            $this->view->assign('contacts', $schulung->getContact());
-
             // Deadline is the start time of the event
             $limit = $termin->getStartzeit();
-
             // Only delete Teilnehmer, if deadline isn't crossed
             if ($now < $limit) {
                 $this->teilnehmerRepository->remove($teilnehmer);
-                $flashMsg = LocalizationUtility::translate('tx_schulungen_domain_model_teilnehmer.deregister.success.flash',
-                    'schulungen');
+                $substitution = $teilnehmer->getSubstitution();
+                if ($substitution === 0) {
+                    $terminUid = $termin->getUid();
+                    $teilnehmerToBeSubstituted = $this->teilnehmerRepository->findTeilnehmerToBeSubstituted($terminUid);
+                    if (count($teilnehmerToBeSubstituted) !== 0) {
+                        $uidTeilnehmerToBeSubstituted = $teilnehmerToBeSubstituted->getFirst()->getUid();
+                        $teilnehmerToBeSubstitutedObj = $this->teilnehmerRepository->findByUid($uidTeilnehmerToBeSubstituted);
+                        if ($teilnehmerToBeSubstitutedObj->getSubstitution() === 1) {
+                            $teilnehmerToBeSubstitutedObj->setSubstitution(0);
+                            $this->teilnehmerRepository->update($teilnehmerToBeSubstitutedObj);
+                            $this->sendeBestaetigungsMail($teilnehmerToBeSubstitutedObj, self::confirmWaitinglistRegistrationTemplate);
+                        }
+                    }
+                }
+                $flashMsg = LocalizationUtility::translate('tx_schulungen_domain_model_teilnehmer.deregister.success.flash', 'schulungen');
                 $this->addFlashMessage($flashMsg . ' ' . $teilnehmer->getVorname() . ' ' . $teilnehmer->getNachname() . ' (' . $teilnehmer->getEmail() . ')');
-
                 // Mail notification
                 $sender = $this->settings['mail']['fromMail'];
                 $senderName = $this->settings['mail']['fromName'];
                 $title = explode(':', $teilnehmer->getTermin()->getSchulung()->getTitel());
                 $subject = LocalizationUtility::translate('tx_schulungen_domain_model_teilnehmer.deregister',
                         'schulungen') . " (" . $title[0] . " - " . $teilnehmer->getTermin()->getStartzeit()->format('d.m.Y H:i') . ")";
-                $templateName = LocalizationUtility::translate('tx_schulungen_email_deregistration_template',
-                    'schulungen');
+                $templateName = LocalizationUtility::translate('tx_schulungen_email_deregistration_template', 'schulungen');
                 $result = $this->emailController->sendeTransactionMail($sender, $senderName, $subject, $templateName,
                     [
                         'teilnehmer' => $teilnehmer,
@@ -311,14 +310,13 @@ class TeilnehmerController extends ActionController
                     ]
                 );
                 GeneralUtility::devlog("De-Registration: TransactionMail sent?", "Schulungen", 1, [$result]);
-
+                $this->view->assign('contacts', $schulung->getContact());
+                $this->view->assign('schulungsTitel',
+                    $schulung->getTitel() . ' (' . $termin->getStartzeit()->format($time_format) . ')');
                 $this->view->assign('status', 'success');
             } else {
                 $flashMsg = LocalizationUtility::translate('tx_schulungen_domain_model_teilnehmer.deregister.fail.flash',
                     'schulungen');
-                $this->addFlashMessage(str_replace('###TEILNEHMER###',
-                    $teilnehmer->getVorname() . ' ' . $teilnehmer->getNachname() . ' (' . $teilnehmer->getEmail() . ')',
-                    $flashMsg));
                 $this->addFlashMessage(str_replace('###TEILNEHMER###',
                     $teilnehmer->getVorname() . ' ' . $teilnehmer->getNachname() . ' (' . $teilnehmer->getEmail() . ')',
                     $flashMsg));

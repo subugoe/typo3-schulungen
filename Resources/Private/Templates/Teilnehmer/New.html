@@ -12,7 +12,7 @@
 		<f:form method="post" action="create" controller="Teilnehmer" class="tx_powermail_pi1_form" name="newTeilnehmer" object="{newTeilnehmer}" additionalParams="{tx_schulungen_schulungen: {schulung: '{teilnehmerTermin.schulung.uid}', termin: '{teilnehmerTermin.uid}'}}">
 			<div class="fieldsets">
 				<fieldset class=" tx-powermail-pi1_fieldset">
-					<f:render partial="Teilnehmer/formFields" arguments="{domainObject:domainObject, teilnehmerTermin:teilnehmerTermin}" />
+					<f:render partial="Teilnehmer/formFields" arguments="{domainObject:domainObject, teilnehmerTermin:teilnehmerTermin, substitution:substitution}" />
 					<div class="tx_powermail_pi1_fieldwrap_html tx_powermail_pi1_fieldwrap_html_submit">
 						<f:form.submit value="{f:translate(key: 'tx_schulungen_controller_teilnehmer_new.anmelden')}" class="powermail_submit" />
 					</div>
