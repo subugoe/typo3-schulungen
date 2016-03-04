@@ -9,14 +9,15 @@
 
 	<f:if condition="{0: false} == {0: schulung.termineVersteckt}">
 	<f:then>
-			<table>
+			<table class="contenttable">
 				<caption><f:translate key="tx_schulungen_domain_model_termin.title" /></caption>
-			<tr><th><f:translate key="tx_schulungen_domain_model_termin.wochentag" /></th>
-				<th><f:translate key="tx_schulungen_domain_model_termin.datum" /></th>
-				<th><f:translate key="tx_schulungen_domain_model_termin.freiePlaetze" /></th>
-				<th><f:translate key="tx_schulungen_domain_model_termin.anmeldung" /></th>
-				<th><f:translate key="tx_schulungen_domain_model_termin.entfaellt" /></th>
-			</tr>
+				<tr>
+					<th><f:translate key="tx_schulungen_domain_model_termin.wochentag" /></th>
+					<th><f:translate key="tx_schulungen_domain_model_termin.datum" /></th>
+					<th><f:translate key="tx_schulungen_domain_model_termin.freiePlaetze" /></th>
+					<th><f:translate key="tx_schulungen_domain_model_termin.anmeldung" /></th>
+					<th><f:translate key="tx_schulungen_domain_model_termin.entfaellt" /></th>
+				</tr>
 			<f:if condition="{termine}">
 				<f:then>
 					<f:for each="{termine}" as="termin" iteration="Iterator">
