@@ -37,7 +37,7 @@
 									</f:if>
 								</f:then>
 								<f:else>
-									<td class="middle">-</td>
+									<td class="middle"><f:link.action action="new" controller="Teilnehmer" arguments="{termin:termin, substitution:1}" additionalParams="{tx_schulungen_schulungen: {schulung: '{schulung.uid}'}}" >Warteliste</f:link.action></td>
 								</f:else>
 							</f:if>
 							<td class="middle">

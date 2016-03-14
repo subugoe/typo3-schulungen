@@ -7,10 +7,10 @@ if (!defined('TYPO3_MODE')) {
 $TCA['tx_schulungen_domain_model_teilnehmer'] = [
     'ctrl' => $TCA['tx_schulungen_domain_model_teilnehmer']['ctrl'],
     'interface' => [
-        'showRecordFieldList' => 'vorname,nachname,email,studienfach,bemerkung,termin',
+        'showRecordFieldList' => 'vorname,nachname,email,studienfach,bemerkung,termin,substitution',
     ],
     'types' => [
-        '1' => ['showitem' => 'vorname,nachname,email,studienfach,bemerkung,termin'],
+        '1' => ['showitem' => 'vorname,nachname,email,studienfach,bemerkung,termin,substitution'],
     ],
     'palettes' => [
         '1' => ['showitem' => ''],
@@ -117,6 +117,7 @@ $TCA['tx_schulungen_domain_model_teilnehmer'] = [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'tx_schulungen_domain_model_termin',
+                'foreign_table_where' => 'AND tx_schulungen_domain_model_termin.startzeit >= UNIX_TIMESTAMP() ORDER BY tx_schulungen_domain_model_termin.startzeit',
                 'size' => 1,
                 'maxitems' => 1,
             ],
@@ -129,6 +130,18 @@ $TCA['tx_schulungen_domain_model_teilnehmer'] = [
                 'eval' => 'trim'
             ],
         ],
-
+        'substitution' => [
+            'exclude' => 0,
+            'label' => 'LLL:EXT:schulungen/Resources/Private/Language/locallang_db.xml:tx_schulungen_domain_model_teilnehmer.substitution',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['Ja', 1],['Nein', 0]
+                ],
+                'size' => 1,
+                'maxitems' => 1,
+            ],
+        ],
     ],
 ];

@@ -39,6 +39,7 @@ class Teilnehmer extends AbstractEntity
      * @validate NotEmpty
      */
     protected $vorname;
+
     /**
      * Nachname des Teilnehmers
      *
@@ -46,6 +47,7 @@ class Teilnehmer extends AbstractEntity
      * @validate NotEmpty
      */
     protected $nachname;
+
     /**
      * E-Mail Adresse des Teilnehmers
      *
@@ -53,18 +55,21 @@ class Teilnehmer extends AbstractEntity
      * @validate NotEmpty, EmailAddress
      */
     protected $email;
+
     /**
      * Studienfach des Teilnehmers
      *
      * @var string $studienfach
      */
     protected $studienfach;
+
     /**
      * Bemerkung des Teilnehmers
      *
      * @var string $bemerkung
      */
     protected $bemerkung;
+
     /**
      * Zusatz: Hidden-Field für Robots (Anti-Spam)
      *
@@ -72,24 +77,34 @@ class Teilnehmer extends AbstractEntity
      * @validate \Subugoe\Schulungen\Validation\Validator\EmptyValidator
      */
     protected $zusatz;
+
     /**
      * Teilnehmer an einem Termin
      *
      * @var \Subugoe\Schulungen\Domain\Model\Termin
      */
     protected $termin;
+
     /**
      * Captcha einer neuen Teilnehmers
      *
      * @var string $captcha
      */
     protected $captcha;
+
     /**
      * Secret for De-Registration eines Teilnehmers
      *
      * @var string $secret
      */
     protected $secret;
+
+    /**
+     * Zustand einer Anmeldung (normale Anmeldung/Warteliste)
+     *
+     * @var int $substitution
+     */
+    protected $substitution;
 
     /**
      * Getter for secret
@@ -270,6 +285,26 @@ class Teilnehmer extends AbstractEntity
     public function setTermin($termin)
     {
         $this->termin = $termin;
+    }
+
+    /**
+     * Getter for substitution
+     *
+     * @return int Zustand einer Anmeldung
+     */
+    public function getSubstitution()
+    {
+        return $this->substitution;
+    }
+
+    /**
+     * Setter for substitution
+     *
+     * @param int $substitution Zustand einer Anmeldung
+     */
+    public function setSubstitution($substitution)
+    {
+        $this->substitution = $substitution;
     }
 
 }

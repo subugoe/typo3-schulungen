@@ -75,6 +75,9 @@
 			<label index="tx_schulungen_domain_model_teilnehmer.nachname">Nachname</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.email">E-Mail</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.studienfach">Fachrichtung / Studiengang</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.registration_status">Anmeldestatus</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.registered">Angemeldet</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.waitinglist">Warteliste</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.schule">Schule</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.ort">Ort</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.bemerkung">Bemerkung</label>
@@ -109,6 +112,9 @@
 			</label>
 			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.email">Eine E-Mail zur Bestätigung
 				wurde an %1$s gesendet
+			</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.warteliste.bestaetigung.text">Sie wurden erfolgreich in die
+				Warteliste eingetragen
 			</label>
 			<label index="tx_schulungen_controller_teilnehmer_create.fail">Die Veranstaltung ist leider schon voll.
 				Bitte versuchen Sie sich zu einem anderen Termin anzumelden.
@@ -229,6 +235,9 @@
 			<label index="tx_schulungen_domain_model_teilnehmer.nachname">Nachname</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.email">E-Mail</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.studienfach">Fachrichtung / Studiengang</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.registration_status">Anmeldestatus</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.registered">Angemeldet</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.waitinglist">Warteliste</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.schule">Schule</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.ort">Ort</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.bemerkung">Bemerkung</label>
@@ -260,6 +269,9 @@
 			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.title">Anmeldebestätigung</label>
 			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.text">Sie wurden erfolgreich in die
 				Teilnehmerliste eingetragen
+			</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.warteliste.bestaetigung.text">Sie wurden erfolgreich in die
+				Warteliste eingetragen
 			</label>
 			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.email">Eine E-Mail zur Bestätigung
 				wurde an %1$s gesendet
