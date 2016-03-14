@@ -1,24 +1,28 @@
 <div class="tx-ttaddress-pi1">
-	<div class="singleAddress">
-		<strong>{contact.title} {contact.firstName} {contact.lastName}</strong>
-		<ul>
+	<div class="singleAddress vcard" itemscope itemtype="http://schema.org/Person">
+		<div class="fn" itemprop="name"><strong>{contact.title} {contact.firstName} {contact.lastName}</strong></div>
+		<address class="substaff_address">
 			<f:if condition="{subBuilding.address}">
-				<li>{subBuilding.address}</li>
-				<li>{subBuilding.zip} {subBuilding.city}, {subBuilding.country}</li>
+				<div class="substaff_detail -address" itemprop="address" itemscope>
+					{subBuilding.address} <br />
+					{subBuilding.zip} {subBuilding.city}, {subBuilding.country}<br />
+				</div>
 			</f:if>
 			<f:if condition="{contact.phone}">
-				<li>{contact.phone}
+				<span class="tel" itemprop="telephone">{contact.phone}
 					<f:translate key="tx_schulungen_domain_model_schulung.phone"/>
-				</li>
+				</span>
+				<br />
 			</f:if>
 			<f:if condition="{contact.fax}">
-				<li>{contact.fax}
+				<span class="substaff_detail -fax" itemprop="faxNumber">{contact.fax}
 					<f:translate key="tx_schulungen_domain_model_schulung.fax"/>
-				</li>
+				</span>
+				<br />
 			</f:if>
 			<f:if condition="{contact.email}">
-				<li><a href="mailto:{contact.email}">{contact.email}</a></li>
+				<span class="substaff_detail -email" itemprop="email"><a href="mailto:{contact.email}">{contact.email}</a></span>
 			</f:if>
-		</ul>
+		</address>
 	</div>
 </div>

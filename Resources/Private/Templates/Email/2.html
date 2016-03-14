@@ -8,9 +8,14 @@ Zeit: <f:format.date format="d.m.Y H:i">{start}</f:format.date> - <f:format.date
 Die Schulung/Führung wurde abgesagt und kann deshalb leider nicht stattfinden.<br />
 Wir bitten Sie daher, sich bei Interesse zu einem anderen Termin anzumelden.<br />
 <br />
-Für Fragen stehen wir Ihnen gerne zur Verfügung.
+<f:if condition="{mailzusatz}">
+    <f:format.nl2br>{mailzusatz}</f:format.nl2br>
+</f:if>
 <br />
-Ihre SUB Göttingen / Zentrale Information
+<br />
+Für Fragen stehen wir Ihnen gerne zur Verfügung.<br />
+<br />
+Ihre SUB Göttingen / Zentrale Information<br />
 <br />
 Platz der G&ouml;ttinger Sieben 1<br />
 37073 G&ouml;ttingen<br />

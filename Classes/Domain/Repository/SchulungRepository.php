@@ -32,6 +32,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class SchulungRepository extends Repository
 {
+
     protected $defaultOrderings = [
         'sort_index' => QueryInterface::ORDER_ASCENDING
     ];
@@ -52,10 +53,12 @@ class SchulungRepository extends Repository
     {
         $categories = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
                             'DISTINCT c.kategorie',
-                            'tx_schulungen_domain_model_schulung c'
+                            'tx_schulungen_domain_model_schulung c',
+                            ''
                 );
 
         $numberOfCategories = $categories->num_rows;
         return $numberOfCategories;
     }
+
 }
