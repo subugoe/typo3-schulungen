@@ -7,7 +7,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="tx_schulungen_domain_model_schulung">Schulungen der SUB Goettingen</label>
-			<label index="tx_schulungen_domain_model_schulung.schulungsangebote">Schulungsangebote</label>
+			<label index="tx_schulungen_domain_model_schulung.schulungsangebote">Kurse &amp; Führungen</label>
 			<label index="tx_schulungen_domain_model_schulung.titel">Titel der Schulung</label>
 			<label index="tx_schulungen_domain_model_schulung.beschreibung">Beschreibung der Schulung</label>
 			<label index="tx_schulungen_domain_model_schulung.voraussetzungen">Voraussetzungen</label>
@@ -163,7 +163,7 @@
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="tx_schulungen_domain_model_schulung">Schulungen der SUB Goettingen</label>
-			<label index="tx_schulungen_domain_model_schulung.schulungsangebote">Schulungsangebote</label>
+			<label index="tx_schulungen_domain_model_schulung.schulungsangebote">Kurse &amp; Führungen</label>
 			<label index="tx_schulungen_domain_model_schulung.titel">Titel der Schulung</label>
 			<label index="tx_schulungen_domain_model_schulung.beschreibung">Beschreibung der Schulung</label>
 			<label index="tx_schulungen_domain_model_schulung.voraussetzungen">Voraussetzungen</label>
@@ -320,6 +320,9 @@
 			<label index="tx_schulungen_domain_validator_captcha">Der übergebene Wert entsprach nicht dem
 				Captcha-Text.
 			</label>
+		</languageKey>
+		<languageKey index="en" type="array">
+			<label index="tx_schulungen_domain_model_schulung.schulungsangebote">Courses &amp; guided library tours</label>
 		</languageKey>
 	</data>
 </T3locallang>
