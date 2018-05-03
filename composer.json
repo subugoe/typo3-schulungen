@@ -5,11 +5,16 @@
     "require-dev": {
         "phpunit/phpunit": "~5.0"
     },
-    "license": "GPL",
+    "license": "GPL-2.0+",
     "authors": [
         {
             "name": "Ingo Pfennigstorf",
-            "email": "i.pfennigstorf@gmail.com"
+            "email": "pfennigstorf@sub.uni-goettingen.de"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "Subugoe\\Schulungen\\": "Classes/"
+        }
+    }
 }

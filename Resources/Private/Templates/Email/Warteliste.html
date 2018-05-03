@@ -1,15 +1,6 @@
 Liebe(r) {vorname} {nachname},<br />
 <br />
-<f:if condition="{substitution}">
-    <f:then>
-        Sie sind nun für die Schulung '{schulungsTitel}' in die Warteliste eingetragen.<br />
-        <br />
-        Sobald ein Plaz frei wird, werden Sie benachrichtigt.<br />
-    </f:then>
-    <f:else>
-        Sie sind nun für die Schulung '{schulungsTitel}' angemeldet.<br />
-    </f:else>
-</f:if>
+Sie sind nun für die Schulung '{schulungsTitel}' von der Warteliste in die Anmeldeliste eingetragen.<br />
 <br />
 Folgende Daten wurden am <f:format.date format="d.m.Y">{timestamp}</f:format.date> um <f:format.date format="H:i">{timestamp}</f:format.date> Uhr an uns gesendet:<br />
 <br />

@@ -71,6 +71,41 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
     const teilnehmerlisteFilename = 'Teilnehmerliste.csv';
 
     /**
+     * @var string
+     */
+    const teilnehmer = 'Teilnehmer (Name, Vorname)';
+
+    /**
+     * @var string
+     */
+    const email = 'E-Mail';
+
+    /**
+     * @var string
+     */
+    const fachrichtungStudiengang = 'Fachrichtung/Studiengang';
+
+    /**
+     * @var string
+     */
+    const anmeldestatus = 'Anmeldestatus';
+
+    /**
+     * @var string
+     */
+    const bemerkung = 'Bemerkung';
+
+    /**
+     * @var string
+     */
+    const warteliste = 'Warteliste';
+
+    /**
+     * @var string
+     */
+    const angemeldet = 'Angemeldet';
+
+    /**
      * Initializes the current action
      */
     protected function initializeAction()
@@ -125,6 +160,10 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
      */
     public function detailAction(Termin $termin)
     {
+        $numberOfWaitinglistTeilnehmer = $this->teilnehmerRepository->findNumberOfWaitinglistTeilnehmer($termin->getUid());
+        $numberOfRegisteredTeilnehmer = ($termin->getAnzahlTeilnehmer() - $numberOfWaitinglistTeilnehmer);
+        $this->view->assign('numberOfWaitinglistTeilnehmer', $numberOfWaitinglistTeilnehmer);
+        $this->view->assign('numberOfRegisteredTeilnehmer', $numberOfRegisteredTeilnehmer);
         $this->view->assign('termin', $termin);
     }
 
@@ -264,6 +303,7 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
             $teilnehmerListe[$key]['nachname'] = $value->getNachname();
             $teilnehmerListe[$key]['email'] = $value->getEmail();
             $teilnehmerListe[$key]['studienfach'] = $value->getStudienfach();
+            $teilnehmerListe[$key]['substitution'] = $value->getSubstitution() > 0 ? self::warteliste:self::angemeldet;
             $teilnehmerListe[$key]['bemerkung'] = $value->getBemerkung();
         }
         $this->setCSVHeaders(self::teilnehmerlisteFilename);
@@ -271,7 +311,7 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
         //description
         fputcsv($outstream, array($schulungsTitel . ' am ' . $startzeit->format('d.m.Y'), ), ';');
         //headline
-        fputcsv($outstream, array('Teilnehmer (Name, Vorname)', 'E-Mail', 'Fachrichtung/Studiengang', 'Bemerkung'), ';');
+        fputcsv($outstream, array(self::teilnehmer, self::email, self::fachrichtungStudiengang, self::anmeldestatus, self::bemerkung), ';');
         //data
         foreach($teilnehmerListe as $teilnehmer){
             fputcsv(
@@ -280,6 +320,7 @@ class BackendController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
                             $teilnehmer['nachname'] . ', ' . $teilnehmer['vorname'],
                             $teilnehmer['email'],
                             $teilnehmer['studienfach'],
+                            $teilnehmer['substitution'],
                             str_replace(array('\r\n', '\r', '\n'), ' ', $teilnehmer['bemerkung'])
                     ),
                     ';'

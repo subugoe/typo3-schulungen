@@ -44,6 +44,7 @@
 			<label index="tx_schulungen_domain_model_teilnehmer.ort">Ort</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.bemerkung">Bemerkung</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.teilnehmer_termin">Teilnehmer: Termin</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.substitution">Warteliste</label>
 		</languageKey>
 	</data>
 </T3locallang>
