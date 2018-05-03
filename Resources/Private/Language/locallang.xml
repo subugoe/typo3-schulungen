@@ -405,12 +405,8 @@
 			<label index="tx_schulungen_domain_model_teilnehmer.captcha">ReCAPTCHA</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.secret">Secret</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.teilnehmer_termin">Teilnehmer an einem Termin</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.required_note">Felder, die mit einem * markiert sind,
-				sind Pflichtfelder.
-			</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.note">Information: Nach erfolgreicher Anmeldung erhalten
-				Sie eine Bestätigungsmail.
-			</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.required_note">Please note: fields marked with an * are mandatory</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.note">Information: upon successful registration you will receive a confirmation mail<label>
 			<label index="tx_schulungen_domain_model_teilnehmer.bestaetigung">Vielen Dank für Ihre Anmeldung</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.success">Vielen Dank für Ihre Anmeldung</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.fail">Es gab ein Problem mit Ihrer Anmeldung</label>
