@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
 	<meta type="array">
 		<type>module</type>
@@ -28,9 +27,11 @@
 			<label index="tx_schulungen_domain_model_schulung.status">Status</label>
 			<label index="tx_schulungen_domain_model_schulung.mail_kopie">E-Mail Adresse einer Person</label>
 			<label index="tx_schulungen_domain_model_schulung.kategorie">Kategorie</label>
-			<label index="tx_schulungen_domain_model_schulung.kategorie.0">Anfänger</label>
-			<label index="tx_schulungen_domain_model_schulung.kategorie.1">Fortgeschrittene</label>
-			<label index="tx_schulungen_domain_model_schulung.kategorie.2">Spezielle Angebote</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.0">Die SUB Göttingen kennenlernen: Führungen</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.1">Literatur finden</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.2">Literatur verwalten</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.3">Fachspezifische Angebote</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.4">Weitere spezielle Angebote</label>
 			<label index="tx_schulungen_domain_model_schulung.schulung_termine">Termine der Schulung</label>
 			<label index="tx_schulungen_domain_model_schulung.schulung_termine_backend">Termine</label>
 			<label index="tx_schulungen_domain_model_schulung.schulung_termine_backend_gesamt">Termine (Gesamt)</label>
@@ -85,66 +86,36 @@
 			<label index="tx_schulungen_domain_model_teilnehmer.captcha">ReCAPTCHA</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.secret">Secret</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.teilnehmer_termin">Teilnehmer an einem Termin</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.required_note">Felder, die mit einem * markiert sind,
-				sind Pflichtfelder.
-			</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.note">Information: Nach erfolgreicher Anmeldung erhalten
-				Sie eine Bestätigungsmail.
-			</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.required_note">Felder, die mit einem * markiert sind, sind Pflichtfelder.</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.note">Information: Nach erfolgreicher Anmeldung erhalten Sie eine Bestätigungsmail.</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.bestaetigung">Vielen Dank für Ihre Anmeldung</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.success">Vielen Dank für Ihre Anmeldung</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.fail">Es gab ein Problem mit Ihrer Anmeldung</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.deregister">Schulungen: Abmeldung</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.deregister.success">Sie wurden erfolgreich von der
-				Schulung abgemeldet.
-			</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.deregister.success">Sie wurden erfolgreich von der Schulung abgemeldet.</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.deregister.success.flash">Entfernter Teilnehmer:</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.deregister.fail">Sie konnten leider nicht von der
-				Schulung abgemeldet werden.
-			</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.deregister.fail.flash">Der Teilnehmer ###TEILNEHMER###
-				konnte nicht mehr entfernt werden, da die Abmeldefrist verstrichen ist. Bitte setzen Sie sich mit der
-				zuständigen Kontaktperson in Verbindung.
-			</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.deregister.fail">Sie konnten leider nicht von der Schulung abgemeldet werden.</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.deregister.fail.flash">Der Teilnehmer ###TEILNEHMER### konnte nicht mehr entfernt werden, da die Abmeldefrist verstrichen ist. Bitte setzen Sie sich mit der zuständigen Kontaktperson in Verbindung.</label>
 			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.title">Anmeldebestätigung</label>
-			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.text">Sie wurden erfolgreich in die
-				Teilnehmerliste eingetragen
-			</label>
-			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.email">Eine E-Mail zur Bestätigung
-				wurde an %1$s gesendet
-			</label>
-			<label index="tx_schulungen_controller_teilnehmer_create.warteliste.bestaetigung.text">Sie wurden erfolgreich in die
-				Warteliste eingetragen
-			</label>
-			<label index="tx_schulungen_controller_teilnehmer_create.fail">Die Veranstaltung ist leider schon voll.
-				Bitte versuchen Sie sich zu einem anderen Termin anzumelden.
-			</label>
-			<label index="tx_schulungen_controller_teilnehmer_create.already_registered">Ein Teilnehmer mit diesen Daten
-				ist bereits für diesen Schulungstermin angemeldet.
-			</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.text">Sie wurden erfolgreich in die Teilnehmerliste eingetragen</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.email">Eine E-Mail zur Bestätigung wurde an %1$s gesendet.</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.warteliste.bestaetigung.text">Sie wurden erfolgreich in die Warteliste eingetragen.</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.fail">Die Veranstaltung ist leider schon voll. Bitte versuchen Sie sich zu einem anderen Termin anzumelden.</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.already_registered">Ein Teilnehmer mit diesen Daten ist bereits für diesen Schulungstermin angemeldet.</label>
 			<label index="tx_schulungen_controller_teilnehmer_new.title">Anmeldung zur Schulung</label>
 			<label index="tx_schulungen_controller_teilnehmer_new.anmelden">Anmelden</label>
 			<label index="tx_schulungen_controller_teilnehmer_edit.title">Teilnehmer bearbeiten</label>
-			<label index="tx_schulungen_controller_backend_cancel.success">Die Schulung wurde abgesagt. Die Teilnehmer
-				werden per E-Mail benachrichtigt!
-			</label>
-			<label index="tx_schulungen_controller_backend_uncancel.success">Die Schulung wurde wieder zugesagt. Die
-				Teilnehmer werden per E-Mail benachrichtigt!
-			</label>
-			<label index="tx_schulungen_controller_backend_timeout">Der Schulungstermin liegt in der Vergangenheit und
-				kann nicht mehr verändert werden!
-			</label>
+			<label index="tx_schulungen_controller_backend_cancel.success">Die Schulung wurde abgesagt. Die Teilnehmer werden per E-Mail benachrichtigt!</label>
+			<label index="tx_schulungen_controller_backend_uncancel.success">Die Schulung wurde wieder zugesagt. Die Teilnehmer werden per E-Mail benachrichtigt!</label>
+			<label index="tx_schulungen_controller_backend_timeout">Der Schulungstermin liegt in der Vergangenheit und kann nicht mehr verändert werden!</label>
 			<label index="tx_schulungen_controller_backend_index.title">Schulungen</label>
 			<label index="tx_schulungen_controller_backend_index.teilnehmer">Teilnehmer</label>
 			<label index="tx_schulungen_controller_backend_detail.operationen">Operationen</label>
-			<label index="tx_schulungen_controller_backend_detail.keine_anmeldungen">Bisher liegen noch keine
-				Anmeldungen vor!
-			</label>
+			<label index="tx_schulungen_controller_backend_detail.keine_anmeldungen">Bisher liegen noch keine Anmeldungen vor!</label>
 			<label index="tx_schulungen_email_bestaetigung_subject">Vielen Dank für Ihre Anmeldung</label>
 			<label index="tx_schulungen_email_bestaetigung_template">Bestaetigung</label>
 			<label index="tx_schulungen_email_deregistration_template">Deregistration</label>
-			<label index="tx_schulungen_email_transaction_template">TransactionMail</label>
-			<label index="tx_schulungen_email_versand.success">Eine E-Mail zur Erinnerung wurde an gesendet:</label>
+			<label index="tx_schulungen_email_versand.success">Eine E-Mail zur Erinnerung wurde gesendet an:</label>
 			<label index="tx_schulungen_email_versand.fail">Ein Fehler beim E-Mail Versand trat auf.</label>
 			<label index="tx_schulungen_email_versand.reminder_title">Erinnerung an Ihre Schulung</label>
 			<label index="tx_schulungen_email_versand.transaction_title">Transaktionsinformation</label>
@@ -154,13 +125,10 @@
 			<label index="tx_schulungen_zurueck">Zurück zur Übersicht</label>
 			<label index="tx_schulungen_domain_validator_empty">Der übergebene Wert war leer.</label>
 			<label index="tx_schulungen_domain_validator_hide">Der übergebene Wert war nicht leer.</label>
-			<label index="tx_schulungen_domain_validator_emailaddress">Der übergebene Wert ist keine gültige
-				E-Mail-Adresse.
-			</label>
-			<label index="tx_schulungen_domain_validator_captcha">Der übergebene Wert entsprach nicht dem
-				Captcha-Text.
-			</label>
+			<label index="tx_schulungen_domain_validator_emailaddress">Der übergebene Wert ist keine gültige E-Mail-Adresse.</label>
+			<label index="tx_schulungen_domain_validator_captcha">Der übergebene Wert entsprach nicht dem Captcha-Text.</label>
 		</languageKey>
+
 		<languageKey index="de" type="array">
 			<label index="tx_schulungen_domain_model_schulung">Schulungen der SUB Goettingen</label>
 			<label index="tx_schulungen_domain_model_schulung.schulungsangebote">Kurse &amp; Führungen</label>
@@ -198,8 +166,6 @@
 			<label index="tx_schulungen_domain_model_schulung.kontakt">Kontakt</label>
 			<label index="tx_schulungen_domain_model_schulung.phone">(Tel.)</label>
 			<label index="tx_schulungen_domain_model_schulung.fax">(Fax)</label>
-			<label index="tx_schulungen_domain_model_schulung.text_fachspezifische_angebote_1">Bitte beachten Sie auch weitere Kurs- und Informationsangebote auf den</label>
-			<label index="tx_schulungen_domain_model_schulung.text_fachspezifische_angebote_2">Fachinformationsseiten!</label>
 			<label index="tx_schulungen_controller_schulung_edit.title">Schulung bearbeiten</label>
 			<label index="tx_schulungen_domain_model_termin">Termin</label>
 			<label index="tx_schulungen_domain_model_termin.title">Termine</label>
@@ -245,66 +211,36 @@
 			<label index="tx_schulungen_domain_model_teilnehmer.captcha">ReCAPTCHA</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.secret">Secret</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.teilnehmer_termin">Teilnehmer an einem Termin</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.required_note">Felder, die mit einem * markiert sind,
-				sind Pflichtfelder.
-			</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.note">Information: Nach erfolgreicher Anmeldung erhalten
-				Sie eine Bestätigungsmail.
-			</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.required_note">Felder, die mit einem * markiert sind, sind Pflichtfelder.</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.note">Information: Nach erfolgreicher Anmeldung erhalten Sie eine Bestätigungsmail.</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.bestaetigung">Vielen Dank für Ihre Anmeldung</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.success">Vielen Dank für Ihre Anmeldung</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.fail">Es gab ein Problem mit Ihrer Anmeldung</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.deregister">Schulungen: Abmeldung</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.deregister.success">Sie wurden erfolgreich von der
-				Schulung abgemeldet.
-			</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.deregister.success">Sie wurden erfolgreich von der Schulung abgemeldet.</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.deregister.success.flash">Entfernter Teilnehmer:</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.deregister.fail">Sie konnten leider nicht von der
-				Schulung abgemeldet werden.
-			</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.deregister.fail.flash">Der Teilnehmer ###TEILNEHMER###
-				konnte nicht mehr entfernt werden, da die Abmeldefrist verstrichen ist. Bitte setzen Sie sich mit der
-				zuständigen Kontaktperson in Verbindung.
-			</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.deregister.fail">Sie konnten leider nicht von der Schulung abgemeldet werden.</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.deregister.fail.flash">Der Teilnehmer ###TEILNEHMER### konnte nicht mehr entfernt werden, da die Abmeldefrist verstrichen ist. Bitte setzen Sie sich mit der zuständigen Kontaktperson in Verbindung.</label>
 			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.title">Anmeldebestätigung</label>
-			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.text">Sie wurden erfolgreich in die
-				Teilnehmerliste eingetragen
-			</label>
-			<label index="tx_schulungen_controller_teilnehmer_create.warteliste.bestaetigung.text">Sie wurden erfolgreich in die
-				Warteliste eingetragen
-			</label>
-			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.email">Eine E-Mail zur Bestätigung
-				wurde an %1$s gesendet
-			</label>
-			<label index="tx_schulungen_controller_teilnehmer_create.fail">Die Veranstaltung ist leider schon voll.
-				Bitte versuchen Sie sich zu einem anderen Termin anzumelden.
-			</label>
-			<label index="tx_schulungen_controller_teilnehmer_create.already_registered">Ein Teilnehmer mit diesen Daten
-				ist bereits für diesen Schulungstermin angemeldet.
-			</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.text">Sie wurden erfolgreich in die Teilnehmerliste eingetragen</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.email">Eine E-Mail zur Bestätigung wurde an %1$s gesendet.</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.warteliste.bestaetigung.text">Sie wurden erfolgreich in die Warteliste eingetragen.</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.fail">Die Veranstaltung ist leider schon voll. Bitte versuchen Sie sich zu einem anderen Termin anzumelden.</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.already_registered">Ein Teilnehmer mit diesen Daten ist bereits für diesen Schulungstermin angemeldet.</label>
 			<label index="tx_schulungen_controller_teilnehmer_new.title">Anmeldung zur Schulung</label>
 			<label index="tx_schulungen_controller_teilnehmer_new.anmelden">Anmelden</label>
 			<label index="tx_schulungen_controller_teilnehmer_edit.title">Teilnehmer bearbeiten</label>
-			<label index="tx_schulungen_controller_backend_cancel.success">Die Schulung wurde abgesagt. Die Teilnehmer
-				werden per E-Mail benachrichtigt!
-			</label>
-			<label index="tx_schulungen_controller_backend_uncancel.success">Die Schulung wurde wieder zugesagt. Die
-				Teilnehmer werden per E-Mail benachrichtigt!
-			</label>
-			<label index="tx_schulungen_controller_backend_timeout">Der Schulungstermin liegt in der Vergangenheit und
-				kann nicht mehr verändert werden!
-			</label>
+			<label index="tx_schulungen_controller_backend_cancel.success">Die Schulung wurde abgesagt. Die Teilnehmer werden per E-Mail benachrichtigt!</label>
+			<label index="tx_schulungen_controller_backend_uncancel.success">Die Schulung wurde wieder zugesagt. Die Teilnehmer werden per E-Mail benachrichtigt!</label>
+			<label index="tx_schulungen_controller_backend_timeout">Der Schulungstermin liegt in der Vergangenheit und kann nicht mehr verändert werden!</label>
 			<label index="tx_schulungen_controller_backend_index.title">Schulungen</label>
 			<label index="tx_schulungen_controller_backend_index.teilnehmer">Teilnehmer</label>
 			<label index="tx_schulungen_controller_backend_detail.operationen">Operationen</label>
-			<label index="tx_schulungen_controller_backend_detail.keine_anmeldungen">Bisher liegen noch keine
-				Anmeldungen vor!
-			</label>
+			<label index="tx_schulungen_controller_backend_detail.keine_anmeldungen">Bisher liegen noch keine Anmeldungen vor!</label>
 			<label index="tx_schulungen_email_bestaetigung_subject">Vielen Dank für Ihre Anmeldung</label>
 			<label index="tx_schulungen_email_bestaetigung_template">Bestaetigung</label>
 			<label index="tx_schulungen_email_deregistration_template">Deregistration</label>
-			<label index="tx_schulungen_email_transaction_template">TransactionMail</label>
-			<label index="tx_schulungen_email_versand.success">Eine E-Mail zur Erinnerung wurde an gesendet:</label>
+			<label index="tx_schulungen_email_versand.success">Eine E-Mail zur Erinnerung wurde gesendet an:</label>
 			<label index="tx_schulungen_email_versand.fail">Ein Fehler beim E-Mail Versand trat auf.</label>
 			<label index="tx_schulungen_email_versand.reminder_title">Erinnerung an Ihre Schulung</label>
 			<label index="tx_schulungen_email_versand.transaction_title">Transaktionsinformation</label>
@@ -314,65 +250,62 @@
 			<label index="tx_schulungen_zurueck">Zurück zur Übersicht</label>
 			<label index="tx_schulungen_domain_validator_empty">Der übergebene Wert war leer.</label>
 			<label index="tx_schulungen_domain_validator_hide">Der übergebene Wert war nicht leer.</label>
-			<label index="tx_schulungen_domain_validator_emailaddress">Der übergebene Wert ist keine gültige
-				E-Mail-Adresse.
-			</label>
-			<label index="tx_schulungen_domain_validator_captcha">Der übergebene Wert entsprach nicht dem
-				Captcha-Text.
-			</label>
+			<label index="tx_schulungen_domain_validator_emailaddress">Der übergebene Wert ist keine gültige E-Mail-Adresse.</label>
+			<label index="tx_schulungen_domain_validator_captcha">Der übergebene Wert entsprach nicht dem Captcha-Text.</label>
 		</languageKey>
+
 		<languageKey index="en" type="array">
+			<label index="tx_schulungen_domain_model_schulung">Courses of the Göttingen State and University Library</label>
 			<label index="tx_schulungen_domain_model_schulung.schulungsangebote">Courses &amp; guided library tours</label>
-            <label index="tx_schulungen_domain_model_schulung">Schulungen der SUB Goettingen</label>
 			<label index="tx_schulungen_domain_model_schulung.titel">Course title</label>
 			<label index="tx_schulungen_domain_model_schulung.beschreibung">Course description</label>
 			<label index="tx_schulungen_domain_model_schulung.voraussetzungen">Prerequesites</label>
 			<label index="tx_schulungen_domain_model_schulung.treffpunkt">Meeting point</label>
 			<label index="tx_schulungen_domain_model_schulung.dauer">Duration</label>
-			<label index="tx_schulungen_domain_model_schulung.veranstalter">Veranstalter</label>
-			<label index="tx_schulungen_domain_model_schulung.teilnehmer">participants per course</label>
+			<label index="tx_schulungen_domain_model_schulung.veranstalter">Organiser</label>
+			<label index="tx_schulungen_domain_model_schulung.teilnehmer">Participants per course</label>
 			<label index="tx_schulungen_domain_model_schulung.teilnehmer_backend">Participants</label>
-			<label index="tx_schulungen_domain_model_schulung.teilnehmer_backend_gesamt">Teilnehmer (Gesamt)</label>
-			<label index="tx_schulungen_domain_model_schulung.teilnehmer_min">Mindestteilnehmerzahl</label>
-			<label index="tx_schulungen_domain_model_schulung.teilnehmer_max">Maximale Teilnehmerzahl</label>
+			<label index="tx_schulungen_domain_model_schulung.teilnehmer_backend_gesamt">Participants (all)</label>
+			<label index="tx_schulungen_domain_model_schulung.teilnehmer_min">Minimum number of participants</label>
+			<label index="tx_schulungen_domain_model_schulung.teilnehmer_max">Maximum number of participants</label>
 			<label index="tx_schulungen_domain_model_schulung.teilnehmerzahl">Number of participants</label>
 			<label index="tx_schulungen_domain_model_schulung.personen">Participants</label>
 			<label index="tx_schulungen_domain_model_schulung.details">Details</label>
 			<label index="tx_schulungen_domain_model_schulung.datum">Date</label>
-			<label index="tx_schulungen_domain_model_schulung.beginn">Beginn</label>
+			<label index="tx_schulungen_domain_model_schulung.beginn">Start</label>
 			<label index="tx_schulungen_domain_model_schulung.ende">End</label>
 			<label index="tx_schulungen_domain_model_schulung.status">Status</label>
-			<label index="tx_schulungen_domain_model_schulung.mail_kopie">E-Mail Adresse einer Person</label>
+			<label index="tx_schulungen_domain_model_schulung.mail_kopie">Email address</label>
 			<label index="tx_schulungen_domain_model_schulung.kategorie">Category</label>
-			<label index="tx_schulungen_domain_model_schulung.kategorie.0">Die SUB Göttingen kennenlernen: Führungen</label>
-			<label index="tx_schulungen_domain_model_schulung.kategorie.1">Literatur finden</label>
-			<label index="tx_schulungen_domain_model_schulung.kategorie.2">Literatur verwalten</label>
-			<label index="tx_schulungen_domain_model_schulung.kategorie.3">Fachspezifische Angebote</label>
-			<label index="tx_schulungen_domain_model_schulung.kategorie.4">Weitere spezielle Angebote</label>
-			<label index="tx_schulungen_domain_model_schulung.schulung_termine">Termine der Schulung</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.0">Getting to know the library: guided tours</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.1">Finding literature</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.2">Managing references</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.3">Subject specific services</label>
+			<label index="tx_schulungen_domain_model_schulung.kategorie.4">Other services</label>
+			<label index="tx_schulungen_domain_model_schulung.schulung_termine">Dates of courses</label>
 			<label index="tx_schulungen_domain_model_schulung.schulung_termine_backend">Sessions</label>
-			<label index="tx_schulungen_domain_model_schulung.schulung_termine_backend_gesamt">Termine (Gesamt)</label>
+			<label index="tx_schulungen_domain_model_schulung.schulung_termine_backend_gesamt">All dates</label>
 			<label index="tx_schulungen_domain_model_schulung.sort_index">Sort-Index</label>
-			<label index="tx_schulungen_domain_model_schulung.kalender">In Kalender eintragen</label>
-			<label index="tx_schulungen_domain_model_schulung.uebersicht">Übersicht</label>
+			<label index="tx_schulungen_domain_model_schulung.kalender">Create date in calender</label>
+			<label index="tx_schulungen_domain_model_schulung.uebersicht">Overview</label>
 			<label index="tx_schulungen_domain_model_schulung.kontakt">Contact</label>
 			<label index="tx_schulungen_domain_model_schulung.phone">(Tel.)</label>
 			<label index="tx_schulungen_domain_model_schulung.fax">(Fax)</label>
-			<label index="tx_schulungen_domain_model_schulung.text_fachspezifische_angebote_1">Bitte beachten Sie auch weitere Kurs- und Informationsangebote auf den</label>
-			<label index="tx_schulungen_domain_model_schulung.text_fachspezifische_angebote_2">Fachinformationsseiten!</label>
-			<label index="tx_schulungen_controller_schulung_edit.title">Schulung bearbeiten</label>
+			<label index="tx_schulungen_domain_model_schulung.text_fachspezifische_angebote_1">Find more courses or other services on our </label>
+			<label index="tx_schulungen_domain_model_schulung.text_fachspezifische_angebote_2">subject information pages!</label>
+			<label index="tx_schulungen_controller_schulung_edit.title">Edit course </label>
 			<label index="tx_schulungen_domain_model_termin">Session</label>
 			<label index="tx_schulungen_domain_model_termin.title">Sessions</label>
-			<label index="tx_schulungen_domain_model_termin.ausgebucht">Derzeit keine freien Plätze verfügbar</label>
-			<label index="tx_schulungen_domain_model_termin.noch">Noch</label>
-			<label index="tx_schulungen_domain_model_termin.freiePlaetze">available places</label>
+			<label index="tx_schulungen_domain_model_termin.ausgebucht">Fully booked</label>
+			<label index="tx_schulungen_domain_model_termin.noch">Still</label>
+			<label index="tx_schulungen_domain_model_termin.freiePlaetze">Available places</label>
 			<label index="tx_schulungen_domain_model_termin.start">Start date and time</label>
-			<label index="tx_schulungen_domain_model_termin.ende">Enddatum</label>
+			<label index="tx_schulungen_domain_model_termin.ende">End date</label>
 			<label index="tx_schulungen_domain_model_termin.datum">Date / Time</label>
-			<label index="tx_schulungen_domain_model_termin.anmeldung">registration</label>
-			<label index="tx_schulungen_domain_model_termin.entfaellt">cancelled</label>
-			<label index="tx_schulungen_domain_model_termin.abgesagt">Flag ob der Termin abgesagt ist</label>
-			<label index="tx_schulungen_domain_model_termin.wochentag">weeekdays</label>
+			<label index="tx_schulungen_domain_model_termin.anmeldung">Registration</label>
+			<label index="tx_schulungen_domain_model_termin.entfaellt">Cancelled</label>
+			<label index="tx_schulungen_domain_model_termin.abgesagt">Flag whether date is cancelled</label>
+			<label index="tx_schulungen_domain_model_termin.wochentag">Weekdays</label>
 			<label index="tx_schulungen_domain_model_termin.wochentag.1">Monday</label>
 			<label index="tx_schulungen_domain_model_termin.wochentag.2">Tuesday</label>
 			<label index="tx_schulungen_domain_model_termin.wochentag.3">Wednesday</label>
@@ -383,99 +316,69 @@
 			<label index="tx_schulungen_domain_model_termin.teilnahme">register</label>
 			<label index="tx_schulungen_domain_model_termin.ja">Yes</label>
 			<label index="tx_schulungen_domain_model_termin.nein">No</label>
-			<label index="tx_schulungen_domain_model_termin.zusagen">Termin zusagen</label>
-			<label index="tx_schulungen_domain_model_termin.absagen">Termin absagen</label>
+			<label index="tx_schulungen_domain_model_termin.zusagen">Confirm date</label>
+			<label index="tx_schulungen_domain_model_termin.absagen">Cancel date</label>
 			<label index="tx_schulungen_domain_model_termin.keine_termine">No dates available!</label>
 			<label index="tx_schulungen_format.date">d.m.Y H:i</label>
 			<label index="tx_schulungen_format.date_long">d. M Y H:i</label>
 			<label index="tx_schulungen_format.date_only">d.m.Y</label>
 			<label index="tx_schulungen_format.hour">H:i</label>
-			<label index="tx_schulungen_domain_model_teilnehmer">Teilnehmer an Schulungen</label>
+			<label index="tx_schulungen_domain_model_teilnehmer">Participants at course</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.vorname">First name</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.nachname">Last name</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.email">Email</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.studienfach">Subject / course</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.registration_status">Anmeldestatus</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.registered">Angemeldet</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.waitinglist">Warteliste</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.schule">Schule</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.ort">Ort</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.registration_status">Registration status</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.registered">Registered</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.waitinglist">Waiting list</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.schule">School</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.ort">City</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.bemerkung">Comment</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.zusatz">Addenda</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.captcha">ReCAPTCHA</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.secret">Secret</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.teilnehmer_termin">Teilnehmer an einem Termin</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.teilnehmer_termin">Participant</label>
 			<label index="tx_schulungen_domain_model_teilnehmer.required_note">Please note: fields marked with an * are mandatory</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.note">Information: upon successful registration you will receive a confirmation mail</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.bestaetigung">Vielen Dank für Ihre Anmeldung</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.success">Vielen Dank für Ihre Anmeldung</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.fail">Es gab ein Problem mit Ihrer Anmeldung</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.deregister">Schulungen: Abmeldung</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.deregister.success">Sie wurden erfolgreich von der
-				Schulung abgemeldet.
-			</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.deregister.success.flash">Entfernter Teilnehmer:</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.deregister.fail">Sie konnten leider nicht von der
-				Schulung abgemeldet werden.
-			</label>
-			<label index="tx_schulungen_domain_model_teilnehmer.deregister.fail.flash">Der Teilnehmer ###TEILNEHMER###
-				konnte nicht mehr entfernt werden, da die Abmeldefrist verstrichen ist. Bitte setzen Sie sich mit der
-				zuständigen Kontaktperson in Verbindung.
-			</label>
-			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.title">Anmeldebestätigung</label>
-			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.text">Sie wurden erfolgreich in die
-				Teilnehmerliste eingetragen
-			</label>
-			<label index="tx_schulungen_controller_teilnehmer_create.warteliste.bestaetigung.text">Sie wurden erfolgreich in die
-				Warteliste eingetragen
-			</label>
-			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.email">Eine E-Mail zur Bestätigung
-				wurde an %1$s gesendet
-			</label>
-			<label index="tx_schulungen_controller_teilnehmer_create.fail">Die Veranstaltung ist leider schon voll.
-				Bitte versuchen Sie sich zu einem anderen Termin anzumelden.
-			</label>
-			<label index="tx_schulungen_controller_teilnehmer_create.already_registered">Ein Teilnehmer mit diesen Daten
-				ist bereits für diesen Schulungstermin angemeldet.
-			</label>
-			<label index="tx_schulungen_controller_teilnehmer_new.title">Anmeldung zur Schulung</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.note">Information: upon successful registration you will receive a confirmation mail.</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.bestaetigung">Thank you for registering</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.success">Thank you for registering</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.fail">There's been a problem with your registration</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.deregister">Courses: unsubscribe</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.deregister.success">You have been successfully unsubscribed from the course.</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.deregister.success.flash">Removed participant:</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.deregister.fail">The cancellation of your registration did not work.</label>
+			<label index="tx_schulungen_domain_model_teilnehmer.deregister.fail.flash">Participant ###TEILNEHMER### could not be deleted from course list as deadline has elapsed. Please contact the responsible contact person.</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.title">Confirmation of registration</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.text">You have been successfully added to the list of participants</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.bestaetigung.email">A confirmation email was sent to %1$s.</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.warteliste.bestaetigung.text">You have been successfully added to the waiting list.</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.fail">The course is fully booked. Please try registering for another date.</label>
+			<label index="tx_schulungen_controller_teilnehmer_create.already_registered">A participant with this data is already registered for this course date.</label>
+			<label index="tx_schulungen_controller_teilnehmer_new.title">Registration for course</label>
 			<label index="tx_schulungen_controller_teilnehmer_new.anmelden">register</label>
-			<label index="tx_schulungen_controller_teilnehmer_edit.title">Teilnehmer bearbeiten</label>
-			<label index="tx_schulungen_controller_backend_cancel.success">Die Schulung wurde abgesagt. Die Teilnehmer
-				werden per E-Mail benachrichtigt!
-			</label>
-			<label index="tx_schulungen_controller_backend_uncancel.success">Die Schulung wurde wieder zugesagt. Die
-				Teilnehmer werden per E-Mail benachrichtigt!
-			</label>
-			<label index="tx_schulungen_controller_backend_timeout">Der Schulungstermin liegt in der Vergangenheit und
-				kann nicht mehr verändert werden!
-			</label>
-			<label index="tx_schulungen_controller_backend_index.title">Schulungen</label>
-			<label index="tx_schulungen_controller_backend_index.teilnehmer">Teilnehmer</label>
-			<label index="tx_schulungen_controller_backend_detail.operationen">Operationen</label>
-			<label index="tx_schulungen_controller_backend_detail.keine_anmeldungen">Bisher liegen noch keine
-				Anmeldungen vor!
-			</label>
-			<label index="tx_schulungen_email_bestaetigung_subject">Vielen Dank für Ihre Anmeldung</label>
-			<label index="tx_schulungen_email_bestaetigung_template">Bestaetigung</label>
-			<label index="tx_schulungen_email_deregistration_template">Deregistration</label>
-			<label index="tx_schulungen_email_transaction_template">TransactionMail</label>
-			<label index="tx_schulungen_email_versand.success">Eine E-Mail zur Erinnerung wurde an gesendet:</label>
-			<label index="tx_schulungen_email_versand.fail">Ein Fehler beim E-Mail Versand trat auf.</label>
-			<label index="tx_schulungen_email_versand.reminder_title">Erinnerung an Ihre Schulung</label>
-			<label index="tx_schulungen_email_versand.transaction_title">Transaktionsinformation</label>
-			<label index="tx_schulungen_email_versand.mail_type.0">Normale Erinnerung</label>
-			<label index="tx_schulungen_email_versand.mail_type.1">Zu wenig Teilnehmer</label>
-			<label index="tx_schulungen_email_versand.mail_type.2">Termin wurde abgesagt</label>
-			<label index="tx_schulungen_zurueck">Zurück zur Übersicht</label>
-			<label index="tx_schulungen_domain_validator_empty">Der übergebene Wert war leer.</label>
-			<label index="tx_schulungen_domain_validator_hide">Der übergebene Wert war nicht leer.</label>
-			<label index="tx_schulungen_domain_validator_emailaddress">Der übergebene Wert ist keine gültige
-				E-Mail-Adresse.
-			</label>
-			<label index="tx_schulungen_domain_validator_captcha">Der übergebene Wert entsprach nicht dem
-				Captcha-Text.
-			</label>
+			<label index="tx_schulungen_controller_teilnehmer_edit.title">Edit participant</label>
+			<label index="tx_schulungen_controller_backend_cancel.success">The course was canceled. The participants will be notified by email!</label>
+			<label index="tx_schulungen_controller_backend_uncancel.success">The course was confirmed. The participants will be notified by email!</label>
+			<label index="tx_schulungen_controller_backend_timeout">The course date is in the past and can not be changed!</label>
+			<label index="tx_schulungen_controller_backend_index.title">Courses</label>
+			<label index="tx_schulungen_controller_backend_index.teilnehmer">Participants</label>
+			<label index="tx_schulungen_controller_backend_detail.operationen">Operations</label>
+			<label index="tx_schulungen_controller_backend_detail.keine_anmeldungen">So far there are no registrations!</label>
+			<label index="tx_schulungen_email_bestaetigung_subject">Thank you for your registration</label>
+			<label index="tx_schulungen_email_bestaetigung_template">Confirmation</label>
+			<label index="tx_schulungen_email_deregistration_template">Cancellation</label>
+			<label index="tx_schulungen_email_versand.success">An email reminder has been sent to:</label>
+			<label index="tx_schulungen_email_versand.fail">An error occurred while sending email.</label>
+			<label index="tx_schulungen_email_versand.reminder_title">Reminder of a course</label>
+			<label index="tx_schulungen_email_versand.transaction_title">Transaction information</label>
+			<label index="tx_schulungen_email_versand.mail_type.0">Normal reminder</label>
+			<label index="tx_schulungen_email_versand.mail_type.1">Too few participants</label>
+			<label index="tx_schulungen_email_versand.mail_type.2">Course was cancelled</label>
+			<label index="tx_schulungen_zurueck">Back to overview</label>
+			<label index="tx_schulungen_domain_validator_empty">Passed value was empty.</label>
+			<label index="tx_schulungen_domain_validator_hide">Passed value was not empty.</label>
+			<label index="tx_schulungen_domain_validator_emailaddress">Passed value is not a valid email address.</label>
+			<label index="tx_schulungen_domain_validator_captcha">Passed value did not match the captcha text.</label>
 		</languageKey>
 	</data>
 </T3locallang>
